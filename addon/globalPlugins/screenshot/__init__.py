@@ -12,6 +12,7 @@ import ui
 import os
 import wx
 import api
+import controlTypes
 import vision
 from .rectangleHandler import Rectangle
 
@@ -87,7 +88,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 					self.oldGestureBindings["kb:"+k] = script
 		self.bindGestures(self.__keyboardLayerGestures)
 		self.toggling = True
-		self.rectangle = Rectangle().fromObject(api.getNavigatorObject())
+		navObject = api.getNavigatorObject()
+		self.rectangle = Rectangle().fromObject(navObject)
+		ui.message(_("Frammed {object} {name} ").format(
+		object=controlTypes.role._roleLabels[navObject.role], name=navObject.name if navObject.role == controlTypes.Role.WINDOW else ""))
 		self.script_rectangleInfo(None)
 
 	__gestures = {
@@ -97,6 +101,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	__keyboardLayerGestures = {
 	"kb:upArrow": "levelUp",
 	"kb:space": "rectangleInfo",
+	"kb:1": "rectangleInfo",
+	"kb:2": "rectangleInfo",
 	"kb:enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
 	# "kb:shift+rightArrow": "moveTopToRight",
@@ -105,15 +111,27 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_levelUp(self, gesture):
 		container = self.rectangle.object.container
+		while container and container.location == self.rectangle.object.location:
+			container = container.container
 		if container:
 			self.rectangle = Rectangle().fromObject(container)
+			ui.message(_("Frammed {object} {name} ").format(
+			object=controlTypes.role._roleLabels[container.role], name=container.name if container.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
 		else:
 			tones.beep(100,90)
 
 	def script_rectangleInfo(self, gesture):
-		ui.message(str(self.rectangle.location))
-		ui.message("%s %s" % (self.rectangle.object.role, self.rectangle.object.name))
+		messages = (
+		_("from {startX}, {startY} to {endX}, {endY}").format(
+		startX=self.rectangle.location.topLeft.x, startY=self.rectangle.location.topLeft.y,
+		endX=self.rectangle.location.bottomRight.x, endY=self.rectangle.location.bottomRight.y),
+		_("width {w} per height {h}").format(w=self.rectangle.location.width, h=self.rectangle.location.height)
+		)
+		try:
+			ui.message(messages[int(gesture.mainKeyName)-1])
+		except:
+			ui.message(". ".join(messages))
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
