@@ -12,6 +12,7 @@ import ui
 import os
 import wx
 import api
+import vision
 from .rectangleHandler import Rectangle
 
 def finally_(func, final):
@@ -63,6 +64,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.toggling:
 			self.script_exit(gesture)
 			self.finish()
+			return
+		from visionEnhancementProviders.screenCurtain import ScreenCurtainProvider
+		screenCurtainId = ScreenCurtainProvider.getSettings().getId()
+		screenCurtainProviderInfo = vision.handler.getProviderInfo(screenCurtainId)
+		isScreenCurtainRunning = bool(vision.handler.getProviderInstance(screenCurtainProviderInfo))
+		if isScreenCurtainRunning:
+			# Translators: Reported when screen curtain is enabled.
+			ui.message(_("Please disable screen curtain before take a screenshot"))
 			return
 		for k in [i[3:] for i in self.__keyboardLayerGestures]:
 			try:
