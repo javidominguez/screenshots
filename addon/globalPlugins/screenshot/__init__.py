@@ -13,7 +13,9 @@ import os
 import wx
 import api
 import controlTypes
+import config
 import vision
+from datetime import datetime
 from .rectangleHandler import Rectangle
 
 def finally_(func, final):
@@ -28,10 +30,21 @@ def finally_(func, final):
 		return new
 	return wrap(final)
 
+confspec = {
+	"folder":"string(default=/)",
+	"format":"string(default=bmp)",
+	"action":"integer(default=2)",
+	"step":"integer(default=5)"
+}
+config.conf.spec["screenshots"]=confspec
+
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self, *args, **kwargs):
 		super(GlobalPlugin, self).__init__(*args, **kwargs)
+
+		if config.conf["screenshots"]["folder"] == "/":
+			config.conf["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 
 		self.oldGestureBindings = {}
 		self.toggling = False
@@ -135,11 +148,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
-		folder = os.getenv("TEMP")+"\\NVDA-screenshots"
-		if not os.path.exists(folder): os.mkdir(folder)
-		img.SaveFile("%s\\screenshot%s.bmp" % (folder, self.rectangle.object.__hash__()))
+		filename = "screenshot_{timestamp}.{ext}".format(
+		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
+		ext=config.conf["screenshots"]["format"])
+		img.SaveFile(os.path.join(config.conf["screenshots"]["folder"], filename))
 		self.finish()
-		os.startfile(folder)
+		if config.conf["screenshots"]["action"] == 1:
+			os.startfile(os.path.join(config.conf["screenshots"]["folder"], filename))
+		elif config.conf["screenshots"]["action"] == 2:
+			os.startfile(config.conf["screenshots"]["folder"])
 
 	def script_wrongGesture(self, gesture):
 		tones.beep(100,50)
