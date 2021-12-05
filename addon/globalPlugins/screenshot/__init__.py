@@ -17,6 +17,7 @@ import config
 import vision
 from datetime import datetime
 from .rectangleHandler import Rectangle
+from .gui import *
 
 def finally_(func, final):
 	"""Calls final after func, even if it fails."""
@@ -32,7 +33,7 @@ def finally_(func, final):
 
 confspec = {
 	"folder":"string(default=/)",
-	"format":"string(default=bmp)",
+	"format":"string(default=BMP)",
 	"action":"integer(default=2)",
 	"step":"integer(default=5)"
 }
@@ -46,10 +47,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if config.conf["screenshots"]["folder"] == "/":
 			config.conf["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 
+		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
+
 		self.oldGestureBindings = {}
 		self.toggling = False
 		self.rectangle = None
-		
+
+	def terminate(self):
+		try:
+			NVDASettingsDialog.categoryClasses.remove(ScreenshotsPanel)
+		except:
+			pass
+
 	def getScript(self, gesture):
 		if not self.toggling:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
