@@ -65,6 +65,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.oldGestureBindings = {}
 		self.toggling = False
 		self.rectangle = None
+		self.oldRectangles = Stack()
 
 	def terminate(self):
 		try:
@@ -95,6 +96,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			if hasattr(script.__self__, script.__name__):
 				script.__self__.bindGesture(key, script.__name__[7:])
 		self.rectangle = None
+		self.oldRectangles.clear()
 
 	def script_keyboardLayer(self, gesture):
 		if self.toggling:
@@ -135,6 +137,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	__keyboardLayerGestures = {
 	"kb:upArrow": "levelUp",
+	"kb:downArrow": "goBack",
 	"kb:space": "rectangleInfo",
 	"kb:1": "rectangleInfo",
 	"kb:2": "rectangleInfo",
@@ -149,12 +152,20 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		while container and container.location == self.rectangle.object.location:
 			container = container.container
 		if container:
+			self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(container)
 			ui.message(_("Frammed {object} {name} ").format(
 			object=controlTypes.role._roleLabels[container.role], name=container.name if container.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
 		else:
 			tones.beep(100,90)
+
+	def script_goBack(self, gesture):
+		if self.oldRectangles.isEmpty():
+			self.script_wrongGesture(None)
+			return
+		self.rectangle = self.oldRectangles.pop()
+		self.script_rectangleInfo(None)
 
 	def script_rectangleInfo(self, gesture):
 		messages = (
@@ -182,3 +193,23 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_wrongGesture(self, gesture):
 		tones.beep(100,50)
+
+class Stack:
+	def __init__(self):
+		self.items = []
+
+	def isEmpty(self):
+		return not self.items
+
+	def push(self, item):
+		self.items.insert(0, item)
+
+	def pop(self):
+		if self.isEmpty():
+			return None
+		else:
+			return self.items.pop(0)
+
+	def clear(self):
+		self.items = []
+		return self.isEmpty()
