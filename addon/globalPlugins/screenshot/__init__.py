@@ -44,8 +44,21 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self, *args, **kwargs):
 		super(GlobalPlugin, self).__init__(*args, **kwargs)
 
-		if config.conf["screenshots"]["folder"] == "/":
-			config.conf["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
+		# By default, the user's documents folder is assumed as the folder where to save the image files of the screenshots.
+		try:
+		# Read the normal profile settings
+			folder = config.conf.profiles[0]["screenshots"]["folder"]
+		except:
+			# If it is not possible we read it from the general configuration
+			folder = config.conf["screenshots"]["folder"]
+		if folder == "/":
+		# If it is used for the first time there will be no folder assigned. The user's documents is assigned to the normal profile.
+			try:
+				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
+			except KeyError:
+				if "screenshots" not in config.conf.profiles[0]:
+					config.conf.profiles[0]["screenshots"] = config.conf["screenshots"]
+				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
 
@@ -159,13 +172,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		img = self.rectangle.getImage()
 		filename = "screenshot_{timestamp}.{ext}".format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
-		ext=config.conf["screenshots"]["format"])
-		img.SaveFile(os.path.join(config.conf["screenshots"]["folder"], filename))
+		ext=config.conf.profiles[0]["screenshots"]["format"])
+		img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
 		self.finish()
-		if config.conf["screenshots"]["action"] == 1:
-			os.startfile(os.path.join(config.conf["screenshots"]["folder"], filename))
-		elif config.conf["screenshots"]["action"] == 2:
-			os.startfile(config.conf["screenshots"]["folder"])
+		if config.conf.profiles[0]["screenshots"]["action"] == 1:
+			os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
+		elif config.conf.profiles[0]["screenshots"]["action"] == 2:
+			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
 
 	def script_wrongGesture(self, gesture):
 		tones.beep(100,50)
