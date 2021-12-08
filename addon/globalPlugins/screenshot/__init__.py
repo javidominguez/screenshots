@@ -147,6 +147,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:space": "rectangleInfo",
 	"kb:1": "rectangleInfo",
 	"kb:2": "rectangleInfo",
+	"kb:3": "rectangleInfo",
+	"kb:4": "rectangleInfo",
 	"kb:enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
 	"kb:shift+rightArrow": "shrinkLeft",
@@ -168,7 +170,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(container)
 			ui.message(_("Frammed {object} {name} ").format(
-			object=controlTypes.role._roleLabels[container.role], name=container.name if container.role == controlTypes.Role.WINDOW else ""))
+			object=controlTypes.role._roleLabels[container.role], name=container.name if container.name and container.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
 		else:
 			tones.beep(100,90)
@@ -179,15 +181,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_wrongGesture(None)
 			return
 		self.rectangle = self.oldRectangles.pop()
+		ui.message(_("Frammed {object} {name} ").format(
+		object=controlTypes.role._roleLabels[self.rectangle.object.role], name=self.rectangle.object.name if self.rectangle.object.name and self.rectangle.object.role == controlTypes.Role.WINDOW else ""))
 		self.script_rectangleInfo(None)
 
 	def script_rectangleInfo(self, gesture):
 		self.lastGesture = None
 		messages = (
+		# 1
 		_("from {startX}, {startY} to {endX}, {endY}").format(
 		startX=self.rectangle.location.topLeft.x, startY=self.rectangle.location.topLeft.y,
 		endX=self.rectangle.location.bottomRight.x, endY=self.rectangle.location.bottomRight.y),
-		_("width {w} per height {h}").format(w=self.rectangle.location.width, h=self.rectangle.location.height)
+		# 2
+		_("width {w} per height {h}").format(w=self.rectangle.location.width, h=self.rectangle.location.height),
+		# 3
+		_("The reference object is {objectRole} {objectName}").format(
+		objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
+		objectName = self.rectangle.object.name if self.rectangle.object.name else ""),
+		# 4
+		_("The reference object occupies {ratio}% of the rectangle").format(
+		ratio=round(self.rectangle.ratioObjectFrame(self.rectangle.object)*100))
 		)
 		try:
 			ui.message(messages[int(gesture.mainKeyName)-1])

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/1/bin/env python3
 # -*- coding: UTF-8 -*-
 """
 This file is covered by the GNU General Public License.
@@ -19,12 +19,7 @@ class Rectangle():
 		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
 		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
 		self.object = obj
-		location = self.object.location
-		obj = self.object
-		while obj:
-			obj = obj.container
-			if obj: location = location.intersection(obj.location)
-		self.location = location
+		self.location = self.__delimit_object(obj)
 		return self
 
 	def getRGBQUAD_Array(self):
@@ -69,3 +64,25 @@ class Rectangle():
 		if y+h > api.getDesktopObject().location.height: return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
 		return y+h
+
+	def ratioObjectFrame(self, obj):
+		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
+		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
+		objloc = self.location.intersection(self.__delimit_object(obj))
+		return (objloc.width*objloc.height)/(self.location.width*self.location.height)
+
+	def ratioFrameObject(self, obj):
+		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
+		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
+
+	def __hook_object(self):
+		pass
+
+	def __delimit_object(self, obj):
+		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
+		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
+		location = obj.location
+		while obj:
+			obj = obj.container
+			if obj: location = location.intersection(obj.location)
+		return location
