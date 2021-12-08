@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
+"""
+GUI for screenshots wizard NVDA addon
+
+This file is covered by the GNU General Public License.
+Copyright (C) Javi Dominguez 2021
+"""
 
 from gui import guiHelper, NVDASettingsDialog
 from gui.settingsDialogs import SettingsPanel

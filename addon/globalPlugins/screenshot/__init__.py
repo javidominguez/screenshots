@@ -1,4 +1,7 @@
-""" NVDA addon that provides an wizard to take screenshots
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+"""
+NVDA addon that provides an wizard to take screenshots
 
 This file is covered by the GNU General Public License.
 Copyright (C) Javi Dominguez 2021
@@ -66,6 +69,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.toggling = False
 		self.rectangle = None
 		self.oldRectangles = Stack()
+		self.lastGesture = None
 
 	def terminate(self):
 		try:
@@ -97,12 +101,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				script.__self__.bindGesture(key, script.__name__[7:])
 		self.rectangle = None
 		self.oldRectangles.clear()
+		self.lastGesture = None
 
 	def script_keyboardLayer(self, gesture):
 		if self.toggling:
 			self.script_exit(gesture)
 			self.finish()
 			return
+		self.lastGesture = gesture.identifiers
 		from visionEnhancementProviders.screenCurtain import ScreenCurtainProvider
 		screenCurtainId = ScreenCurtainProvider.getSettings().getId()
 		screenCurtainProviderInfo = vision.handler.getProviderInfo(screenCurtainId)
@@ -132,7 +138,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.script_rectangleInfo(None)
 
 	__gestures = {
-	"kb:control+NVDA+escape": "keyboardLayer"
+	"kb:printScreen": "keyboardLayer"
 	}
 
 	__keyboardLayerGestures = {
@@ -143,11 +149,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:2": "rectangleInfo",
 	"kb:enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
-	# "kb:shift+rightArrow": "moveTopToRight",
-	# "kb:shift+leftArrow": "moveTopToUp",
+	"kb:shift+rightArrow": "shrinkLeft",
+	"kb:shift+leftArrow": "expandLeftward",
+	"kb:shift+upArrow": "expandUpward",
+	"kb:shift+downArrow": "shrinkAbove",
+	"kb:control+rightArrow": "expandRightward",
+	"kb:control+leftArrow": "shrinkRight",
+	"kb:control+upArrow": "shrinkBottom",
+	"kb:control+downArrow": "expandBottomward"
 	}
 
 	def script_levelUp(self, gesture):
+		self.lastGesture = gesture.identifiers
 		container = self.rectangle.object.container
 		while container and container.location == self.rectangle.object.location:
 			container = container.container
@@ -161,6 +174,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			tones.beep(100,90)
 
 	def script_goBack(self, gesture):
+		self.lastGesture = gesture.identifiers
 		if self.oldRectangles.isEmpty():
 			self.script_wrongGesture(None)
 			return
@@ -168,6 +182,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.script_rectangleInfo(None)
 
 	def script_rectangleInfo(self, gesture):
+		self.lastGesture = None
 		messages = (
 		_("from {startX}, {startY} to {endX}, {endY}").format(
 		startX=self.rectangle.location.topLeft.x, startY=self.rectangle.location.topLeft.y,
@@ -191,7 +206,88 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		elif config.conf.profiles[0]["screenshots"]["action"] == 2:
 			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
 
+	def script_expandUpward(self, gesture):
+		p = self.rectangle.moveTopEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Top edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_shrinkAbove(self, gesture):
+		p = self.rectangle.moveTopEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Top edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_expandLeftward(self, gesture):
+		p = self.rectangle.moveLeftEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Left edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_shrinkLeft(self, gesture):
+		p = self.rectangle.moveLeftEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Left edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_expandBottomward(self, gesture):
+		p = self.rectangle.moveBottomEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Bottom edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_shrinkBottom(self, gesture):
+		p = self.rectangle.moveBottomEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Bottom edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_expandRightward(self, gesture):
+		p = self.rectangle.moveRightEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Right edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_shrinkRight(self, gesture):
+		p = self.rectangle.moveRightEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
+		if p:
+			ui.message("{msg} {point}".format(
+			msg="" if self.lastGesture==gesture.identifiers else _("Right edge moved to"),
+			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
 	def script_wrongGesture(self, gesture):
+		self.lastGesture = None
 		tones.beep(100,50)
 
 class Stack:

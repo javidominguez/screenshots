@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
 """
 This file is covered by the GNU General Public License.
 Copyright (C) Javi Dominguez 2021
 """
 
+import api
 import wx
 import screenBitmap
 import locationHelper
@@ -32,3 +35,37 @@ class Rectangle():
 		rgb = self.getRGBQUAD_Array()
 		if not rgb: return None
 		return wx.BitmapFromBufferRGBA(self.location.width, self.location.height, rgb).ConvertToImage()
+
+	def moveLeftEdge(self, step=1):
+		x, y, w, h = self.location
+		x = x+step
+		w = w+(-1*step)
+		if x<0: return None
+		if x > self.location.right-10: return None
+		self.location = locationHelper.RectLTWH(x, y, w, h)
+		return x
+
+	def moveRightEdge(self, step=1):
+		x, y, w, h = self.location
+		w = w+step
+		if x+w > api.getDesktopObject().location.width: return None
+		if w < 10: return None
+		self.location = locationHelper.RectLTWH(x, y, w, h)
+		return x+w
+
+	def moveTopEdge(self, step=1):
+		x, y, w, h = self.location
+		y = y+step
+		h = h+(-1*step)
+		if y < 0: return None
+		if y > self.location.bottom-10: return None
+		self.location = locationHelper.RectLTWH(x,y,w,h)
+		return y
+
+	def moveBottomEdge(self, step=1):
+		x, y, w, h = self.location
+		h = h+step
+		if h < 10: return None
+		if y+h > api.getDesktopObject().location.height: return None
+		self.location = locationHelper.RectLTWH(x, y, w, h)
+		return y+h
