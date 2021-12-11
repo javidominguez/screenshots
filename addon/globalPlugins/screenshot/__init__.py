@@ -145,6 +145,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:upArrow": "levelUp",
 	"kb:downArrow": "goBack",
 	"kb:space": "rectangleInfo",
+	"kb:pageUp": "increaseStep",
+	"kb:pageDown": "decreaseStep",
 	"kb:1": "rectangleInfo",
 	"kb:2": "rectangleInfo",
 	"kb:3": "rectangleInfo",
@@ -202,7 +204,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
 		objectName = self.rectangle.object.name if self.rectangle.object.name else ""),
 		# 4
-		_("The reference object occupies {ratio}% of the rectangle").format(
+		_("{ratio}% of the rectangle is occupied by the object of reference").format(
 		ratio=round(self.rectangle.ratioObjectFrame(self.rectangle.object)*100)),
 		# 5
 		"{msg}".format(
@@ -230,6 +232,24 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
 		elif config.conf.profiles[0]["screenshots"]["action"] == 2:
 			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
+
+	def script_increaseStep(self, gesture):
+		self.increaseOrDecreaseStep(1)
+		self.lastGesture = gesture.identifiers
+
+	def script_decreaseStep(self, gesture):
+		self.increaseOrDecreaseStep(-1)
+		self.lastGesture = gesture.identifiers
+
+	def increaseOrDecreaseStep(self, x):
+		step = int(config.conf.profiles[0]["screenshots"]["step"])
+		step = step+x
+		if step < 11 and step > 0:
+			config.conf.profiles[0]["screenshots"]["step"] = step
+			# Translators: Message   when modifying the amount of movement in pixels
+			ui.message(_("{step} px").format(step=config.conf.profiles[0]["screenshots"]["step"]))
+		else:
+			self.script_wrongGesture(None)
 
 	def script_expandUpward(self, gesture):
 		p = self.rectangle.moveTopEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
