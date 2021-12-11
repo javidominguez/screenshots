@@ -136,7 +136,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		ui.message(_("Frammed {object} {name} ").format(
 		object=controlTypes.role._roleLabels[navObject.role], name=navObject.name if navObject.role == controlTypes.Role.WINDOW else ""))
 		self.script_rectangleInfo(None)
-
+	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 	__gestures = {
 	"kb:printScreen": "keyboardLayer"
 	}
@@ -149,6 +149,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:2": "rectangleInfo",
 	"kb:3": "rectangleInfo",
 	"kb:4": "rectangleInfo",
+	"kb:5": "rectangleInfo",
+	"kb:6": "rectangleInfo",
+	"kb:7": "rectangleInfo",
 	"kb:enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
 	"kb:shift+rightArrow": "shrinkLeft",
@@ -200,7 +203,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		objectName = self.rectangle.object.name if self.rectangle.object.name else ""),
 		# 4
 		_("The reference object occupies {ratio}% of the rectangle").format(
-		ratio=round(self.rectangle.ratioObjectFrame(self.rectangle.object)*100))
+		ratio=round(self.rectangle.ratioObjectFrame(self.rectangle.object)*100)),
+		# 5
+		"{msg}".format(
+		msg = _("The reference object is completely inside the rectangle") if self.rectangle.isObjectInsideRectangle() else _("Part of the reference object is outside the rectangle")),
+		# 6
+		"{msg}".format(
+		msg = _("The rectangle is inside the active window") if self.rectangle.isRectangleInsideTheWindow() else _("Part of the rectangle is outside the active window")),
+		# 7
+		_("The rectangle occupies {percentage}% of the screen").format(
+		percentage = round(self.rectangle.ratioFrameObject(api.getDesktopObject())*100))
 		)
 		try:
 			ui.message(messages[int(gesture.mainKeyName)-1])

@@ -38,6 +38,7 @@ class Rectangle():
 		if x<0: return None
 		if x > self.location.right-10: return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
+		self.__hook_object()
 		return x
 
 	def moveRightEdge(self, step=1):
@@ -46,6 +47,7 @@ class Rectangle():
 		if x+w > api.getDesktopObject().location.width: return None
 		if w < 10: return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
+		self.__hook_object()
 		return x+w
 
 	def moveTopEdge(self, step=1):
@@ -55,6 +57,7 @@ class Rectangle():
 		if y < 0: return None
 		if y > self.location.bottom-10: return None
 		self.location = locationHelper.RectLTWH(x,y,w,h)
+		self.__hook_object()
 		return y
 
 	def moveBottomEdge(self, step=1):
@@ -63,6 +66,7 @@ class Rectangle():
 		if h < 10: return None
 		if y+h > api.getDesktopObject().location.height: return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
+		self.__hook_object()
 		return y+h
 
 	def ratioObjectFrame(self, obj):
@@ -74,6 +78,14 @@ class Rectangle():
 	def ratioFrameObject(self, obj):
 		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
 		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
+		objloc = self.__delimit_object(obj)
+		return (self.location.width*self.location.height)/(objloc.width*objloc.height)
+
+	def isObjectInsideRectangle(self):
+		return self.location.isSuperset(self.__delimit_object(self.object))
+
+	def isRectangleInsideTheWindow(self):
+		return self.__delimit_object(api.getForegroundObject()).isSuperset(self.location)
 
 	def __hook_object(self):
 		pass
