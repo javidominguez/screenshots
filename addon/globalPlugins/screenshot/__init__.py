@@ -15,6 +15,7 @@ import ui
 import os
 import wx
 import api
+import winUser
 import controlTypes
 import config
 import vision
@@ -144,6 +145,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	__keyboardLayerGestures = {
 	"kb:upArrow": "levelUp",
 	"kb:downArrow": "goBack",
+	"kb:w": "frameObject",
+	"kb:s": "frameObject",
+	"kb:f": "frameObject",
+	"kb:n": "frameObject",
+	"kb:m": "frameObject",
 	"kb:space": "rectangleInfo",
 	"kb:pageUp": "increaseStep",
 	"kb:pageDown": "decreaseStep",
@@ -171,11 +177,36 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		container = self.rectangle.object.container
 		while container and container.location == self.rectangle.object.location:
 			container = container.container
-		if container:
+		self.rectangleFromObject(container)
+
+	def script_frameObject(self, gesture):
+		self.lastGesture = gesture.identifiers
+		if gesture.mainKeyName == "w":
+			obj = api.getForegroundObject()
+		elif gesture.mainKeyName == "s":
+			obj = api.getDesktopObject()
+		elif gesture.mainKeyName == "f":
+			obj = api.getFocusObject()
+		elif gesture.mainKeyName == "n":
+			obj = api.getNavigatorObject()
+		elif gesture.mainKeyName == "m":
+			x, y = winUser.getCursorPos()
+			obj = api.getDesktopObject().objectFromPoint(x,y)
+		else:
+			self.script_wrongGesture(None)
+			return
+		if obj == self.rectangle.object:
+			self.script_wrongGesture(None)
+			ui.message(_("Already framed"))
+		else:
+			self.rectangleFromObject(obj)
+
+	def rectangleFromObject(self, obj):
+		if obj:
 			self.oldRectangles.push(self.rectangle)
-			self.rectangle = Rectangle().fromObject(container)
+			self.rectangle = Rectangle().fromObject(obj)
 			ui.message(_("Frammed {object} {name} ").format(
-			object=controlTypes.role._roleLabels[container.role], name=container.name if container.name and container.role == controlTypes.Role.WINDOW else ""))
+			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
 		else:
 			tones.beep(100,90)
