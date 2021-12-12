@@ -69,6 +69,19 @@ class Rectangle():
 		self.__hook_object()
 		return y+h
 
+	def expandOrShrink(self, step=1):
+		try:
+			location = api.getDesktopObject().location.intersection(self.location.expandOrShrink(step))
+		except:
+			return False
+		if location.width < 10 or location.height < 10:
+			return False
+		elif location == self.location:
+			return False
+		else:
+			self.location = location
+			return True
+
 	def ratioObjectFrame(self, obj):
 		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
 		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")

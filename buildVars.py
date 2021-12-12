@@ -26,7 +26,7 @@ addon_info = {
 	"addon_description": _("""
 NVDA addon that provides an wizard to take screenshots."""),
 	# version
-	"addon_version": "alpha-4",
+	"addon_version": "alpha-5",
 	# Author(s)
 	"addon_author": "Javi Domínguez <fjavids@gmail.com>",
 	# URL for the add-on documentation support

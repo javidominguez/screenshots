@@ -169,7 +169,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:control+rightArrow": "expandRightward",
 	"kb:control+leftArrow": "shrinkRight",
 	"kb:control+upArrow": "shrinkBottom",
-	"kb:control+downArrow": "expandBottomward"
+	"kb:control+downArrow": "expandBottomward",
+	"kb:control+shift+upArrow": "expandRectangle",
+	"kb:control+shift+downArrow": "shrinkRectangle"
 	}
 
 	def script_levelUp(self, gesture):
@@ -259,9 +261,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		ext=config.conf.profiles[0]["screenshots"]["format"])
 		img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
 		self.finish()
-		if config.conf.profiles[0]["screenshots"]["action"] == 1:
+		if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
 			os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
-		elif config.conf.profiles[0]["screenshots"]["action"] == 2:
+		elif int(config.conf.profiles[0]["screenshots"]["action"]) == 2:
 			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
 
 	def script_increaseStep(self, gesture):
@@ -358,6 +360,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message("{msg} {point}".format(
 			msg="" if self.lastGesture==gesture.identifiers else _("Right edge moved to"),
 			point=p))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_expandRectangle(self, gesture):
+		if self.rectangle.expandOrShrink(int(config.conf.profiles[0]["screenshots"]["step"])):
+			ui.message(_("{msg} {width} per {height}").format(
+			msg = _("Expanding, ") if self.lastGesture != gesture.identifiers else "",
+			width = self.rectangle.location.width,
+			height = self.rectangle.location.height))
+		else:
+			self.script_wrongGesture(None)
+		self.lastGesture = gesture.identifiers
+
+	def script_shrinkRectangle(self, gesture):
+		if self.rectangle.expandOrShrink(-1*int(config.conf.profiles[0]["screenshots"]["step"])):
+			ui.message(_("{msg} {width} per {height}").format(
+			msg = _("Shrinking, ") if self.lastGesture != gesture.identifiers else "",
+			width = self.rectangle.location.width,
+			height = self.rectangle.location.height))
 		else:
 			self.script_wrongGesture(None)
 		self.lastGesture = gesture.identifiers
