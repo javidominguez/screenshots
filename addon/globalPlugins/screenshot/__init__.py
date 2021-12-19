@@ -22,6 +22,9 @@ import vision
 from datetime import datetime
 from .rectangleHandler import Rectangle
 from .gui import *
+import mouseHandler
+import winInputHook
+import winUser
 
 def finally_(func, final):
 	"""Calls final after func, even if it fails."""
@@ -42,6 +45,7 @@ confspec = {
 	"step":"integer(default=5)"
 }
 config.conf.spec["screenshots"]=confspec
+mouseCallbackFunc = None
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
@@ -78,6 +82,24 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except:
 			pass
 
+	def mouseCapture(self, msg, x, y, injected):
+		if msg  == mouseHandler.WM_LBUTTONDOWN:
+			self.script_frameObject(KeyboardInputGesture.fromName("m"))
+		elif msg  == mouseHandler.WM_MOUSEMOVE:
+			return mouseCallbackFunc(msg, x, y, injected)
+		else:
+			if msg  != mouseHandler.WM_LBUTTONUP: self.script_wrongGesture(None)
+
+	def lockMouse(self):
+		global mouseCallbackFunc
+		mouseCallbackFunc = winInputHook.mouseCallback
+		winInputHook.setCallbacks(mouse=self.mouseCapture)
+		
+	def unlockMouse(self):
+		global mouseCallbackFunc
+		winInputHook.setCallbacks(mouse=mouseCallbackFunc)
+		mouseCallbackFunc = None
+
 	def getScript(self, gesture):
 		if not self.toggling:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
@@ -102,6 +124,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				script.__self__.bindGesture(key, script.__name__[7:])
 		self.rectangle = None
 		self.oldRectangles.clear()
+		self.unlockMouse()
 		self.lastGesture = None
 
 	def script_keyboardLayer(self, gesture):
@@ -132,6 +155,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 					self.oldGestureBindings["kb:"+k] = script
 		self.bindGestures(self.__keyboardLayerGestures)
 		self.toggling = True
+		self.lockMouse()
 		navObject = api.getNavigatorObject()
 		self.rectangle = Rectangle().fromObject(navObject)
 		ui.message(_("Frammed {object} {name} ").format(
