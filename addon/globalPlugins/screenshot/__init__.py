@@ -83,12 +83,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			pass
 
 	def mouseCapture(self, msg, x, y, injected):
-		if msg  == mouseHandler.WM_LBUTTONDOWN:
-			self.script_frameObject(KeyboardInputGesture.fromName("m"))
-		elif msg  == mouseHandler.WM_MOUSEMOVE:
+		if msg  == mouseHandler.WM_MOUSEMOVE:
 			return mouseCallbackFunc(msg, x, y, injected)
 		else:
-			if msg  != mouseHandler.WM_LBUTTONUP: self.script_wrongGesture(None)
+			self.script_wrongGesture(None)
 
 	def lockMouse(self):
 		global mouseCallbackFunc
