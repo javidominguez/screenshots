@@ -12,6 +12,10 @@ import locationHelper
 from threading import Event, Thread
 
 EVT_object = "Rectangle.event_referenceObjectChanged"
+EVT_objectInside = "Rectangle.event_referenceObjectInsideFrame"
+EVT_objectOverflow = "Rectangle.event_referenceObjectOverflowFrame"
+EVT_insideWindow = "Rectangle.event_rectInsideWindow"
+EVT_overflowWindow = "Rectangle.event_rectOverflowWindow"
 
 class Rectangle():
 
@@ -19,7 +23,11 @@ class Rectangle():
 		self.location = locationHelper.RectLTWH(top,left,width,height)
 		self.object = None
 		self.__events = {
-		EVT_object: Event()
+		EVT_object: Event(),
+		EVT_objectInside: Event(),
+		EVT_objectOverflow: Event(),
+		EVT_insideWindow: Event(),
+		EVT_overflowWindow: Event()
 		}
 		self.__threads = set()
 
@@ -44,54 +52,83 @@ class Rectangle():
 		return wx.BitmapFromBufferRGBA(self.location.width, self.location.height, rgb).ConvertToImage()
 
 	def moveLeftEdge(self, step=1):
+		check = self.__check_overflows()
 		x, y, w, h = self.location
 		x = x+step
 		w = w+(-1*step)
-		if x<0: return None
-		if x > self.location.right-10: return None
+		if x<0:
+			check.set()
+			return None
+		if x > self.location.right-10:
+			check.set()
+			return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
 		self.__hook_object()
+		check.set()
 		return x
 
 	def moveRightEdge(self, step=1):
+		check = self.__check_overflows()
 		x, y, w, h = self.location
 		w = w+step
-		if x+w > api.getDesktopObject().location.width: return None
-		if w < 10: return None
+		if x+w > api.getDesktopObject().location.width:
+			check.set()
+			return None
+		if w < 10:
+			check.set()
+			return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
 		self.__hook_object()
+		check.set()
 		return x+w
 
 	def moveTopEdge(self, step=1):
+		check = self.__check_overflows()
 		x, y, w, h = self.location
 		y = y+step
 		h = h+(-1*step)
-		if y < 0: return None
-		if y > self.location.bottom-10: return None
+		if y < 0:
+			check.set()
+			return None
+		if y > self.location.bottom-10:
+			check.set()
+			return None
 		self.location = locationHelper.RectLTWH(x,y,w,h)
 		self.__hook_object()
+		check.set()
 		return y
 
 	def moveBottomEdge(self, step=1):
+		check = self.__check_overflows()
 		x, y, w, h = self.location
 		h = h+step
-		if h < 10: return None
-		if y+h > api.getDesktopObject().location.height: return None
+		if h < 10:
+			check.set()
+			return None
+		if y+h > api.getDesktopObject().location.height:
+			check.set()
+			return None
 		self.location = locationHelper.RectLTWH(x, y, w, h)
 		self.__hook_object()
+		check.set()
 		return y+h
 
 	def expandOrShrink(self, step=1):
+		check = self.__check_overflows()
 		try:
 			location = api.getDesktopObject().location.intersection(self.location.expandOrShrink(step))
 		except:
+			check.set()
 			return False
 		if location.width < 10 or location.height < 10:
+			check.set()
 			return False
 		elif location == self.location:
+			check.set()
 			return False
 		else:
 			self.location = location
+			check.set()
 			return True
 
 	def ratioObjectFrame(self, obj):
@@ -139,6 +176,27 @@ class Rectangle():
 			obj = obj.container
 			if obj: location = location.intersection(obj.location)
 		return location
+
+	def __check_overflows(self):
+		ev = Event()
+		obj = self.object
+		insideObject = self.isObjectInsideRectangle()
+		insideWindow = self.isRectangleInsideTheWindow()
+		def check():
+			ev.wait()
+			if self.object != obj: return
+			curInsideObject = self.isObjectInsideRectangle()
+			if (insideObject, curInsideObject) == (True, False):
+				self.__events[EVT_objectOverflow].set()
+			elif (insideObject, curInsideObject) == (False, True):
+				self.__events[EVT_objectInside].set()
+			curInsideWindow = self.isRectangleInsideTheWindow()
+			if (insideWindow, curInsideWindow) == (True, False):
+				self.__events[EVT_overflowWindow].set()
+			elif (insideWindow, curInsideWindow) == (False, True):
+				self.__events[EVT_insideWindow].set()
+		Thread(target=check).start()
+		return ev
 
 class EventHandler(Thread):
 
