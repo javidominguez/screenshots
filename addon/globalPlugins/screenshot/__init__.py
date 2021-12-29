@@ -20,7 +20,7 @@ import controlTypes
 import config
 import vision
 from datetime import datetime
-from .rectangleHandler import Rectangle
+from .rectangleHandler import *
 from .gui import *
 import mouseHandler
 import winInputHook
@@ -155,10 +155,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.toggling = True
 		self.lockMouse()
 		navObject = api.getNavigatorObject()
-		self.rectangle = Rectangle().fromObject(navObject)
-		ui.message(_("Frammed {object} {name} ").format(
-		object=controlTypes.role._roleLabels[navObject.role], name=navObject.name if navObject.role == controlTypes.Role.WINDOW else ""))
-		self.script_rectangleInfo(None)
+		self.rectangle = Rectangle()
+		self.rectangleFromObject(navObject)
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 	__gestures = {
 	"kb:printScreen": "keyboardLayer"
@@ -227,8 +225,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def rectangleFromObject(self, obj):
 		if obj:
-			self.oldRectangles.push(self.rectangle)
+			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(obj)
+			self.rectangle.bind(EVT_object, tones.beep, 1000,90)
 			ui.message(_("Frammed {object} {name} ").format(
 			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
