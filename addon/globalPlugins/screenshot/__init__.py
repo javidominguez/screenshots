@@ -72,7 +72,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 		self.oldGestureBindings = {}
 		self.toggling = False
-		self.rectangle = None
+		self.rectangle = Rectangle()
 		self.oldRectangles = Stack()
 		self.lastGesture = None
 
@@ -120,7 +120,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			script = self.oldGestureBindings[key]
 			if hasattr(script.__self__, script.__name__):
 				script.__self__.bindGesture(key, script.__name__[7:])
-		self.rectangle = None
+		self.rectangle = Rectangle()
 		self.oldRectangles.clear()
 		self.unlockMouse()
 		self.lastGesture = None
@@ -154,9 +154,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.bindGestures(self.__keyboardLayerGestures)
 		self.toggling = True
 		self.lockMouse()
-		navObject = api.getNavigatorObject()
-		self.rectangle = Rectangle()
-		self.rectangleFromObject(navObject)
+		focus = api.getFocusObject()
+		self.rectangleFromObject(focus)
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 	__gestures = {
 	"kb:printScreen": "keyboardLayer"
@@ -191,7 +190,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:control+upArrow": "shrinkBottom",
 	"kb:control+downArrow": "expandBottomward",
 	"kb:control+shift+upArrow": "expandRectangle",
-	"kb:control+shift+downArrow": "shrinkRectangle"
+	"kb:control+shift+downArrow": "shrinkRectangle",
+	"kb:backspace": "adjustToObject"
 	}
 
 	def script_levelUp(self, gesture):
@@ -408,6 +408,19 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else:
 			self.script_wrongGesture(None)
 		self.lastGesture = gesture.identifiers
+
+	def script_adjustToObject(self, gesture):
+		loc = self.rectangle.location
+		if self.rectangle.adjustToObject():
+			if loc == self.rectangle.location:
+				ui.message(_("Already adjusted"))
+				self.script_wrongGesture(None)
+			else:
+				ui.message(_("Rectangle  adjusted to {objectRole} {objectName}").format(
+				objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
+				objectName = self.rectangle.object.name if self.rectangle.object.name else ""))
+		else:
+			self.script_wrongGesture(None)
 
 	def script_wrongGesture(self, gesture):
 		self.lastGesture = None

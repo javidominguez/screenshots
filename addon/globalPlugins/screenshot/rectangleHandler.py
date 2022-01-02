@@ -150,8 +150,14 @@ class Rectangle():
 	def isRectangleInsideTheWindow(self):
 		return self.__delimit_object(api.getForegroundObject()).isSuperset(self.location)
 
+	def adjustToObject(self):
+		if not self.object: return False
+		self.location = self.__delimit_object(self.object)
+		return True
+
 	def bind(self, event, func, *args, **kwargs):
-		# validar args
+		if event not in self.__events: raise TypeError("unexpected type. The first argument expected a valid rectangle event.")
+		if not hasattr(func, "__call__"): raise TypeError("Unexpected type. The second argument expected a function or a callable object.")
 		thread = EventHandler(self.__events[event], func, *args, **kwargs)
 		thread.setName(event)
 		self.__events[event].clear()
