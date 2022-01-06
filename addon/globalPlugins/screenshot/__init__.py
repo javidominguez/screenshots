@@ -7,24 +7,23 @@ This file is covered by the GNU General Public License.
 Copyright (C) Javi Dominguez 2021
 """
 
-import globalPluginHandler
-from keyboardHandler import KeyboardInputGesture
+from .gui import *
+from .rectangleHandler import *
+from datetime import datetime
 from functools import wraps
+from keyboardHandler import KeyboardInputGesture
+import api
+import config
+import controlTypes
+import globalPluginHandler
+import mouseHandler
+import os
 import tones
 import ui
-import os
-import wx
-import api
-import winUser
-import controlTypes
-import config
 import vision
-from datetime import datetime
-from .rectangleHandler import *
-from .gui import *
-import mouseHandler
 import winInputHook
 import winUser
+import wx
 
 def finally_(func, final):
 	"""Calls final after func, even if it fails."""
@@ -130,7 +129,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_exit(gesture)
 			self.finish()
 			return
-		self.lastGesture = gesture.identifiers
 		from visionEnhancementProviders.screenCurtain import ScreenCurtainProvider
 		screenCurtainId = ScreenCurtainProvider.getSettings().getId()
 		screenCurtainProviderInfo = vision.handler.getProviderInfo(screenCurtainId)
@@ -139,6 +137,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			# Translators: Reported when screen curtain is enabled.
 			ui.message(_("Please disable screen curtain before take a screenshot"))
 			return
+		self.lastGesture = gesture.identifiers
 		for k in [i[3:] for i in self.__keyboardLayerGestures]:
 			try:
 				script = KeyboardInputGesture.fromName(k).script
@@ -157,42 +156,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		focus = api.getFocusObject()
 		self.rectangleFromObject(focus)
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
-	__gestures = {
-	"kb:printScreen": "keyboardLayer"
-	}
-
-	__keyboardLayerGestures = {
-	"kb:upArrow": "levelUp",
-	"kb:downArrow": "goBack",
-	"kb:w": "frameObject",
-	"kb:s": "frameObject",
-	"kb:f": "frameObject",
-	"kb:n": "frameObject",
-	"kb:m": "frameObject",
-	"kb:space": "rectangleInfo",
-	"kb:pageUp": "increaseStep",
-	"kb:pageDown": "decreaseStep",
-	"kb:1": "rectangleInfo",
-	"kb:2": "rectangleInfo",
-	"kb:3": "rectangleInfo",
-	"kb:4": "rectangleInfo",
-	"kb:5": "rectangleInfo",
-	"kb:6": "rectangleInfo",
-	"kb:7": "rectangleInfo",
-	"kb:enter": "saveScreenshot",
-	"kb:numpadEnter": "saveScreenshot",
-	"kb:shift+rightArrow": "shrinkLeft",
-	"kb:shift+leftArrow": "expandLeftward",
-	"kb:shift+upArrow": "expandUpward",
-	"kb:shift+downArrow": "shrinkAbove",
-	"kb:control+rightArrow": "expandRightward",
-	"kb:control+leftArrow": "shrinkRight",
-	"kb:control+upArrow": "shrinkBottom",
-	"kb:control+downArrow": "expandBottomward",
-	"kb:control+shift+upArrow": "expandRectangle",
-	"kb:control+shift+downArrow": "shrinkRectangle",
-	"kb:backspace": "adjustToObject"
-	}
 
 	def script_levelUp(self, gesture):
 		self.lastGesture = gesture.identifiers
@@ -223,21 +186,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else:
 			self.rectangleFromObject(obj)
 
-	def rectangleFromObject(self, obj):
-		if obj:
-			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
-			self.rectangle = Rectangle().fromObject(obj)
-			self.rectangle.bind(EVT_object, ui.message, _("Reference object has changed"))
-			self.rectangle.bind(EVT_objectInside, ui.message, _("The reference object is fully inside the rectangle"))
-			self.rectangle.bind(EVT_objectOverflow, ui.message, _("The reference object exceeds the bounds of the rectangle"))
-			self.rectangle.bind(EVT_overflowWindow, ui.message, _("The rectangle has overflowed the active window"))
-			self.rectangle.bind(EVT_insideWindow, ui.message, _("The rectangle is inside the active window"))
-			ui.message(_("Frammed {object} {name} ").format(
-			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
-			self.script_rectangleInfo(None)
-		else:
-			tones.beep(100,90)
-
 	def script_goBack(self, gesture):
 		self.lastGesture = gesture.identifiers
 		if self.oldRectangles.isEmpty():
@@ -253,10 +201,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		messages = (
 		# 1
 		_("from {startX}, {startY} to {endX}, {endY}").format(
-		startX=self.rectangle.location.topLeft.x, startY=self.rectangle.location.topLeft.y,
-		endX=self.rectangle.location.bottomRight.x, endY=self.rectangle.location.bottomRight.y),
+		startX=self.rectangle.topLeft.x, startY=self.rectangle.topLeft.y,
+		endX=self.rectangle.bottomRight.x, endY=self.rectangle.bottomRight.y),
 		# 2
-		_("width {w} per height {h}").format(w=self.rectangle.location.width, h=self.rectangle.location.height),
+		_("width {w} per height {h}").format(w=self.rectangle.width, h=self.rectangle.height),
 		# 3
 		_("The reference object is {objectRole} {objectName}").format(
 		objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
@@ -298,16 +246,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_decreaseStep(self, gesture):
 		self.increaseOrDecreaseStep(-1)
 		self.lastGesture = gesture.identifiers
-
-	def increaseOrDecreaseStep(self, x):
-		step = int(config.conf.profiles[0]["screenshots"]["step"])
-		step = step+x
-		if step < 11 and step > 0:
-			config.conf.profiles[0]["screenshots"]["step"] = step
-			# Translators: Message   when modifying the amount of movement in pixels
-			ui.message(_("{step} px").format(step=config.conf.profiles[0]["screenshots"]["step"]))
-		else:
-			self.script_wrongGesture(None)
 
 	def script_expandUpward(self, gesture):
 		p = self.rectangle.moveTopEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
@@ -393,8 +331,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.rectangle.expandOrShrink(int(config.conf.profiles[0]["screenshots"]["step"])):
 			ui.message(_("{msg} {width} per {height}").format(
 			msg = _("Expanding, ") if self.lastGesture != gesture.identifiers else "",
-			width = self.rectangle.location.width,
-			height = self.rectangle.location.height))
+			width = self.rectangle.width,
+			height = self.rectangle.height))
 		else:
 			self.script_wrongGesture(None)
 		self.lastGesture = gesture.identifiers
@@ -403,8 +341,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.rectangle.expandOrShrink(-1*int(config.conf.profiles[0]["screenshots"]["step"])):
 			ui.message(_("{msg} {width} per {height}").format(
 			msg = _("Shrinking, ") if self.lastGesture != gesture.identifiers else "",
-			width = self.rectangle.location.width,
-			height = self.rectangle.location.height))
+			width = self.rectangle.width,
+			height = self.rectangle.height))
 		else:
 			self.script_wrongGesture(None)
 		self.lastGesture = gesture.identifiers
@@ -426,7 +364,70 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 		tones.beep(100,50)
 
+	def rectangleFromObject(self, obj):
+		if obj:
+			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
+			self.rectangle = Rectangle().fromObject(obj)
+			self.rectangle.bind(EVT_object, ui.message, _("Reference object has changed"))
+			self.rectangle.bind(EVT_objectInside, ui.message, _("The reference object is fully inside the rectangle"))
+			self.rectangle.bind(EVT_objectOverflow, ui.message, _("The reference object exceeds the bounds of the rectangle"))
+			self.rectangle.bind(EVT_overflowWindow, ui.message, _("The rectangle has overflowed the active window"))
+			self.rectangle.bind(EVT_insideWindow, ui.message, _("The rectangle is inside the active window"))
+			ui.message(_("Frammed {object} {name} ").format(
+			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
+			self.script_rectangleInfo(None)
+		else:
+			tones.beep(100,90)
+
+	def increaseOrDecreaseStep(self, x):
+		step = int(config.conf.profiles[0]["screenshots"]["step"])
+		step = step+x
+		if step < 11 and step > 0:
+			config.conf.profiles[0]["screenshots"]["step"] = step
+			# Translators: Message   when modifying the amount of movement in pixels
+			ui.message(_("{step} px").format(step=config.conf.profiles[0]["screenshots"]["step"]))
+		else:
+			self.script_wrongGesture(None)
+
+	__gestures = {
+	"kb:printScreen": "keyboardLayer"
+	}
+
+	__keyboardLayerGestures = {
+	"kb:upArrow": "levelUp",
+	"kb:downArrow": "goBack",
+	"kb:w": "frameObject",
+	"kb:s": "frameObject",
+	"kb:f": "frameObject",
+	"kb:n": "frameObject",
+	"kb:m": "frameObject",
+	"kb:space": "rectangleInfo",
+	"kb:pageUp": "increaseStep",
+	"kb:pageDown": "decreaseStep",
+	"kb:1": "rectangleInfo",
+	"kb:2": "rectangleInfo",
+	"kb:3": "rectangleInfo",
+	"kb:4": "rectangleInfo",
+	"kb:5": "rectangleInfo",
+	"kb:6": "rectangleInfo",
+	"kb:7": "rectangleInfo",
+	"kb:enter": "saveScreenshot",
+	"kb:numpadEnter": "saveScreenshot",
+	"kb:shift+rightArrow": "shrinkLeft",
+	"kb:shift+leftArrow": "expandLeftward",
+	"kb:shift+upArrow": "expandUpward",
+	"kb:shift+downArrow": "shrinkAbove",
+	"kb:control+rightArrow": "expandRightward",
+	"kb:control+leftArrow": "shrinkRight",
+	"kb:control+upArrow": "shrinkBottom",
+	"kb:control+downArrow": "expandBottomward",
+	"kb:control+shift+upArrow": "expandRectangle",
+	"kb:control+shift+downArrow": "shrinkRectangle",
+	"kb:backspace": "adjustToObject"
+	}
+
 class Stack:
+
 	def __init__(self):
 		self.items = []
 
