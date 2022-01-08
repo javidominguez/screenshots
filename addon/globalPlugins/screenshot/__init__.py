@@ -37,6 +37,13 @@ def finally_(func, final):
 		return new
 	return wrap(final)
 
+def evtMessage(msg):
+	try:
+		tones.nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "event.wav"))
+	except:
+		pass
+	ui.message(msg)
+
 confspec = {
 	"folder":"string(default=/)",
 	"format":"string(default=BMP)",
@@ -229,6 +236,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
+		try:
+			tones.nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "takeImage.wav"))
+		except:
+			pass
 		filename = "screenshot_{timestamp}.{ext}".format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
 		ext=config.conf.profiles[0]["screenshots"]["format"])
@@ -368,11 +379,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if obj:
 			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(obj)
-			self.rectangle.bind(EVT_object, ui.message, _("Reference object has changed"))
-			self.rectangle.bind(EVT_objectInside, ui.message, _("The reference object is fully inside the rectangle"))
-			self.rectangle.bind(EVT_objectOverflow, ui.message, _("The reference object exceeds the bounds of the rectangle"))
-			self.rectangle.bind(EVT_overflowWindow, ui.message, _("The rectangle has overflowed the active window"))
-			self.rectangle.bind(EVT_insideWindow, ui.message, _("The rectangle is inside the active window"))
+			self.rectangle.bind(EVT_object, evtMessage, _("Reference object has changed"))
+			self.rectangle.bind(EVT_objectInside, evtMessage, _("The reference object is fully inside the rectangle"))
+			self.rectangle.bind(EVT_objectOverflow, evtMessage, _("The reference object exceeds the bounds of the rectangle"))
+			self.rectangle.bind(EVT_overflowWindow, evtMessage, _("The rectangle has overflowed the active window"))
+			self.rectangle.bind(EVT_insideWindow, evtMessage, _("The rectangle is inside the active window"))
 			ui.message(_("Frammed {object} {name} ").format(
 			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
