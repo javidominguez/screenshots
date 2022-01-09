@@ -12,6 +12,7 @@ from .rectangleHandler import *
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
+import addonHandler
 import api
 import config
 import controlTypes
@@ -24,6 +25,8 @@ import vision
 import winInputHook
 import winUser
 import wx
+
+addonHandler.initTranslation()
 
 def finally_(func, final):
 	"""Calls final after func, even if it fails."""

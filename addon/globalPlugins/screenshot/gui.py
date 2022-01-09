@@ -9,8 +9,11 @@ Copyright (C) Javi Dominguez 2021
 
 from gui import guiHelper, NVDASettingsDialog
 from gui.settingsDialogs import SettingsPanel
+import addonHandler
 import config
 import wx
+
+addonHandler.initTranslation()
 
 class ScreenshotsPanel(SettingsPanel):
 	# TRANSLATORS: title for the Update Channel settings category
@@ -20,12 +23,12 @@ class ScreenshotsPanel(SettingsPanel):
 		helper = guiHelper.BoxSizerHelper(self, sizer=sizer)
 
 		# Selecting the folder where the image file will be saved
-		label = wx.StaticText(self, wx.ID_ANY, "Select the folder where the image files of the screenshots will be saved")
+		label = wx.StaticText(self, wx.ID_ANY, _("Select the folder where the image files of the screenshots will be saved"))
 		helper.addItem(label)
 		sizerDir = wx.BoxSizer(wx.HORIZONTAL)
 		self.textPath = wx.TextCtrl (self, style=wx.TE_RICH|wx.TE_NO_VSCROLL|wx.TE_WORDWRAP|wx.TE_MULTILINE|wx.TE_READONLY, value =config.conf.profiles[0]["screenshots"]["folder"],  size=(300,20))
 		sizerDir.Add(self.textPath)
-		self.buttonBrowse = wx.Button(self, wx.ID_ANY, "browse")
+		self.buttonBrowse = wx.Button(self, wx.ID_ANY, _("browse"))
 		sizerDir.Add(self.buttonBrowse)
 		helper.addItem(sizerDir)
 		self.buttonBrowse.Bind(wx.EVT_BUTTON, self.onBrowse)
@@ -43,7 +46,7 @@ class ScreenshotsPanel(SettingsPanel):
 
 		# Selecting the number of pixels per step when the rectangle coordinates are modified.
 		sizerStep = wx.BoxSizer(wx.HORIZONTAL)
-		labelStep = wx.StaticText(self, wx.ID_ANY, "Movement unit (in pixels): ")
+		labelStep = wx.StaticText(self, wx.ID_ANY, _("Movement unit (in pixels): "))
 		sizerStep.Add(labelStep)
 		self.spin_ctrl = wx.SpinCtrl(self, wx.ID_ANY, str(config.conf.profiles[0]["screenshots"]["step"]), min=1, max=10)
 		sizerStep.Add(self.spin_ctrl)

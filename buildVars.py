@@ -23,20 +23,19 @@ addon_info = {
 	"addon_summary": _("screenshots wizard"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	"addon_description": _("""
-NVDA addon that provides an wizard to take screenshots."""),
+	"addon_description": _("""Provides an wizard to take screenshots."""),
 	# version
-	"addon_version": "alpha-7",
+	"addon_version": "alpha-8",
 	# Author(s)
 	"addon_author": "Javi Domínguez <fjavids@gmail.com>",
 	# URL for the add-on documentation support
-	"addon_url": None,
+	"addon_url": "https://github.com/javidominguez/screenshots",
 	# Documentation file name
 	"addon_docFileName": "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
-	"addon_minimumNVDAVersion": "2020.2.0",
+	"addon_minimumNVDAVersion": "2021.2.0",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2021.2.0",
+	"addon_lastTestedNVDAVersion": "2022.1.0",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
@@ -51,7 +50,7 @@ NVDA addon that provides an wizard to take screenshots."""),
 # pythonSources = ["addon/globalPlugins/*.py"]
 # For more information on SCons Glob expressions please take a look at:
 # https://scons.org/doc/production/HTML/scons-user/apd.html
-pythonSources = []
+pythonSources = ["addon/globalPlugins/screenshot/*.py"]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources = pythonSources + ["buildVars.py"]
