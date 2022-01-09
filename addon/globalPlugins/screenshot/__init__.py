@@ -74,7 +74,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 			except KeyError:
 				if "screenshots" not in config.conf.profiles[0]:
-					config.conf.profiles[0]["screenshots"] = config.conf["screenshots"]
+					config.conf.profiles[0]["screenshots"] = {}
+					for k in config.conf["screenshots"]:
+						config.conf.profiles[0]["screenshots"][k] = config.conf["screenshots"][k]
 				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
