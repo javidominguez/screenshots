@@ -116,7 +116,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		return script
 
 	def script_exit(self, gesture):
-		ui.message("Cancelled")
+		# Translators: Message when escape is pressed to exit the keyboard command layer
+		ui.message(_("Cancelled"))
 
 	def finish(self):
 		self.toggling = False
@@ -161,7 +162,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.toggling = True
 		self.lockMouse()
 		focus = api.getFocusObject()
-		self.rectangleFromObject(focus)
+		try:
+			self.rectangleFromObject(focus)
+		except:
+			self.rectangleFromObject(api.getForegroundObject())
+	# Translators: Message presented in input help mode.
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 
 	def script_levelUp(self, gesture):
@@ -199,6 +204,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_wrongGesture(None)
 			return
 		self.rectangle = self.oldRectangles.pop()
+		# Translators: Message presented when a object is framed.
 		ui.message(_("Frammed {object} {name} ").format(
 		object=controlTypes.role._roleLabels[self.rectangle.object.role], name=self.rectangle.object.name if self.rectangle.object.name and self.rectangle.object.role == controlTypes.Role.WINDOW else ""))
 		self.script_rectangleInfo(None)
@@ -207,25 +213,32 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 		messages = (
 		# 1
+		# Translators: Rectangle information: coordinates of the upper left and lower right corners.
 		_("from {startX}, {startY} to {endX}, {endY}").format(
 		startX=self.rectangle.topLeft.x, startY=self.rectangle.topLeft.y,
 		endX=self.rectangle.bottomRight.x, endY=self.rectangle.bottomRight.y),
 		# 2
+		# Translators: Rectangle information: Rectangle dimensions, width per height.
 		_("width {w} per height {h}").format(w=self.rectangle.width, h=self.rectangle.height),
 		# 3
+		# Translators: Rectangle information: Description of the reference object.
 		_("The reference object is {objectRole} {objectName}").format(
 		objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
 		objectName = self.rectangle.object.name if self.rectangle.object.name else ""),
 		# 4
+		# Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
 		_("{ratio}% of the rectangle is occupied by the object of reference").format(
 		ratio=round(self.rectangle.ratioObjectFrame(self.rectangle.object)*100)),
 		# 5
+		# Translators: Rectangle information: Relation of the object with respect to the rectangle.
 		"{msg}".format(
 		msg = _("The reference object is completely inside the rectangle") if self.rectangle.isObjectInsideRectangle() else _("Part of the reference object is outside the rectangle")),
 		# 6
+		# Translators: Rectangle information: Relation of the rectangle with respect to the active window.
 		"{msg}".format(
 		msg = _("The rectangle is inside the active window") if self.rectangle.isRectangleInsideTheWindow() else _("Part of the rectangle is outside the active window")),
 		# 7
+		# Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
 		_("The rectangle occupies {percentage}% of the screen").format(
 		percentage = round(self.rectangle.ratioFrameObject(api.getDesktopObject())*100))
 		)
@@ -340,6 +353,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_expandRectangle(self, gesture):
 		if self.rectangle.expandOrShrink(int(config.conf.profiles[0]["screenshots"]["step"])):
+			# Translators: Message when the rectangle is expanded, dimensions width per height
 			ui.message(_("{msg} {width} per {height}").format(
 			msg = _("Expanding, ") if self.lastGesture != gesture.identifiers else "",
 			width = self.rectangle.width,
@@ -350,6 +364,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_shrinkRectangle(self, gesture):
 		if self.rectangle.expandOrShrink(-1*int(config.conf.profiles[0]["screenshots"]["step"])):
+			# Translators: Message when the rectangle is shrunken, dimensions width per height
 			ui.message(_("{msg} {width} per {height}").format(
 			msg = _("Shrinking, ") if self.lastGesture != gesture.identifiers else "",
 			width = self.rectangle.width,
@@ -396,6 +411,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if step < 11 and step > 0:
 			config.conf.profiles[0]["screenshots"]["step"] = step
 			# Translators: Message   when modifying the amount of movement in pixels
+			# Translators: Message presented when the number of pixels per movement is modified.
 			ui.message(_("{step} px").format(step=config.conf.profiles[0]["screenshots"]["step"]))
 		else:
 			self.script_wrongGesture(None)
