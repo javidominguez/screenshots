@@ -14,9 +14,13 @@ from functools import wraps
 from keyboardHandler import KeyboardInputGesture
 import addonHandler
 import api
+import braille
 import config
 import controlTypes
+import globalCommands
 import globalPluginHandler
+import gui
+import inputCore
 import mouseHandler
 import os
 import tones
@@ -86,6 +90,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.rectangle = Rectangle()
 		self.oldRectangles = Stack()
 		self.lastGesture = None
+		self.brailleMessageTimeout = config.conf["braille"]["noMessageTimeout"]
+		self.allowedBrailleGestures = set()
 
 	def terminate(self):
 		try:
@@ -112,6 +118,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def getScript(self, gesture):
 		if not self.toggling:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
+		if True in [gID.lower() in self.allowedBrailleGestures for gID in gesture.identifiers]:
+			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
 		script = globalPluginHandler.GlobalPlugin.getScript(self, gesture)
 		if not script:
 			if "kb:escape" in gesture.identifiers:
@@ -122,6 +130,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_exit(self, gesture):
 		# Translators: Message when escape is pressed to exit the keyboard command layer
+		config.conf["braille"]["noMessageTimeout"] = self.brailleMessageTimeout
 		ui.message(_("Cancelled"))
 
 	def finish(self):
@@ -139,8 +148,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_keyboardLayer(self, gesture):
 		if self.toggling:
-			self.script_exit(gesture)
-			self.finish()
+			self.script_wrongGesture(None)
 			return
 		from visionEnhancementProviders.screenCurtain import ScreenCurtainProvider
 		screenCurtainId = ScreenCurtainProvider.getSettings().getId()
@@ -164,8 +172,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				else:
 					self.oldGestureBindings["kb:"+k] = script
 		self.bindGestures(self.__keyboardLayerGestures)
+		# Braille gestures that will be allowed:
+		try:
+			gestures = inputCore.manager.getAllGestureMappings(obj=gui.mainFrame.prevFocus, ancestors=gui.mainFrame.prevFocusAncestors)
+			for brGesture in\
+			gestures[globalCommands.SCRCAT_BRAILLE][globalCommands.GlobalCommands.script_braille_scrollForward.__doc__].gestures\
+			+ gestures[globalCommands.SCRCAT_BRAILLE][globalCommands.GlobalCommands.script_braille_scrollBack.__doc__].gestures:
+				self.allowedBrailleGestures.add(brGesture)
+		except ZeroDivisionError:
+			pass
 		self.toggling = True
 		self.lockMouse()
+		config.conf["braille"]["noMessageTimeout"] = True
 		focus = api.getFocusObject()
 		try:
 			self.rectangleFromObject(focus)
