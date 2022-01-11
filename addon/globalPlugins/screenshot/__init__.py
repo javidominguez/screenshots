@@ -12,6 +12,7 @@ from .rectangleHandler import *
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
+from time import sleep
 import addonHandler
 import api
 import braille
@@ -92,6 +93,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 		self.brailleMessageTimeout = config.conf["braille"]["noMessageTimeout"]
 		self.allowedBrailleGestures = set()
+		self.kbTimer = None
 
 	def terminate(self):
 		try:
@@ -120,6 +122,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
 		if True in [gID.lower() in self.allowedBrailleGestures for gID in gesture.identifiers]:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
+		if gesture.mainKeyName != "f1" and self.kbTimer:
+			self.kbTimer = None
 		script = globalPluginHandler.GlobalPlugin.getScript(self, gesture)
 		if not script:
 			if "kb:escape" in gesture.identifiers:
@@ -409,6 +413,19 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else:
 			self.script_wrongGesture(None)
 
+	def script_help(self, gesture):
+		if self.kbTimer and self.kbTimer.isAlive():
+			try:
+				path = filter(lambda a: a.name == "screenshots", addonHandler.getAvailableAddons()).__next__().getDocFilePath()
+				os.startfile(path)
+				self.finish()
+			except:
+				pas
+			return
+		self.kbTimer = Thread(target=sleep, args=(0.35, ))
+		self.kbTimer.start()
+		ui.message(_("Press up arrow to frame the container object, space bar or numbers to know the rectangle information, enter key to take the screenshot or escape to cancel and exit. See the documentation for more commands."))
+
 	def script_wrongGesture(self, gesture):
 		self.lastGesture = None
 		tones.beep(100,50)
@@ -473,7 +490,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:control+downArrow": "expandBottomward",
 	"kb:control+shift+upArrow": "expandRectangle",
 	"kb:control+shift+downArrow": "shrinkRectangle",
-	"kb:backspace": "adjustToObject"
+	"kb:backspace": "adjustToObject",
+	"kb:F1": "help"
 	}
 
 class Stack:
