@@ -6,6 +6,8 @@ Cuando se invoca el asistente se crea un rectángulo virtual alrededor del objet
 
 ### comandos
 
+* F1 muestra un mensaje de ayuda con los comandos básicos; pulsado dos veces rápidamente abre este documento.
+
 #### Información del rectángulo
 
 Las teclas del 1 al 7 proporcionan la siguiente información:

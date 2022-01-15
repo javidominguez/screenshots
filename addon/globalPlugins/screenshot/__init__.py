@@ -12,7 +12,9 @@ from .rectangleHandler import *
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
+from threading import Event, Thread, Timer
 from time import sleep
+from tones import beep, nvwave
 import addonHandler
 import api
 import braille
@@ -20,11 +22,11 @@ import config
 import controlTypes
 import globalCommands
 import globalPluginHandler
+import globalVars
 import gui
 import inputCore
 import mouseHandler
 import os
-import tones
 import ui
 import vision
 import winInputHook
@@ -47,7 +49,7 @@ def finally_(func, final):
 
 def evtMessage(msg):
 	try:
-		tones.nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "event.wav"))
+		nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "event.wav"))
 	except:
 		pass
 	ui.message(msg)
@@ -94,6 +96,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.brailleMessageTimeout = config.conf["braille"]["noMessageTimeout"]
 		self.allowedBrailleGestures = set()
 		self.kbTimer = None
+		self.brTimer = None
 
 	def terminate(self):
 		try:
@@ -135,6 +138,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_exit(self, gesture):
 		# Translators: Message when escape is pressed to exit the keyboard command layer
 		config.conf["braille"]["noMessageTimeout"] = self.brailleMessageTimeout
+		# Translators: Message presented when leaving the keyboard  layer
 		ui.message(_("Cancelled"))
 
 	def finish(self):
@@ -151,6 +155,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 
 	def script_keyboardLayer(self, gesture):
+		if globalVars.appArgs.secure == True:
+			# Translators: Message presented when the script is invoked from a secure window
+			ui.message(_("Function not available on secure screens."))
+			return
 		if self.toggling:
 			self.script_wrongGesture(None)
 			return
@@ -201,7 +209,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		container = self.rectangle.object.container
 		while container and container.location == self.rectangle.object.location:
 			container = container.container
-		self.rectangleFromObject(container)
+		if container:
+			self.rectangleFromObject(container)
+		else:
+			beep(100,50)
+			# Translators: Message when rying to frame the containing object but the largest container is already framed
+			ui.message(_("There is no upper container"))
 
 	def script_frameObject(self, gesture):
 		self.lastGesture = gesture.identifiers
@@ -220,7 +233,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_wrongGesture(None)
 			return
 		if obj == self.rectangle.object:
-			self.script_wrongGesture(None)
+			beep(100,50)
+			# Translators: Message presented when trying to frame an object that is already framed.
 			ui.message(_("Already framed"))
 		else:
 			self.rectangleFromObject(obj)
@@ -271,13 +285,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		)
 		try:
 			ui.message(messages[int(gesture.mainKeyName)-1])
+		except IndexError:
+			self.script_wrongGesture(None)
 		except:
 			ui.message(". ".join(messages))
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
 		try:
-			tones.nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "takeImage.wav"))
+			nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "takeImage.wav"))
 		except:
 			pass
 		filename = "screenshot_{timestamp}.{ext}".format(
@@ -302,6 +318,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveTopEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the top edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Top edge moved to"),
 			point=p))
 		else:
@@ -312,6 +329,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveTopEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the top edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Top edge moved to"),
 			point=p))
 		else:
@@ -322,6 +340,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveLeftEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the left edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Left edge moved to"),
 			point=p))
 		else:
@@ -332,6 +351,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveLeftEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the left edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Left edge moved to"),
 			point=p))
 		else:
@@ -342,6 +362,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveBottomEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the bottom edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Bottom edge moved to"),
 			point=p))
 		else:
@@ -352,6 +373,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveBottomEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the bottom edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Bottom edge moved to"),
 			point=p))
 		else:
@@ -362,6 +384,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveRightEdge(int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the right edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Right edge moved to"),
 			point=p))
 		else:
@@ -372,6 +395,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		p = self.rectangle.moveRightEdge(-1*int(config.conf.profiles[0]["screenshots"]["step"]))
 		if p:
 			ui.message("{msg} {point}".format(
+			# Translators: Message informing that the right edge has been moved.
 			msg="" if self.lastGesture==gesture.identifiers else _("Right edge moved to"),
 			point=p))
 		else:
@@ -404,9 +428,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		loc = self.rectangle.location
 		if self.rectangle.adjustToObject():
 			if loc == self.rectangle.location:
+				beep(100,50)
+				# Translators: Message when trying to fit the frame around an object that is already wrapped.
 				ui.message(_("Already adjusted"))
-				self.script_wrongGesture(None)
 			else:
+				# Translators: Message when fit the frame  around the object.
 				ui.message(_("Rectangle  adjusted to {objectRole} {objectName}").format(
 				objectRole = controlTypes.role._roleLabels[self.rectangle.object.role],
 				objectName = self.rectangle.object.name if self.rectangle.object.name else ""))
@@ -424,26 +450,43 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			return
 		self.kbTimer = Thread(target=sleep, args=(0.35, ))
 		self.kbTimer.start()
+		# Translators: Help message presented when F1 is pressed on the keyboard layer.
 		ui.message(_("Press up arrow to frame the container object, space bar or numbers to know the rectangle information, enter key to take the screenshot or escape to cancel and exit. See the documentation for more commands."))
 
 	def script_wrongGesture(self, gesture):
 		self.lastGesture = None
-		tones.beep(100,50)
+		beep(100,50)
+		# Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
+		wrongGestureMessage =  _("Wrong gesture")
+		displayedMessage = braille.handler.messageBuffer.rawText
+		if wrongGestureMessage != displayedMessage:
+			braille.handler.message(wrongGestureMessage)
+			if self.brTimer and self.brTimer.isAlive(): return
+			def restoreDisplayedMessage():
+				if braille.handler.messageBuffer.rawText == wrongGestureMessage:
+					braille.handler.message(displayedMessage)
+			self.brTimer = Timer(config.conf["braille"]["messageTimeout"], restoreDisplayedMessage)
+			self.brTimer.setDaemon(True)
+			self.brTimer.start()
 
 	def rectangleFromObject(self, obj):
 		if obj:
 			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(obj)
+			# Translators: Messages that will be presented when the events occur.
 			self.rectangle.bind(EVT_object, evtMessage, _("Reference object has changed"))
 			self.rectangle.bind(EVT_objectInside, evtMessage, _("The reference object is fully inside the rectangle"))
 			self.rectangle.bind(EVT_objectOverflow, evtMessage, _("The reference object exceeds the bounds of the rectangle"))
 			self.rectangle.bind(EVT_overflowWindow, evtMessage, _("The rectangle has overflowed the active window"))
 			self.rectangle.bind(EVT_insideWindow, evtMessage, _("The rectangle is inside the active window"))
+			# Translators: Message when an object is framed.
 			ui.message(_("Frammed {object} {name} ").format(
 			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
 			self.script_rectangleInfo(None)
 		else:
-			tones.beep(100,90)
+			beep(100,50)
+			# Translators: Message presented when trying to frame an object but there is none.
+			ui.message(_("object not found"))
 
 	def increaseOrDecreaseStep(self, x):
 		step = int(config.conf.profiles[0]["screenshots"]["step"])

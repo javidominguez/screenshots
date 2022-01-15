@@ -6,6 +6,8 @@ When the wizard is invoked, a virtual rectangle is created around the object wit
 
 ### commands
 
+* F1 presents an help message with basic commands; pressing twice  opens this document.
+
 #### Rectangle information
 
 Keys 1 through 7 provide the following information:

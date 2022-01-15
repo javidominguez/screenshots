@@ -25,7 +25,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("""Provides an wizard to take screenshots."""),
 	# version
-	"addon_version": "alpha-9",
+	"addon_version": "1.0-beta1",
 	# Author(s)
 	"addon_author": "Javi Domínguez <fjavids@gmail.com>",
 	# URL for the add-on documentation support

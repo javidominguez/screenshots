@@ -46,8 +46,10 @@ class Rectangle():
 
 	def getRGBQUAD_Array(self):
 		""" Returns a screenBitmap.RGBQUAD_Array object with the pixels that the rectangle contains. """
-		if not self.__object: return None
-		return screenBitmap.ScreenBitmap(self.__location.width, self.__location.height).captureImage(self.__location.top, self.__location.left, self.__location.width, self.__location.height)
+		try:
+			return screenBitmap.ScreenBitmap(self.__location.width, self.__location.height).captureImage(self.__location.top, self.__location.left, self.__location.width, self.__location.height)
+		except:
+			return None
 
 	def getImage(self):
 		""" Returns a wx.Image object with the screen image delimited by the rectangle. """
@@ -204,7 +206,10 @@ class Rectangle():
 		insideObject = self.isObjectInsideRectangle()
 		insideWindow = self.isRectangleInsideTheWindow()
 		def check():
-			ev.wait()
+			ev.wait(1.0)
+			if not ev.isSet:
+			# If it get here because  timeout was exceeded, it exits without doing anything.
+				return
 			if self.__object != obj: return
 			curInsideObject = self.isObjectInsideRectangle()
 			if (insideObject, curInsideObject) == (True, False):
@@ -277,6 +282,7 @@ class EventHandler(Thread):
 		self.__kwargs = kwargs
 		self.__flag = True
 		super(EventHandler, self).__init__()
+		self.daemon = True
 
 	def run(self):
 		while self.__flag:
