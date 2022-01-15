@@ -69,8 +69,8 @@ class Rectangle():
 			check.set()
 			return None
 		self.__location = locationHelper.RectLTWH(x, y, w, h)
-		self.__hook_object()
 		check.set()
+		self.__hook_object()
 		return x
 
 	def moveRightEdge(self, step=1):
@@ -84,8 +84,8 @@ class Rectangle():
 			check.set()
 			return None
 		self.__location = locationHelper.RectLTWH(x, y, w, h)
-		self.__hook_object()
 		check.set()
+		self.__hook_object()
 		return x+w
 
 	def moveTopEdge(self, step=1):
@@ -100,8 +100,8 @@ class Rectangle():
 			check.set()
 			return None
 		self.__location = locationHelper.RectLTWH(x,y,w,h)
-		self.__hook_object()
 		check.set()
+		self.__hook_object()
 		return y
 
 	def moveBottomEdge(self, step=1):
@@ -115,8 +115,8 @@ class Rectangle():
 			check.set()
 			return None
 		self.__location = locationHelper.RectLTWH(x, y, w, h)
-		self.__hook_object()
 		check.set()
+		self.__hook_object()
 		return y+h
 
 	def expandOrShrink(self, step=1):
