@@ -200,14 +200,22 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		try:
 			self.rectangleFromObject(focus)
 		except:
-			self.rectangleFromObject(api.getForegroundObject())
+			try:
+				self.rectangleFromObject(api.getForegroundObject())
+			except:
+				self.rectangleFromObject(api.getDesktopObject())
 	# Translators: Message presented in input help mode.
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 
 	def script_levelUp(self, gesture):
 		self.lastGesture = gesture.identifiers
-		container = self.rectangle.object.container
+		if self.rectangle.location == api.getDesktopObject().location:
+			container = None
+		else:
+			container = self.rectangle.object.container
 		while container and container.location == self.rectangle.object.location:
+			container = container.container
+		if container and container.location == (0,0,0,0):
 			container = container.container
 		if container:
 			self.rectangleFromObject(container)
