@@ -67,6 +67,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self, *args, **kwargs):
 		super(GlobalPlugin, self).__init__(*args, **kwargs)
+		if globalVars.appArgs.secure == True:
+			raise RuntimeError("This add-on cannot run on secure screens")
 
 		# By default, the user's documents folder is assumed as the folder where to save the image files of the screenshots.
 		try:
@@ -155,10 +157,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 
 	def script_keyboardLayer(self, gesture):
-		if globalVars.appArgs.secure == True:
-			# Translators: Message presented when the script is invoked from a secure window
-			ui.message(_("Function not available on secure screens."))
-			return
 		if self.toggling:
 			self.script_wrongGesture(None)
 			return
