@@ -226,6 +226,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if self.toggling:
 			self.script_wrongGesture(None)
 			return
+		from visionEnhancementProviders.screenCurtain import ScreenCurtainProvider
+		screenCurtainId = ScreenCurtainProvider.getSettings().getId()
+		screenCurtainProviderInfo = vision.handler.getProviderInfo(screenCurtainId)
+		isScreenCurtainRunning = bool(vision.handler.getProviderInstance(screenCurtainProviderInfo))
+		if isScreenCurtainRunning:
+			# Translators: Reported when screen curtain is enabled.
+			ui.message(_("Please disable screen curtain before take a screenshot"))
+			return
 		self.rectangleFromObject(obj, verbose=False)
 		self.flagNoAction = True
 		self.script_saveScreenshot(None)
