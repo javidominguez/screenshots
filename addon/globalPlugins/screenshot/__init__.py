@@ -101,6 +101,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.kbTimer = None
 		self.brTimer = None
 		self.flagNoAction = False
+		self.lastScreenshot = None
 
 	def terminate(self):
 		try:
@@ -206,6 +207,29 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				self.rectangleFromObject(api.getDesktopObject())
 	# Translators: Message presented in input help mode.
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
+
+	def script_openFolder(self, gesture):
+		try:
+			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
+		except FileNotFoundError:
+			Thread(target=wx.MessageBox, args=(
+			config.conf.profiles[0]["screenshots"]["folder"], _("Folder not found"), wx.ICON_EXCLAMATION)
+			).start()
+	# Translators: Message presented in input help mode.
+	script_openFolder.__doc__ = _("Open the folder where the screenshots are stored.")
+
+	def script_openLastScreenshot(self, gesture):
+		if not self.lastScreenshot:
+			ui.message(_("No screenshot has been taken yet."))
+			return
+		try:
+			os.startfile(self.lastScreenshot)
+		except FileNotFoundError:
+			Thread(target=wx.MessageBox, args=(
+			self.lastScreenshot, _("File not found"), wx.ICON_EXCLAMATION)
+			).start()
+	# Translators: Message presented in input help mode.
+	script_openLastScreenshot.__doc__ = _("Open the last screenshot file in the default app.")
 
 	def script_instantShotFullscreen(self, gesture):
 		self.instantShot(api.getDesktopObject())
@@ -339,7 +363,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		filename = "screenshot_{timestamp}.{ext}".format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
 		ext=config.conf.profiles[0]["screenshots"]["format"])
-		img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
+		if img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename)):
+			self.lastScreenshot = os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename)
 		self.finish()
 		if self.flagNoAction: return
 		if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
