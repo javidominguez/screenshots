@@ -64,6 +64,7 @@ config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+	scriptCategory = _("Screenshots Wizard")
 
 	def __init__(self, *args, **kwargs):
 		super(GlobalPlugin, self).__init__(*args, **kwargs)
@@ -99,6 +100,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.allowedBrailleGestures = set()
 		self.kbTimer = None
 		self.brTimer = None
+		self.flagNoAction = False
 
 	def terminate(self):
 		try:
@@ -205,6 +207,30 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	# Translators: Message presented in input help mode.
 	script_keyboardLayer.__doc__ = _("Launch the screenshots wizard. A layer of keyboard commands will be activated. Use enter key to take a screenshot, escape to cancel. See documentation for know more commands.")
 
+	def script_instantShotFullscreen(self, gesture):
+		self.instantShot(api.getDesktopObject())
+	# Translators: Message presented in input help mode.
+	script_instantShotFullscreen.__doc__ = _("Take a full screenshot directly, bypassing the keyboard command layer")
+
+	def script_instantShotFocus(self, gesture):
+		self.instantShot(api.getFocusObject())
+	# Translators: Message presented in input help mode.
+	script_instantShotFocus.__doc__ = _("Take a  screenshot of focused object directly, bypassing the keyboard command layer")
+
+	def script_instantShotWindow(self, gesture):
+		self.instantShot(api.getForegroundObject())
+	# Translators: Message presented in input help mode.
+	script_instantShotWindow.__doc__ = _("Take a  screenshot of current window directly, bypassing the keyboard command layer")
+
+	def instantShot(self, obj):
+		if self.toggling:
+			self.script_wrongGesture(None)
+			return
+		self.rectangleFromObject(obj, verbose=False)
+		self.flagNoAction = True
+		self.script_saveScreenshot(None)
+		self.flagNoAction = False
+
 	def script_levelUp(self, gesture):
 		self.lastGesture = gesture.identifiers
 		if self.rectangle.location == api.getDesktopObject().location:
@@ -307,6 +333,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		ext=config.conf.profiles[0]["screenshots"]["format"])
 		img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
 		self.finish()
+		if self.flagNoAction: return
 		if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
 			os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
 		elif int(config.conf.profiles[0]["screenshots"]["action"]) == 2:
@@ -475,7 +502,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.brTimer.setDaemon(True)
 			self.brTimer.start()
 
-	def rectangleFromObject(self, obj):
+	def rectangleFromObject(self, obj, verbose=True):
 		if obj:
 			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
 			self.rectangle = Rectangle().fromObject(obj)
@@ -485,10 +512,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.rectangle.bind(EVT_objectOverflow, evtMessage, _("The reference object exceeds the bounds of the rectangle"))
 			self.rectangle.bind(EVT_overflowWindow, evtMessage, _("The rectangle has overflowed the active window"))
 			self.rectangle.bind(EVT_insideWindow, evtMessage, _("The rectangle is inside the active window"))
-			# Translators: Message when an object is framed.
-			ui.message(_("Frammed {object} {name} ").format(
-			object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
-			self.script_rectangleInfo(None)
+			if verbose:
+				# Translators: Message when an object is framed.
+				ui.message(_("Frammed {object} {name} ").format(
+				object=controlTypes.role._roleLabels[obj.role], name=obj.name if obj.name and obj.role == controlTypes.Role.WINDOW else ""))
+				self.script_rectangleInfo(None)
 		else:
 			beep(100,50)
 			# Translators: Message presented when trying to frame an object but there is none.

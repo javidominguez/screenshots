@@ -141,7 +141,6 @@ class Rectangle():
 		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
 		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
 		objloc = self.__location.intersection(self.__delimit_object(obj))
-		print(self.location)
 		return (objloc.width*objloc.height)/(self.__location.width*self.__location.height) if self.__location.width*self.__location.height > 0 else 0
 
 	def ratioFrameObject(self, obj):
