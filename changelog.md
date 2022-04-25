@@ -5,3 +5,5 @@
 
 * Added script to open the folder where the screenshots are stored. No default gesture.
 * Added a script to open the file of the last screenshot with the default application. No default gesture.
+
+* fix: The windows and alt keys no longer go through the keyboard layer.

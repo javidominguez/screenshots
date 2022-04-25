@@ -133,6 +133,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if gesture.mainKeyName != "f1" and self.kbTimer:
 			self.kbTimer = None
 		script = globalPluginHandler.GlobalPlugin.getScript(self, gesture)
+		inputCore.manager._captureFunc = lambda self: not (gesture.isModifier and gesture.mainKeyName in (
+		"leftWindows", "rightWindows", "leftAlt"))
 		if not script:
 			if "kb:escape" in gesture.identifiers:
 				script = finally_(self.script_exit, self.finish)
