@@ -1,0 +1,264 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Screenshots wizard\n"
+"POT-Creation-Date: 2022-05-19 22:10+0300\n"
+"PO-Revision-Date: 2022-05-19 23:00+0300\n"
+"Last-Translator: Volodymyr Pyrih <vp88.mobile@gmail.com>\n"
+"Language-Team: Volodymyr Pyrih\n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: installTasks.py\n"
+"X-Poedit-SearchPath-1: globalPlugins/screenshot/__init__.py\n"
+"X-Poedit-SearchPath-2: globalPlugins/screenshot/gui.py\n"
+"X-Poedit-SearchPath-3: globalPlugins/screenshot/rectangleHandler.py\n"
+
+#. TRANSLATORS: title for the Screenshots Wizard settings category
+#: globalPlugins/screenshot/__init__.py:67 globalPlugins/screenshot/gui.py:20
+msgid "Screenshots Wizard"
+msgstr "Майстер скриншотів"
+
+#: globalPlugins/screenshot/__init__.py:149
+msgid "Cancelled"
+msgstr "Скасовано"
+
+#: globalPlugins/screenshot/__init__.py:174
+#: globalPlugins/screenshot/__init__.py:261
+msgid "Please disable screen curtain before take a screenshot"
+msgstr "Будь ласка, вимкніть екранну завісу перед тим, як зробити скриншот"
+
+#: globalPlugins/screenshot/__init__.py:211
+msgid ""
+"Launch the screenshots wizard. A layer of keyboard commands will be "
+"activated. Use enter key to take a screenshot, escape to cancel. See "
+"documentation for know more commands."
+msgstr ""
+"Запускає майстер скриншотів. Можна активовувати клавіатурні команди. "
+"Використовуйте клавішу enter, щоб зробити скриншот, а escape для "
+"скасування. Щоб дізнатися більше команд, перегляньте документацію."
+
+#: globalPlugins/screenshot/__init__.py:218
+msgid "Folder not found"
+msgstr "Папку не знайдено"
+
+#: globalPlugins/screenshot/__init__.py:221
+msgid "Open the folder where the screenshots are stored."
+msgstr "Відкрити папку, в якій зберігаються скриншоти."
+
+#: globalPlugins/screenshot/__init__.py:225
+msgid "No screenshot has been taken yet."
+msgstr "Скриншот поки що не зроблено."
+
+#: globalPlugins/screenshot/__init__.py:231
+msgid "File not found"
+msgstr "Файл не знайдено"
+
+#: globalPlugins/screenshot/__init__.py:234
+msgid "Open the last screenshot file in the default app."
+msgstr "Відкрити останній скриншот у стандартному застосунку."
+
+#: globalPlugins/screenshot/__init__.py:239
+msgid "Take a full screenshot directly, bypassing the keyboard command layer"
+msgstr ""
+"Зробити скриншот усього екрана безпосередньо, без клавіатурних команд"
+
+#: globalPlugins/screenshot/__init__.py:244
+msgid ""
+"Take a  screenshot of focused object directly, bypassing the keyboard "
+"command layer"
+msgstr ""
+"Зробити скриншот об'єкта у фокусі безпосередньо, без клавіатурних команд"
+
+#: globalPlugins/screenshot/__init__.py:249
+msgid ""
+"Take a  screenshot of current window directly, bypassing the keyboard "
+"command layer"
+msgstr ""
+"Зробити скриншот активного вікна безпосередньо, без клавіатурних команд"
+
+#: globalPlugins/screenshot/__init__.py:283
+msgid "There is no upper container"
+msgstr "Верхній контейнер відсутній"
+
+#: globalPlugins/screenshot/__init__.py:304
+msgid "Already framed"
+msgstr "Вже відкадровано"
+
+#: globalPlugins/screenshot/__init__.py:315
+#: globalPlugins/screenshot/__init__.py:552
+#, python-brace-format
+msgid "Frammed {object} {name} "
+msgstr "Відкадровано {object} {name} "
+
+#: globalPlugins/screenshot/__init__.py:324
+#, python-brace-format
+msgid "from {startX}, {startY} to {endX}, {endY}"
+msgstr "від {startX}, {startY} до {endX}, {endY}"
+
+#: globalPlugins/screenshot/__init__.py:329
+#, python-brace-format
+msgid "width {w} per height {h}"
+msgstr "ширина {w} на висоту {h}"
+
+#: globalPlugins/screenshot/__init__.py:332
+#, python-brace-format
+msgid "The reference object is {objectRole} {objectName}"
+msgstr "Опорним об'єктом є {objectRole} {objectName}"
+
+#: globalPlugins/screenshot/__init__.py:337
+#, python-format, python-brace-format
+msgid "{ratio}% of the rectangle is occupied by the object of reference"
+msgstr "Опорний об'єкт займає {ratio}% прямокутника"
+
+#: globalPlugins/screenshot/__init__.py:342
+msgid "The reference object is completely inside the rectangle"
+msgstr "Опорний об'єкт повністю розташований у прямокутнику"
+
+#: globalPlugins/screenshot/__init__.py:342
+msgid "Part of the reference object is outside the rectangle"
+msgstr "Частина опорного об'єкта перебуває за межами прямокутника"
+
+#: globalPlugins/screenshot/__init__.py:346
+#: globalPlugins/screenshot/__init__.py:549
+msgid "The rectangle is inside the active window"
+msgstr "Прямокутник перебуває всередині активного вікна"
+
+#: globalPlugins/screenshot/__init__.py:346
+msgid "Part of the rectangle is outside the active window"
+msgstr "Частина прямокутника перебуває за межами активного вікна"
+
+#: globalPlugins/screenshot/__init__.py:349
+#, python-format, python-brace-format
+msgid "The rectangle occupies {percentage}% of the screen"
+msgstr "Прямокутник займає {percentage}% екрана"
+
+#: globalPlugins/screenshot/__init__.py:390
+#: globalPlugins/screenshot/__init__.py:401
+msgid "Top edge moved to"
+msgstr "Верхній край переміщено до"
+
+#: globalPlugins/screenshot/__init__.py:412
+#: globalPlugins/screenshot/__init__.py:423
+msgid "Left edge moved to"
+msgstr "Лівий край переміщено до"
+
+#: globalPlugins/screenshot/__init__.py:434
+#: globalPlugins/screenshot/__init__.py:445
+msgid "Bottom edge moved to"
+msgstr "Нижній край переміщено до"
+
+#: globalPlugins/screenshot/__init__.py:456
+#: globalPlugins/screenshot/__init__.py:467
+msgid "Right edge moved to"
+msgstr "Правий край переміщено до"
+
+#: globalPlugins/screenshot/__init__.py:476
+#: globalPlugins/screenshot/__init__.py:487
+#, python-brace-format
+msgid "{msg} {width} per {height}"
+msgstr "{msg} {width} на {height}"
+
+#: globalPlugins/screenshot/__init__.py:477
+msgid "Expanding, "
+msgstr "Розширення, "
+
+#: globalPlugins/screenshot/__init__.py:488
+msgid "Shrinking, "
+msgstr "Зменшення, "
+
+#: globalPlugins/screenshot/__init__.py:501
+msgid "Already adjusted"
+msgstr "Вже відрегульовано"
+
+#: globalPlugins/screenshot/__init__.py:504
+#, python-brace-format
+msgid "Rectangle  adjusted to {objectRole} {objectName}"
+msgstr "Прямокутник відрегульовано до {objectRole} {objectName}"
+
+#: globalPlugins/screenshot/__init__.py:522
+msgid ""
+"Press up arrow to frame the container object, space bar or numbers to know "
+"the rectangle information, enter key to take the screenshot or escape to "
+"cancel and exit. See the documentation for more commands."
+msgstr ""
+"Натисніть стрілку вгору, щоб відкадрувати контейнер об'єкта, пробіл або "
+"цифри для отримання інформації про прямокутник, enter, щоб зробити "
+"скриншот, або escape для скасування й виходу з додатка. Щоб дізнатися "
+"більше команд, перегляньте документацію."
+
+#: globalPlugins/screenshot/__init__.py:528
+msgid "Wrong gesture"
+msgstr "Неправильний жест"
+
+#: globalPlugins/screenshot/__init__.py:545
+msgid "Reference object has changed"
+msgstr "Опорний об'єкт змінено"
+
+#: globalPlugins/screenshot/__init__.py:546
+msgid "The reference object is fully inside the rectangle"
+msgstr "Опорний об'єкт повністю перебуває в прямокутнику"
+
+#: globalPlugins/screenshot/__init__.py:547
+msgid "The reference object exceeds the bounds of the rectangle"
+msgstr "Опорний об'єкт виходить за межі прямокутника"
+
+#: globalPlugins/screenshot/__init__.py:548
+msgid "The rectangle has overflowed the active window"
+msgstr "Прямокутник переповнив активне вікно"
+
+#: globalPlugins/screenshot/__init__.py:558
+msgid "object not found"
+msgstr "об'єкт не знайдено"
+
+#: globalPlugins/screenshot/__init__.py:567
+#, python-brace-format
+msgid "{step} px"
+msgstr "{step} пікселів"
+
+#. TRANSLATORS: Selecting the folder where the image file will be saved
+#: globalPlugins/screenshot/gui.py:27
+msgid ""
+"Select the folder where the image files of the screenshots will be saved"
+msgstr "Оберіть папку, в яку будуть зберігатися скриншоти"
+
+#. TRANSLATORS: Label of the button to select folder.
+#: globalPlugins/screenshot/gui.py:36
+msgid "browse"
+msgstr "огляд"
+
+#. TRANSLATORS: Selecting the format of the image to be saved
+#: globalPlugins/screenshot/gui.py:44
+msgid "File format"
+msgstr "Формат файла"
+
+#. TRANSLATORS: Select what to do after saving the file
+#: globalPlugins/screenshot/gui.py:50
+msgid "After saving the screenshot"
+msgstr "Після збереження скриншота"
+
+#: globalPlugins/screenshot/gui.py:50
+msgid "Nothing"
+msgstr "Нічого не робити"
+
+#: globalPlugins/screenshot/gui.py:50
+msgid "Open file"
+msgstr "Відкрити файл"
+
+#: globalPlugins/screenshot/gui.py:50
+msgid "Open folder"
+msgstr "Відкрити папку"
+
+#. TRANSLATORS: Selecting the number of pixels per step when the rectangle coordinates are modified.
+#: globalPlugins/screenshot/gui.py:57
+msgid "Movement unit (in pixels): "
+msgstr "Одиниці переміщення (у пікселях): "
+
+#. TRANSLATORS: Title of the dialog where to select the folder
+#: globalPlugins/screenshot/gui.py:66
+msgid "Choose a folder:"
+msgstr "Оберіть папку:"
