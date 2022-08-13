@@ -1,0 +1,280 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Screenshots Wizard\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
+"POT-Creation-Date: 2022-08-12 22:14+0100\n"
+"PO-Revision-Date: 2022-08-12 23:14-0300\n"
+"Last-Translator: \n"
+"Language-Team: Bruno Welber <bwpereira@gmail.com>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#. Translators: Message presented when leaving the keyboard  layer
+#: addon\globalPlugins\screenshot\__init__.py:142
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. Translators: Message presented when the script is invoked from a secure window
+#: addon\globalPlugins\screenshot\__init__.py:160
+msgid "Function not available on secure screens."
+msgstr "Função não disponível em telas seguras."
+
+#. Translators: Reported when screen curtain is enabled.
+#: addon\globalPlugins\screenshot\__init__.py:171
+msgid "Please disable screen curtain before take a screenshot"
+msgstr "Desative a cortina de tela antes de fazer a captura da tela"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:205
+msgid ""
+"Launch the screenshots wizard. A layer of keyboard commands will be "
+"activated. Use enter key to take a screenshot, escape to cancel. See "
+"documentation for know more commands."
+msgstr ""
+"Inicie o assistente de captura de tela. Uma camada de comandos será "
+"ativada. Use a tecla Enter para capiturar, escape para cancelar. Consulte "
+"a documentação para saber mais comandos."
+
+#. Translators: Message when rying to frame the containing object but the largest container is already framed
+#: addon\globalPlugins\screenshot\__init__.py:217
+msgid "There is no upper container"
+msgstr "Não há container pai"
+
+#. Translators: Message presented when trying to frame an object that is already framed.
+#: addon\globalPlugins\screenshot\__init__.py:238
+msgid "Already framed"
+msgstr "Já enquadrado"
+
+#. Translators: Message presented when a object is framed.
+#. Translators: Message when an object is framed.
+#: addon\globalPlugins\screenshot\__init__.py:249
+#: addon\globalPlugins\screenshot\__init__.py:483
+#, python-brace-format
+msgid "Frammed {object} {name} "
+msgstr "Enquadrado {object} {name} "
+
+#. 1
+#. Translators: Rectangle information: coordinates of the upper left and lower right corners.
+#: addon\globalPlugins\screenshot\__init__.py:258
+#, python-brace-format
+msgid "from {startX}, {startY} to {endX}, {endY}"
+msgstr "de {startX}, {startY} até {endX}, {endY}"
+
+#. 2
+#. Translators: Rectangle information: Rectangle dimensions, width per height.
+#: addon\globalPlugins\screenshot\__init__.py:263
+#, python-brace-format
+msgid "width {w} per height {h}"
+msgstr "largura {w} por altura {h}"
+
+#. 3
+#. Translators: Rectangle information: Description of the reference object.
+#: addon\globalPlugins\screenshot\__init__.py:266
+#, python-brace-format
+msgid "The reference object is {objectRole} {objectName}"
+msgstr "O objeto de referência é {objectRole} {objectName}"
+
+#. 4
+#. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
+#: addon\globalPlugins\screenshot\__init__.py:271
+#, python-format, python-brace-format
+msgid "{ratio}% of the rectangle is occupied by the object of reference"
+msgstr "{ratio}% do enquadramento é ocupado pelo objeto de referência"
+
+#: addon\globalPlugins\screenshot\__init__.py:276
+msgid "The reference object is completely inside the rectangle"
+msgstr "O objeto de referência está completamente dentro do enquadramento"
+
+#: addon\globalPlugins\screenshot\__init__.py:276
+msgid "Part of the reference object is outside the rectangle"
+msgstr "Parte do objeto de referência está fora do enquadramento"
+
+#: addon\globalPlugins\screenshot\__init__.py:280
+#: addon\globalPlugins\screenshot\__init__.py:481
+msgid "The rectangle is inside the active window"
+msgstr "O enquadramento está dentro da janela ativa"
+
+#: addon\globalPlugins\screenshot\__init__.py:280
+msgid "Part of the rectangle is outside the active window"
+msgstr "Parte do enquadramento está fora da janela ativa"
+
+#. 7
+#. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
+#: addon\globalPlugins\screenshot\__init__.py:283
+#, python-format, python-brace-format
+msgid "The rectangle occupies {percentage}% of the screen"
+msgstr "O enquadramento ocupa {percentage}% da tela"
+
+#. Translators: Message informing that the top edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:322
+#: addon\globalPlugins\screenshot\__init__.py:333
+msgid "Top edge moved to"
+msgstr "Borda superior movida para"
+
+#. Translators: Message informing that the left edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:344
+#: addon\globalPlugins\screenshot\__init__.py:355
+msgid "Left edge moved to"
+msgstr "Borda esquerda movida para"
+
+#. Translators: Message informing that the bottom edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:366
+#: addon\globalPlugins\screenshot\__init__.py:377
+msgid "Bottom edge moved to"
+msgstr "Borda inferior movida para"
+
+#. Translators: Message informing that the right edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:388
+#: addon\globalPlugins\screenshot\__init__.py:399
+msgid "Right edge moved to"
+msgstr "Borda direita movida para"
+
+#. Translators: Message when the rectangle is expanded, dimensions width per height
+#. Translators: Message when the rectangle is shrunken, dimensions width per height
+#: addon\globalPlugins\screenshot\__init__.py:408
+#: addon\globalPlugins\screenshot\__init__.py:419
+#, python-brace-format
+msgid "{msg} {width} per {height}"
+msgstr "{msg} {width} por {height}"
+
+#: addon\globalPlugins\screenshot\__init__.py:409
+msgid "Expanding, "
+msgstr "Ampliando "
+
+#: addon\globalPlugins\screenshot\__init__.py:420
+msgid "Shrinking, "
+msgstr "Diminuindo "
+
+#. Translators: Message when trying to fit the frame around an object that is already wrapped.
+#: addon\globalPlugins\screenshot\__init__.py:432
+msgid "Already adjusted"
+msgstr "Já enquadrado"
+
+#. Translators: Message when fit the frame  around the object.
+#: addon\globalPlugins\screenshot\__init__.py:436
+#, python-brace-format
+msgid "Rectangle  adjusted to {objectRole} {objectName}"
+msgstr "Enquadramento ajustado para {objectRole} {objectName}"
+
+#. Translators: Help message presented when F1 is pressed on the keyboard layer.
+#: addon\globalPlugins\screenshot\__init__.py:454
+msgid ""
+"Press up arrow to frame the container object, space bar or numbers to know "
+"the rectangle information, enter key to take the screenshot or escape to "
+"cancel and exit. See the documentation for more commands."
+msgstr ""
+"Pressione a seta para cima para enquadrar o objeto contêiner, barra de "
+"espaço ou números para saber as informações do enquadramento, pressione a "
+"tecla Enter para fazer a captura ou escape para cancelar. Consulte a "
+"documentação para obter mais comandos."
+
+#. Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
+#: addon\globalPlugins\screenshot\__init__.py:460
+msgid "Wrong gesture"
+msgstr "Comando errado"
+
+#. Translators: Messages that will be presented when the events occur.
+#: addon\globalPlugins\screenshot\__init__.py:477
+msgid "Reference object has changed"
+msgstr "O objeto de referência foi alterado"
+
+#: addon\globalPlugins\screenshot\__init__.py:478
+msgid "The reference object is fully inside the rectangle"
+msgstr "O objeto de referência está totalmente enquadrado"
+
+#: addon\globalPlugins\screenshot\__init__.py:479
+msgid "The reference object exceeds the bounds of the rectangle"
+msgstr "O objeto de referência excede os limites do enquadramento"
+
+#: addon\globalPlugins\screenshot\__init__.py:480
+msgid "The rectangle has overflowed the active window"
+msgstr "O enquadramento ultrapassou a janela ativa"
+
+#. Translators: Message presented when trying to frame an object but there is none.
+#: addon\globalPlugins\screenshot\__init__.py:489
+msgid "object not found"
+msgstr "objeto não encontrado"
+
+#. Translators: Message   when modifying the amount of movement in pixels
+#. Translators: Message presented when the number of pixels per movement is modified.
+#: addon\globalPlugins\screenshot\__init__.py:498
+#, python-brace-format
+msgid "{step} px"
+msgstr "{step} px"
+
+#. TRANSLATORS: title for the Screenshots Wizard settings category
+#: addon\globalPlugins\screenshot\gui.py:20
+msgid "Screenshots Wizard"
+msgstr "Screenshots Wizard"
+
+#. TRANSLATORS: Selecting the folder where the image file will be saved
+#: addon\globalPlugins\screenshot\gui.py:27
+msgid ""
+"Select the folder where the image files of the screenshots will be saved"
+msgstr "Selecione a pasta para salvar os arquivos de imagem"
+
+#. TRANSLATORS: Label of the button to select folder.
+#: addon\globalPlugins\screenshot\gui.py:36
+msgid "browse"
+msgstr "procurar"
+
+#. TRANSLATORS: Selecting the format of the image to be saved
+#: addon\globalPlugins\screenshot\gui.py:44
+msgid "File format"
+msgstr "Formato do arquivo"
+
+#. TRANSLATORS: Select what to do after saving the file
+#: addon\globalPlugins\screenshot\gui.py:50
+msgid "After saving the screenshot"
+msgstr "Depois de salvar a captura de tela"
+
+#: addon\globalPlugins\screenshot\gui.py:50
+msgid "Nothing"
+msgstr "Nada"
+
+#: addon\globalPlugins\screenshot\gui.py:50
+msgid "Open file"
+msgstr "Abrir arquivo"
+
+#: addon\globalPlugins\screenshot\gui.py:50
+msgid "Open folder"
+msgstr "Abrir pasta"
+
+#. TRANSLATORS: Selecting the number of pixels per step when the rectangle coordinates are modified.
+#: addon\globalPlugins\screenshot\gui.py:57
+msgid "Movement unit (in pixels): "
+msgstr "quantidade de movimento (em pixels):"
+
+#. TRANSLATORS: Title of the dialog where to select the folder
+#: addon\globalPlugins\screenshot\gui.py:66
+msgid "Choose a folder:"
+msgstr "Selecione uma pasta: "
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+#: buildVars.py:23
+msgid "screenshots wizard"
+msgstr "screenshots wizard"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:26
+msgid "Provides an wizard to take screenshots."
+msgstr "Acistente para capituras de tela"
+
+msgid "Choose a directory:"
+msgstr "Selecione uma pasta: "
+
+msgid ""
+"\n"
+"NVDA addon that provides an wizard to take screenshots."
+msgstr ""
+"\n"
+"Complemento do NVDA que proporciona un Acistente para capituras de tela."
