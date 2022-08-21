@@ -365,14 +365,34 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		filename = "screenshot_{timestamp}.{ext}".format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
 		ext=config.conf.profiles[0]["screenshots"]["format"])
-		if img.SaveFile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename)):
-			self.lastScreenshot = os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename)
-		self.finish()
-		if self.flagNoAction: return
-		if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
-			os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
-		elif int(config.conf.profiles[0]["screenshots"]["action"]) == 2:
-			os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
+		def callback(result):
+			if result == wx.ID_OK:
+				path = dlg.GetPath()
+			elif result == -1:
+				path = os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename)
+			else:
+				wx.MessageBox(_("Image was not saved"), _("Cancelled"), wx.OK|wx.ICON_WARNING)
+				return
+			if img.SaveFile(path):
+				self.lastScreenshot = path
+			if self.flagNoAction: return
+			if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
+				os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
+			elif int(config.conf.profiles[0]["screenshots"]["action"]) == 2:
+				os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
+		if gesture and "shift" in gesture.modifierNames:
+			dlg = wx.FileDialog(
+			parent = gui.mainFrame,
+			message = _("Save image"),
+			defaultDir = config.conf.profiles[0]["screenshots"]["folder"],
+			defaultFile = filename,
+			wildcard = "|*.bmp||*.jpg||*.gif||*.png||*.tiff",
+			style = wx.FD_SAVE)
+			self.finish()
+			gui.runScriptModalDialog(dlg, callback)
+		else:
+			self.finish()
+			callback(-1)
 
 	def script_increaseStep(self, gesture):
 		self.increaseOrDecreaseStep(1)
@@ -591,6 +611,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:6": "rectangleInfo",
 	"kb:7": "rectangleInfo",
 	"kb:enter": "saveScreenshot",
+	"kb:shift+enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
 	"kb:shift+rightArrow": "shrinkLeft",
 	"kb:shift+leftArrow": "expandLeftward",
