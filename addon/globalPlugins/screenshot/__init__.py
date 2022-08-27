@@ -9,6 +9,7 @@ Copyright (C) Javi Dominguez 2021
 
 from .gui import *
 from .rectangleHandler import *
+from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
@@ -27,6 +28,7 @@ import gui
 import inputCore
 import mouseHandler
 import os
+import scriptHandler
 import ui
 import vision
 import winInputHook
@@ -548,6 +550,20 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else:
 			self.script_wrongGesture(None)
 
+	def script_OCR(self, gesture):
+		if scriptHandler.getLastScriptRepeatCount() > 0:
+			return
+		l, t, w, h = self.rectangle.location
+		if w < 100 or h < 100:
+			ui.message(_("the image is too small to be recognized."))
+			return
+		recognizer = uwpOcr.UwpOcr()
+		bm = self.rectangle.getRGBQUAD_Array()
+		imgInfo = RecogImageInfo.createFromRecognizer(l, t, w, h, recognizer)
+		def onResult(r):
+			ui.message(r.makeTextInfo(self.rectangle.object, "all").text)
+		recognizer.recognize(bm, imgInfo, onResult)
+
 	def script_help(self, gesture):
 		if self.kbTimer and self.kbTimer.isAlive():
 			try:
@@ -645,7 +661,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:control+shift+upArrow": "expandRectangle",
 	"kb:control+shift+downArrow": "shrinkRectangle",
 	"kb:backspace": "adjustToObject",
-	"kb:F1": "help"
+	"kb:F1": "help",
+	"kb:r": "OCR"
 	}
 
 class Stack:
