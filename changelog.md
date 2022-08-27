@@ -6,4 +6,7 @@
 * Added script to open the folder where the screenshots are stored. No default gesture.
 * Added a script to open the file of the last screenshot with the default application. No default gesture.
 
+* A file dialog was implemented in keyboard layer to ask where save image file (shift+enter)
+* Allowed  objects navigation gestures in the keyboard layer.
+
 * fix: The windows and alt keys no longer go through the keyboard layer.

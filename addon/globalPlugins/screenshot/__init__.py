@@ -98,6 +98,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastGesture = None
 		self.brailleMessageTimeout = config.conf["braille"]["noMessageTimeout"]
 		self.allowedBrailleGestures = set()
+		self.allowedNavigationGestures = set()
 		self.kbTimer = None
 		self.brTimer = None
 		self.flagNoAction = False
@@ -128,9 +129,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def getScript(self, gesture):
 		if not self.toggling:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
-		if True in [gID.lower() in self.allowedBrailleGestures for gID in gesture.identifiers]:
+		if True in [gID.lower() in self.allowedBrailleGestures for gID in gesture.identifiers] \
+		or set(gesture.normalizedIdentifiers) & self.allowedNavigationGestures:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
-		if gesture.mainKeyName != "f1" and self.kbTimer:
+		if isinstance(gesture, KeyboardInputGesture) and gesture.mainKeyName != "f1" and self.kbTimer:
 			self.kbTimer = None
 		script = globalPluginHandler.GlobalPlugin.getScript(self, gesture)
 		inputCore.manager._captureFunc = lambda self: not (gesture.isModifier and gesture.mainKeyName in (
@@ -187,14 +189,29 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				else:
 					self.oldGestureBindings["kb:"+k] = script
 		self.bindGestures(self.__keyboardLayerGestures)
-		# Braille gestures that will be allowed:
 		try:
 			gestures = inputCore.manager.getAllGestureMappings(obj=gui.mainFrame.prevFocus, ancestors=gui.mainFrame.prevFocusAncestors)
+		except:
+			gestures = None
+		try:
+		# Braille gestures that will be allowed:
 			for brGesture in\
 			gestures[globalCommands.SCRCAT_BRAILLE][globalCommands.GlobalCommands.script_braille_scrollForward.__doc__].gestures\
 			+ gestures[globalCommands.SCRCAT_BRAILLE][globalCommands.GlobalCommands.script_braille_scrollBack.__doc__].gestures:
 				self.allowedBrailleGestures.add(brGesture)
-		except ZeroDivisionError:
+		except:
+			pass
+		try:
+		# Object navigation gestures will be allowed
+			for x in gestures:
+				for y in gestures[x]:
+					gestureScriptInfo = gestures[x][y]
+					if gestureScriptInfo.className == "GlobalCommands" and (
+					gestureScriptInfo.scriptName.startswith("navigatorObject_") \
+					and not gestureScriptInfo.scriptName.endswith("devInfo")):
+						for g in gestureScriptInfo.gestures:
+							self.allowedNavigationGestures.add(g)
+		except:
 			pass
 		self.toggling = True
 		self.lockMouse()
@@ -302,6 +319,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			beep(100,50)
 			# Translators: Message presented when trying to frame an object that is already framed.
 			ui.message(_("Already framed"))
+		elif obj.location.width == 0 or obj.location.height == 0:
+			beep(100, 50)
+			# Translators: Message presented when the size of the object is 0 and therefore cannot be framed.
+			ui.message(_("The object cannot be framed."))
 		else:
 			self.rectangleFromObject(obj)
 
