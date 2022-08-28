@@ -9,5 +9,6 @@
 * A file dialog was implemented in keyboard layer to ask where save image file (shift+enter)
 * Allowed  objects navigation gestures in the keyboard layer.
 * Implemented recognition of the content of the current navigator object with Windows OCR (R in keyboard layer).
+* Implemented image enlargement (set it on NVDA settings dialog).
 
 * fix: The windows and alt keys no longer go through the keyboard layer.

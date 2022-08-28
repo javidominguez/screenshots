@@ -60,7 +60,8 @@ confspec = {
 	"folder":"string(default=/)",
 	"format":"string(default=BMP)",
 	"action":"integer(default=2)",
-	"step":"integer(default=5)"
+	"step":"integer(default=5)",
+	"scale":"boolean(default=true)"
 }
 config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
@@ -90,6 +91,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 					for k in config.conf["screenshots"]:
 						config.conf.profiles[0]["screenshots"][k] = config.conf["screenshots"][k]
 				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
+		if "scale" not in config.conf.profiles[0]["screenshots"]:
+		# Required for those upgrading from previous versions.
+			config.conf.profiles[0]["screenshots"]["scale"] = config.conf["screenshots"]["action"]
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
 
@@ -382,11 +386,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
+		if config.conf.profiles[0]["screenshots"]["scale"]:
+			img = self.scaleImage(img)
 		try:
 			nvwave.playWaveFile(os.path.join(os.path.dirname(__file__), "soundEfects", "takeImage.wav"))
 		except:
 			pass
-		filename = "screenshot_{timestamp}.{ext}".format(
+		filename = _("screenshot_{timestamp}.{ext}").format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
 		ext=config.conf.profiles[0]["screenshots"]["format"])
 		def callback(result):
@@ -625,6 +631,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message(_("{step} px").format(step=config.conf.profiles[0]["screenshots"]["step"]))
 		else:
 			self.script_wrongGesture(None)
+
+	def scaleImage(self, img):
+		fg = api.getDesktopObject()
+		wFactor = fg.location.width/img.Width
+		hFactor = fg.location.height/img.Height
+		factor = wFactor if wFactor<hFactor else hFactor
+		if factor>4: factor = 4 # Enlarging more than 4x produces blurry images.
+		return img.Scale(img.Width*factor, img.Height*factor, wx.IMAGE_QUALITY_HIGH)
 
 	__gestures = {
 	"kb:printScreen": "keyboardLayer"
