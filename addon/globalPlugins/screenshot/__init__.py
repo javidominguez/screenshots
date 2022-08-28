@@ -105,6 +105,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.brTimer = None
 		self.flagNoAction = False
 		self.lastScreenshot = None
+		self.recognizer = uwpOcr.UwpOcr()
 
 	def terminate(self):
 		try:
@@ -551,18 +552,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_wrongGesture(None)
 
 	def script_OCR(self, gesture):
-		if scriptHandler.getLastScriptRepeatCount() > 0:
-			return
 		l, t, w, h = self.rectangle.location
-		if w < 100 or h < 100:
-			ui.message(_("the image is too small to be recognized."))
-			return
-		recognizer = uwpOcr.UwpOcr()
+		self.recognizer._onResult = None
 		bm = self.rectangle.getRGBQUAD_Array()
-		imgInfo = RecogImageInfo.createFromRecognizer(l, t, w, h, recognizer)
+		imgInfo = RecogImageInfo.createFromRecognizer(l, t, w, h, self.recognizer)
 		def onResult(r):
 			ui.message(r.makeTextInfo(self.rectangle.object, "all").text)
-		recognizer.recognize(bm, imgInfo, onResult)
+		try:
+			self.recognizer.recognize(bm, imgInfo, onResult)
+		except:
+			self.recognizer._onResult = None
+			ui.message(_("could not be recognized. {reason}").format(
+			reason = _("The image is too small.") if w<100 or h<100 else ""))
 
 	def script_help(self, gesture):
 		if self.kbTimer and self.kbTimer.isAlive():
