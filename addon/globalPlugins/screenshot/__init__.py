@@ -61,7 +61,7 @@ confspec = {
 	"format":"string(default=BMP)",
 	"action":"integer(default=2)",
 	"step":"integer(default=5)",
-	"scale":"boolean(default=true)"
+	"scale":"boolean(default=false)"
 }
 config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
@@ -93,7 +93,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
 		if "scale" not in config.conf.profiles[0]["screenshots"]:
 		# Required for those upgrading from previous versions.
-			config.conf.profiles[0]["screenshots"]["scale"] = config.conf["screenshots"]["action"]
+			config.conf.profiles[0]["screenshots"]["scale"] = config.conf["screenshots"]["scale"]
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
 

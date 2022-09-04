@@ -45,9 +45,16 @@ class ScreenshotsPanel(SettingsPanel):
 		self.radioBoxFormat.SetSelection(fileFormats.index(config.conf.profiles[0]["screenshots"]["format"]))
 		helper.addItem(self.radioBoxFormat)
 
+		self.checkboxEnlargement = wx.CheckBox(self, wx.ID_ANY,
+		# TRANSLATORS: Checkbox to toggle  images enlagement
+		label=_("Enlarge small images"))
+		self.checkboxEnlargement.SetValue(config.conf.profiles[0]["screenshots"]["scale"])
+		helper.addItem(self.checkboxEnlargement)
+
 		self.radioBoxAction = wx.RadioBox(self, wx.ID_ANY,
 		# TRANSLATORS: Select what to do after saving the file
-		_("After saving the screenshot"), choices=[_("Nothing"), _("Open file"), _("Open folder")], majorDimension=3, style=wx.RA_SPECIFY_COLS)
+		_("After saving the screenshot"),
+		choices=[_("Nothing"), _("Open file"), _("Open folder")], majorDimension=3, style=wx.RA_SPECIFY_COLS)
 		self.radioBoxAction.SetSelection(int(config.conf.profiles[0]["screenshots"]["action"]))
 		helper.addItem(self.radioBoxAction)
 
@@ -74,6 +81,7 @@ class ScreenshotsPanel(SettingsPanel):
 		config.conf.profiles[0]["screenshots"]["folder"] = self.textPath.GetValue()
 		config.conf.profiles[0]["screenshots"]["format"] = self.radioBoxFormat.GetStringSelection()
 		config.conf.profiles[0]["screenshots"]["action"] = int(self.radioBoxAction.GetSelection())
+		config.conf.profiles[0]["screenshots"]["scale"] = self.checkboxEnlargement.GetValue()
 		config.conf.profiles[0]["screenshots"]["step"] = self.spin_ctrl.GetValue()
 
 	def onDiscard(self):
