@@ -48,7 +48,15 @@ class ScreenshotsPanel(SettingsPanel):
 		self.checkboxEnlargement = wx.CheckBox(self, wx.ID_ANY,
 		# TRANSLATORS: Checkbox to toggle  images enlagement
 		label=_("Enlarge small images"))
-		self.checkboxEnlargement.SetValue(config.conf.profiles[0]["screenshots"]["scale"])
+		if isinstance(config.conf.profiles[0]["screenshots"]["scale"], str):
+			l = True if config.conf.profiles[0]["screenshots"]["scale"].lower() == "true" else False
+		else:
+			l = config.conf.profiles[0]["screenshots"]["scale"]
+		self.checkboxEnlargement.SetValue(l)
+		""" try:
+			self.checkboxEnlargement.SetValue(config.conf.profiles[0]["screenshots"]["scale"])
+		except:
+			pass """
 		helper.addItem(self.checkboxEnlargement)
 
 		self.radioBoxAction = wx.RadioBox(self, wx.ID_ANY,

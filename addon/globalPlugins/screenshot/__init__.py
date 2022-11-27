@@ -13,6 +13,7 @@ from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
+from subprocess import Popen
 from threading import Event, Thread, Timer
 from time import sleep
 from tones import beep, nvwave
@@ -102,7 +103,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.rectangle = Rectangle()
 		self.oldRectangles = Stack()
 		self.lastGesture = None
-		self.brailleMessageTimeout = config.conf["braille"]["noMessageTimeout"]
+		#14233
+		self.brailleMessageTimeout = config.conf["braille"]["showMessages"] if "showMessages" in config.conf["braille"] else config.conf["braille"]["noMessageTimeout"]
 		self.allowedBrailleGestures = set()
 		self.allowedNavigationGestures = set()
 		self.kbTimer = None
@@ -153,7 +155,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_exit(self, gesture):
 		# Translators: Message when escape is pressed to exit the keyboard command layer
-		config.conf["braille"]["noMessageTimeout"] = self.brailleMessageTimeout
+		if "showMessages" in config.conf["braille"]:
+			#14233
+			config.conf["braille"]["showMessages"] = self.brailleMessageTimeout
+		else:
+			config.conf["braille"]["noMessageTimeout"] = self.brailleMessageTimeout
 		# Translators: Message presented when leaving the keyboard  layer
 		ui.message(_("Cancelled"))
 
@@ -222,7 +228,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			pass
 		self.toggling = True
 		self.lockMouse()
-		config.conf["braille"]["noMessageTimeout"] = True
+		if "showMessages" in config.conf["braille"]:
+			#14233
+			config.conf["braille"]["showMessages"] = 2
+		else:
+			config.conf["braille"]["noMessageTimeout"] = True
 		focus = api.getFocusObject()
 		try:
 			self.rectangleFromObject(focus)
@@ -407,9 +417,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				self.lastScreenshot = path
 			if self.flagNoAction: return
 			if int(config.conf.profiles[0]["screenshots"]["action"]) == 1:
-				os.startfile(os.path.join(config.conf.profiles[0]["screenshots"]["folder"], filename))
+				os.startfile(path)
 			elif int(config.conf.profiles[0]["screenshots"]["action"]) == 2:
-				os.startfile(config.conf.profiles[0]["screenshots"]["folder"])
+				Popen("explorer /n, /select,\"{}\"".format(path))
 		if gesture and "shift" in gesture.modifierNames:
 			dlg = wx.FileDialog(
 			parent = gui.mainFrame,
