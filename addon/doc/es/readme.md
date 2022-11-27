@@ -52,9 +52,15 @@ La cantidad de píxeles para estos movimientos se puede modificar con las teclas
 
 Al modificar el tamaño del rectángulo el objeto de referencia puede cambiar. Se intentará seleccionar siempre el objeto que esté centrado, en primer plano y que ocupe un área mayor dentro del rectángulo. Los cambios de objeto se anunciarán cuando se produzcan.
 
+#### OCR
+
+Pressing R will recognize the text included in the rectangle. This may not work in some circumstances, for example if the rectangle is too small or if the Bluetooth audio plugin is installed (there is a rare incompatibility).
+
 #### Capturar la imagen
 
 Con la tecla enter se captura la imagen del área de la pantalla delimitada por el rectángulo, se guarda en un archivo y se sale del asistente.
+
+Con mayúsculas+enter en lugar de sólo enter se mostrará un diálogo para elegir dónde guardar la captura en lugar de guardarla automáticamente  en la carpeta predefinida.
 
 Con la tecla escape se cancela y sale del asistente.
 
@@ -64,6 +70,7 @@ En las preferencias de NVDA, opciones, se pueden configurar los siguienhtes ajus
 
 * La carpeta donde se guardarán los archivos. Por defecto la carpeta de documentos del usuario.
 * El formato del archivo de imagen.
+* Si se debe o no ampliar la imagen capturada. La escala se calcula en función del tamaño del rectángulo y de la pantalla. Las imágenes pequeñas se ampliarán más, a un máximo de 4x, y las mayores sólo hasta el límite de la pantalla.
 * La acción después de guardar (nada, abrir la carpeta o abrir el archivo).
 * La cantidad de píxeles de cada movimiento.
 

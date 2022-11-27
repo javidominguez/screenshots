@@ -52,9 +52,15 @@ The number of pixels for these movements can be changed with the page up and pag
 
 By resizing the rectangle the reference object may change. It will always try to select the object that is centered, in the foreground and that occupies a larger area within the rectangle. Object changes will be announced when they occur.
 
+#### OCR
+
+Pressing R will recognize the text included in the rectangle. This may not work in some circumstances, for example if the rectangle is too small or if the Bluetooth audio addon is installed (there is a rare incompatibility).
+
 #### Capture the image
 
 Enter key captures the image of the screen area delimited by the rectangle, it is saved in a file and  exits.
+
+Shift+enter instead of just enter will bring up a dialog to choose where to save the screenshot instead of automatically saving it to the default folder.
 
 Escape key  cancels and exits.
 
@@ -64,5 +70,6 @@ In NVDA preferences, options, the following settings can be configured:
 
 * The folder where the files will be saved.  The user's documents folder by default.
 * The image file format.
+* Whether or not to enlarge the captured image. The scale is calculated based on the size of the rectangle and the screen. Small images will be enlarged further, to a maximum of 4x, and larger ones only to the edge of the screen.
 * The action after saving (nothing, open the folder or open the file).
 * The number of pixels for each movement.
