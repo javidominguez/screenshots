@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ekran Yakalama Sihirbazı\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
-"POT-Creation-Date: 2022-01-15 19:14+0100\n"
-"PO-Revision-Date: 2022-01-17 00:06+0300\n"
+"POT-Creation-Date: 2022-05-19 22:10+0300\n"
+"PO-Revision-Date: 2022-11-28 00:50+0300\n"
 "Last-Translator: Umut KORKMAZ <umutkork@gmail.com>\n"
 "Language-Team: Umut KORKMAZ <umutkork@gmail.com>\n"
 "Language: tr_TR\n"
@@ -11,264 +11,289 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#. Translators: Message presented when leaving the keyboard  layer
-#: addon\globalPlugins\screenshot\__init__.py:142
+#. TRANSLATORS: title for the Screenshots Wizard settings category
+#: globalPlugins/screenshot/__init__.py:67 globalPlugins/screenshot/gui.py:20
+msgid "Screenshots Wizard"
+msgstr "Ekran Yakalama Sihirbazı"
+
+#: globalPlugins/screenshot/__init__.py:149
 msgid "Cancelled"
 msgstr "İptal edildi"
 
-#. Translators: Message presented when the script is invoked from a secure window
-#: addon\globalPlugins\screenshot\__init__.py:160
-msgid "Function not available on secure screens."
-msgstr "İşlev, güvenli ekranlarda kullanılamaz."
-
-#. Translators: Reported when screen curtain is enabled.
-#: addon\globalPlugins\screenshot\__init__.py:171
+#: globalPlugins/screenshot/__init__.py:174
+#: globalPlugins/screenshot/__init__.py:261
 msgid "Please disable screen curtain before take a screenshot"
 msgstr ""
 "Lütfen ekran görüntüsü almadan önce ekran perdesini devre dışı bırakın."
 
-#. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:205
+#: globalPlugins/screenshot/__init__.py:211
 msgid ""
 "Launch the screenshots wizard. A layer of keyboard commands will be "
 "activated. Use enter key to take a screenshot, escape to cancel. See "
 "documentation for know more commands."
 msgstr ""
-"Ekran Yakalama sihirbazını başlatın. Bir klavye komutları katmanı "
-"etkinleştirilecektir. Ekran görüntüsü almak için enter, iptal etmek için "
-"ise Escape tuşunu kullanın. Daha fazla bilgi için belgelere bakın."
+"Ekran Yakalama sihirbazını başlatır. Bir klavye komutları katmanı "
+"etkinleştirilecektir. Ekran görüntüsü almak için enter, iptal etmek için ise "
+"Escape tuşunu kullanın. Daha fazla bilgi için belgelere bakın."
 
-#. Translators: Message when rying to frame the containing object but the largest container is already framed
-#: addon\globalPlugins\screenshot\__init__.py:217
+#: globalPlugins/screenshot/__init__.py:218
+msgid "Folder not found"
+msgstr "Klasör bulunamadı"
+
+#: globalPlugins/screenshot/__init__.py:221
+msgid "Open the folder where the screenshots are stored."
+msgstr "Yakalanan ekran görüntülerinin depolandığı klasörü açar."
+
+#: globalPlugins/screenshot/__init__.py:225
+msgid "No screenshot has been taken yet."
+msgstr "Henüz ekran görüntüsü yakalanmadı."
+
+#: globalPlugins/screenshot/__init__.py:231
+msgid "File not found"
+msgstr "Dosya bulunamadı"
+
+#: globalPlugins/screenshot/__init__.py:234
+msgid "Open the last screenshot file in the default app."
+msgstr "Son ekran yakalama dosyasını varsayılan uygulamada açar."
+
+#: globalPlugins/screenshot/__init__.py:239
+msgid "Take a full screenshot directly, bypassing the keyboard command layer"
+msgstr ""
+"Klavye komut katmanını atlayarak doğrudan tam bir ekran görüntüsü yakalar"
+
+#: globalPlugins/screenshot/__init__.py:244
+msgid ""
+"Take a  screenshot of focused object directly, bypassing the keyboard "
+"command layer"
+msgstr ""
+"Klavye komut katmanını atlayarak doğrudan odaklanılan nesnenin ekran "
+"görüntüsünü alır"
+
+#: globalPlugins/screenshot/__init__.py:249
+msgid ""
+"Take a  screenshot of current window directly, bypassing the keyboard "
+"command layer"
+msgstr ""
+"Klavye komut katmanını atlayarak doğrudan geçerli pencerenin ekran "
+"görüntüsünü yakalar"
+
+#: globalPlugins/screenshot/__init__.py:283
 msgid "There is no upper container"
 msgstr "Üst kapsayıcı yok"
 
-#. Translators: Message presented when trying to frame an object that is already framed.
-#: addon\globalPlugins\screenshot\__init__.py:238
+#: globalPlugins/screenshot/__init__.py:304
 msgid "Already framed"
 msgstr "zaten çerçeveli"
 
-#. Translators: Message presented when a object is framed.
-#. Translators: Message when an object is framed.
-#: addon\globalPlugins\screenshot\__init__.py:249
-#: addon\globalPlugins\screenshot\__init__.py:483
+#: globalPlugins/screenshot/__init__.py:315
+#: globalPlugins/screenshot/__init__.py:552
 #, python-brace-format
 msgid "Frammed {object} {name} "
 msgstr "{object} {name} Çerçeveli"
 
-#. 1
-#. Translators: Rectangle information: coordinates of the upper left and lower right corners.
-#: addon\globalPlugins\screenshot\__init__.py:258
+#: globalPlugins/screenshot/__init__.py:324
 #, python-brace-format
 msgid "from {startX}, {startY} to {endX}, {endY}"
 msgstr "{startX}, {startY}, {endX}, {endY}"
 
-#. 2
-#. Translators: Rectangle information: Rectangle dimensions, width per height.
-#: addon\globalPlugins\screenshot\__init__.py:263
+#: globalPlugins/screenshot/__init__.py:329
 #, python-brace-format
 msgid "width {w} per height {h}"
 msgstr "Genişlik {w} yükseklik {h}"
 
-#. 3
-#. Translators: Rectangle information: Description of the reference object.
-#: addon\globalPlugins\screenshot\__init__.py:266
+#: globalPlugins/screenshot/__init__.py:332
 #, python-brace-format
 msgid "The reference object is {objectRole} {objectName}"
 msgstr "Referans nesnesi {objectRole} {objectName}"
 
-#. 4
-#. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
-#: addon\globalPlugins\screenshot\__init__.py:271
+#: globalPlugins/screenshot/__init__.py:337
 #, python-format, python-brace-format
 msgid "{ratio}% of the rectangle is occupied by the object of reference"
 msgstr "{ratio}% dikdörtgen referans nesnesi tarafından tamamen dolu"
 
-#: addon\globalPlugins\screenshot\__init__.py:276
+#: globalPlugins/screenshot/__init__.py:342
 msgid "The reference object is completely inside the rectangle"
 msgstr "Referans nesnesi tamamen dikdörtgenin içinde"
 
-#: addon\globalPlugins\screenshot\__init__.py:276
+#: globalPlugins/screenshot/__init__.py:342
 msgid "Part of the reference object is outside the rectangle"
 msgstr "Referans nesnesinin bir kısmı dikdörtgenin dışında"
 
-#: addon\globalPlugins\screenshot\__init__.py:280
-#: addon\globalPlugins\screenshot\__init__.py:481
+#: globalPlugins/screenshot/__init__.py:346
+#: globalPlugins/screenshot/__init__.py:549
 msgid "The rectangle is inside the active window"
 msgstr "Dikdörtgen etkin pencerenin içinde"
 
-#: addon\globalPlugins\screenshot\__init__.py:280
+#: globalPlugins/screenshot/__init__.py:346
 msgid "Part of the rectangle is outside the active window"
 msgstr "Dikdörtgenin bir kısmı etkin pencerenin dışında"
 
-#. 7
-#. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
-#: addon\globalPlugins\screenshot\__init__.py:283
+#: globalPlugins/screenshot/__init__.py:349
 #, python-format, python-brace-format
 msgid "The rectangle occupies {percentage}% of the screen"
 msgstr "The rectangle occupies {percentage}% of the screen"
 
-#. Translators: Message informing that the top edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:322
-#: addon\globalPlugins\screenshot\__init__.py:333
+#: globalPlugins/screenshot/__init__.py:390
+#: globalPlugins/screenshot/__init__.py:401
 msgid "Top edge moved to"
 msgstr "Üst kenar taşındı"
 
-#. Translators: Message informing that the left edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:344
-#: addon\globalPlugins\screenshot\__init__.py:355
+#: globalPlugins/screenshot/__init__.py:412
+#: globalPlugins/screenshot/__init__.py:423
 msgid "Left edge moved to"
 msgstr "Sol kenar şuraya taşındı:"
 
-#. Translators: Message informing that the bottom edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:366
-#: addon\globalPlugins\screenshot\__init__.py:377
+#: globalPlugins/screenshot/__init__.py:434
+#: globalPlugins/screenshot/__init__.py:445
 msgid "Bottom edge moved to"
 msgstr "Alt kenar taşındı"
 
-#. Translators: Message informing that the right edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:388
-#: addon\globalPlugins\screenshot\__init__.py:399
+#: globalPlugins/screenshot/__init__.py:456
+#: globalPlugins/screenshot/__init__.py:467
 msgid "Right edge moved to"
 msgstr "Sağ kenar taşındı"
 
-#. Translators: Message when the rectangle is expanded, dimensions width per height
-#. Translators: Message when the rectangle is shrunken, dimensions width per height
-#: addon\globalPlugins\screenshot\__init__.py:408
-#: addon\globalPlugins\screenshot\__init__.py:419
+#: globalPlugins/screenshot/__init__.py:476
+#: globalPlugins/screenshot/__init__.py:487
 #, python-brace-format
 msgid "{msg} {width} per {height}"
 msgstr "{msg} {width} {height}"
 
-#: addon\globalPlugins\screenshot\__init__.py:409
+#: globalPlugins/screenshot/__init__.py:477
 msgid "Expanding, "
 msgstr "Genişlik, "
 
-#: addon\globalPlugins\screenshot\__init__.py:420
+#: globalPlugins/screenshot/__init__.py:488
 msgid "Shrinking, "
 msgstr "küçülen, "
 
-#. Translators: Message when trying to fit the frame around an object that is already wrapped.
-#: addon\globalPlugins\screenshot\__init__.py:432
+#: globalPlugins/screenshot/__init__.py:501
 msgid "Already adjusted"
 msgstr "Zaten ayarlanmış"
 
-#. Translators: Message when fit the frame  around the object.
-#: addon\globalPlugins\screenshot\__init__.py:436
+#: globalPlugins/screenshot/__init__.py:504
 #, python-brace-format
 msgid "Rectangle  adjusted to {objectRole} {objectName}"
 msgstr "Dikdörtgen {objectRole} {objectName} olarak ayarlandı"
 
-#. Translators: Help message presented when F1 is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:454
+#: globalPlugins/screenshot/__init__.py:522
 msgid ""
 "Press up arrow to frame the container object, space bar or numbers to know "
 "the rectangle information, enter key to take the screenshot or escape to "
 "cancel and exit. See the documentation for more commands."
 msgstr ""
-"Kapsayıcı nesnesini çerçevelemek için yukarı oka basın, dikdörtgen "
-"bilgisini öğrenmek için boşluk çubuğu veya sayılar, ekran görüntüsünü "
-"almak için enter tuşuna basın veya iptal edip çıkmak için Escape tuşuna "
-"basın. Daha fazla komut için belgelere bakın."
+"Kapsayıcı nesnesini çerçevelemek için yukarı oka basın, dikdörtgen bilgisini "
+"öğrenmek için boşluk çubuğu veya sayılar, ekran görüntüsünü almak için enter "
+"tuşuna basın veya iptal edip çıkmak için Escape tuşuna basın. Daha fazla "
+"komut için belgelere bakın."
 
-#. Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:460
+#: globalPlugins/screenshot/__init__.py:528
 msgid "Wrong gesture"
 msgstr "Tanımlı değil"
 
-#. Translators: Messages that will be presented when the events occur.
-#: addon\globalPlugins\screenshot\__init__.py:477
+#: globalPlugins/screenshot/__init__.py:545
 msgid "Reference object has changed"
 msgstr "Referans nesnesi değişti"
 
-#: addon\globalPlugins\screenshot\__init__.py:478
+#: globalPlugins/screenshot/__init__.py:546
 msgid "The reference object is fully inside the rectangle"
 msgstr "Referans nesnesi tamamen dikdörtgenin içinde"
 
-#: addon\globalPlugins\screenshot\__init__.py:479
+#: globalPlugins/screenshot/__init__.py:547
 msgid "The reference object exceeds the bounds of the rectangle"
 msgstr "Başvuru nesnesi dikdörtgenin sınırlarını aşıyor"
 
-#: addon\globalPlugins\screenshot\__init__.py:480
+#: globalPlugins/screenshot/__init__.py:548
 msgid "The rectangle has overflowed the active window"
 msgstr "Dikdörtgen etkin pencereden taştı."
 
-#. Translators: Message presented when trying to frame an object but there is none.
-#: addon\globalPlugins\screenshot\__init__.py:489
+#: globalPlugins/screenshot/__init__.py:558
 msgid "object not found"
 msgstr "nesne bulunamadı"
 
-#. Translators: Message   when modifying the amount of movement in pixels
-#. Translators: Message presented when the number of pixels per movement is modified.
-#: addon\globalPlugins\screenshot\__init__.py:498
+#: globalPlugins/screenshot/__init__.py:567
 #, python-brace-format
 msgid "{step} px"
 msgstr "{step} piksel"
 
-#. TRANSLATORS: title for the Screenshots Wizard settings category
-#: addon\globalPlugins\screenshot\gui.py:20
-msgid "Screenshots Wizard"
-msgstr "Ekran Yakalama Sihirbazı"
-
 #. TRANSLATORS: Selecting the folder where the image file will be saved
-#: addon\globalPlugins\screenshot\gui.py:27
+#: globalPlugins/screenshot/gui.py:27
 msgid ""
 "Select the folder where the image files of the screenshots will be saved"
 msgstr "Yakalanan görüntü dosyalarının kaydedileceği klasörü seçin"
 
 #. TRANSLATORS: Label of the button to select folder.
-#: addon\globalPlugins\screenshot\gui.py:36
+#: globalPlugins/screenshot/gui.py:36
 msgid "browse"
 msgstr "Gözat"
 
 #. TRANSLATORS: Selecting the format of the image to be saved
-#: addon\globalPlugins\screenshot\gui.py:44
+#: globalPlugins/screenshot/gui.py:44
 msgid "File format"
 msgstr "Dosya Biçimi"
 
 #. TRANSLATORS: Select what to do after saving the file
-#: addon\globalPlugins\screenshot\gui.py:50
+#: globalPlugins/screenshot/gui.py:50
 msgid "After saving the screenshot"
 msgstr "Ekran görüntüsünü kaydettikten sonra"
 
-#: addon\globalPlugins\screenshot\gui.py:50
+#: globalPlugins/screenshot/gui.py:50
 msgid "Nothing"
 msgstr "Hiçbir şey yapma"
 
-#: addon\globalPlugins\screenshot\gui.py:50
+#: globalPlugins/screenshot/gui.py:50
 msgid "Open file"
 msgstr "Dosyayı Aç"
 
-#: addon\globalPlugins\screenshot\gui.py:50
+#: globalPlugins/screenshot/gui.py:50
 msgid "Open folder"
 msgstr "Klasörü aç"
 
 #. TRANSLATORS: Selecting the number of pixels per step when the rectangle coordinates are modified.
-#: addon\globalPlugins\screenshot\gui.py:57
+#: globalPlugins/screenshot/gui.py:57
 msgid "Movement unit (in pixels): "
 msgstr "Hareket değeri (piksel olarak): "
 
 #. TRANSLATORS: Title of the dialog where to select the folder
-#: addon\globalPlugins\screenshot\gui.py:66
+#: globalPlugins/screenshot/gui.py:66
 msgid "Choose a folder:"
 msgstr "Bir klasör seçin:"
 
-#. Add-on summary, usually the user visible name of the addon.
-#. Translators: Summary for this add-on
-#. to be shown on installation and add-on information found in Add-ons Manager.
-#: buildVars.py:23
-msgid "screenshots wizard"
-msgstr "ekran Yakalama sihirbazı"
+#~ msgid "The object cannot be framed."
+#~ msgstr "Nesne çerçevelenemez."
 
-#. Add-on description
-#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-#: buildVars.py:26
-msgid "Provides an wizard to take screenshots."
-msgstr "Ekran görüntüsü almak için bir sihirbaz sağlar."
+#, python-brace-format
+#~ msgid "screenshot_{timestamp}.{ext}"
+#~ msgstr "ekran yakalama_{timestamp}.{ext}"
+
+#~ msgid "Image was not saved"
+#~ msgstr "Resim kaydedilmedi"
+
+#~ msgid "Save image"
+#~ msgstr "Resmi Kaydet"
+
+#, python-brace-format
+#~ msgid "could not be recognized. {reason}"
+#~ msgstr "tanınamadı. {reason}"
+
+#~ msgid "The image is too small."
+#~ msgstr "Resim çok küçük."
+
+#~ msgid "Enlarge small images"
+#~ msgstr "Küçük resimleri büyüt"
+
+#~ msgid "screenshots wizard"
+#~ msgstr "ekran Yakalama sihirbazı"
+
+#~ msgid "Provides an wizard to take screenshots."
+#~ msgstr "Ekran görüntüsü almak için bir sihirbaz sağlar."
+
+#~ msgid "Function not available on secure screens."
+#~ msgstr "İşlev, güvenli ekranlarda kullanılamaz."
 
 #~ msgid "Choose a directory:"
 #~ msgstr "Seleccione un directorio"

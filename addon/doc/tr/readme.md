@@ -1,16 +1,3 @@
----
-autonumber-headings: false
-extratags: true
-extratags-back: true
-filename: readme
-lang: tr_TR
-mathjax: false
-path: 'C:\Users\ITU\AppData\Roaming\nvda\addons\screenshots\doc\tr\'
-template: default
-title: Ekran Yakalama Sihirbazı
-toc: false
-...
-
 # Ekran yakalama sihirbazı
 
 Bu eklenti, tüm ekranın veya nesneler, pencereler vb. gibi belirli alanların ekran görüntülerini almak için bir sihirbaz sağlar. Standart klavyelerde genellikle F12 tuşunun sağındaki üçlü grubun ilki olan _print screen_ tuşu ile etkinleştirilir. Başka bir tane kullanmayı tercih ederseniz, NVDA tercihlerinde, girdi hareketlerinde yapılandırılabilir.  
@@ -65,9 +52,15 @@ Bu hareketler için piksel sayısı sayfa yukarı ve sayfa aşağı tuşları il
 
 Dikdörtgeni yeniden boyutlandırarak referans nesnesi değişebilir. Her zaman ortalanmış, ön planda olan ve dikdörtgen içinde daha geniş bir alanı kaplayan nesneyi seçmeye çalışacaktır. Nesne değişiklikleri gerçekleştiğinde duyurulacaktır.  
 
+#### OCR
+
+R'ye basmak, dikdörtgenin içerdiği metni tanıyacaktır. Bu, bazı durumlarda, örneğin dikdörtgen çok küçükse veya Bluetooth ses eklentisi kuruluysa (nadiren görülen bir uyumsuzluk vardır) çalışmayabilir.
+
 #### Görüntü yakalama:  
 
 Enter tuşu, dikdörtgen ile sınırlandırılmış ekran alanının görüntüsünü yakalar, bir dosyaya kaydedilir ve çıkar.  
+
+Yalnızca enter yerine Shift+enter, ekran görüntüsünü otomatik olarak varsayılan klasöre kaydetmek yerine nereye kaydedeceğinizi seçmek için bir iletişim kutusu açar.  
 
 Escape tuşu iptal eder ve çıkar.  
 
@@ -77,5 +70,7 @@ NVDA tercihlerinde, ayarlarda aşağıdaki seçenekler yapılandırılabilir:
 
 * Dosyaların kaydedileceği klasör. Varsayılan olarak kullanıcının belgeler klasörüdür.  
 * Görüntü dosyası biçimi.  
+* Küçük resimleri büyüt onay kutusu: Ölçek, dikdörtgenin ve ekranın boyutuna göre hesaplanır. Küçük resimler maksimum 4x olacak şekilde daha da büyütülecek ve daha büyük resimler yalnızca ekranın kenarına kadar büyütülecektir.
 * Kaydettikten sonraki eylem (hiçbir şey yapma, klasörü aç veya dosyayı aç).  
-* Her hareket için piksel sayısı.  
+* Her hareket için piksel sayısı.
+
