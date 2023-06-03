@@ -1,0 +1,328 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
+"POT-Creation-Date: 2023-05-25 10:37+0800\n"
+"PO-Revision-Date: 2023-06-03 09:47+0800\n"
+"Last-Translator: 蔡宗豪 <surfer0627@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.3.1\n"
+"X-Poedit-Basepath: .\n"
+
+#. TRANSLATORS: title for the Screenshots Wizard settings category
+#: addon\globalPlugins\screenshot\__init__.py:71
+#: addon\globalPlugins\screenshot\gui.py:20
+msgid "Screenshots Wizard"
+msgstr "螢幕截圖精靈"
+
+#. Translators: Message presented when leaving the keyboard  layer
+#: addon\globalPlugins\screenshot\__init__.py:164
+#: addon\globalPlugins\screenshot\__init__.py:414
+msgid "Cancelled"
+msgstr "已取消"
+
+#. Translators: Reported when screen curtain is enabled.
+#: addon\globalPlugins\screenshot\__init__.py:189
+#: addon\globalPlugins\screenshot\__init__.py:295
+msgid "Please disable screen curtain before take a screenshot"
+msgstr "拍攝螢幕截圖前請先停用螢幕簾幕。"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:245
+msgid ""
+"Launch the screenshots wizard. A layer of keyboard commands will be "
+"activated. Use enter key to take a screenshot, escape to cancel. See "
+"documentation for know more commands."
+msgstr ""
+"啟動螢幕截圖精靈。將啟用一層鍵盤命令。使用 Enter 鍵拍攝螢幕截圖，按 Esc 鍵"
+"取消。請參閱說明以瞭解更多命令。"
+
+#: addon\globalPlugins\screenshot\__init__.py:252
+msgid "Folder not found"
+msgstr "找不到資料夾"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:255
+msgid "Open the folder where the screenshots are stored."
+msgstr "開啟儲存螢幕截圖的資料夾。"
+
+#: addon\globalPlugins\screenshot\__init__.py:259
+msgid "No screenshot has been taken yet."
+msgstr "尚未拍攝任何螢幕截圖。"
+
+#: addon\globalPlugins\screenshot\__init__.py:265
+msgid "File not found"
+msgstr "找不到檔案"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:268
+msgid "Open the last screenshot file in the default app."
+msgstr "以預設的應用程式開啟最後拍攝的螢幕截圖檔案。"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:273
+msgid "Take a full screenshot directly, bypassing the keyboard command layer"
+msgstr "直接拍攝完整螢幕截圖，跳過鍵盤命令層"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:278
+msgid ""
+"Take a  screenshot of focused object directly, bypassing the keyboard "
+"command layer"
+msgstr "直接拍攝聚焦物件的螢幕截圖，跳過鍵盤命令層"
+
+#. Translators: Message presented in input help mode.
+#: addon\globalPlugins\screenshot\__init__.py:283
+msgid ""
+"Take a  screenshot of current window directly, bypassing the keyboard "
+"command layer"
+msgstr "直接拍攝目前視窗的螢幕截圖，跳過鍵盤命令層"
+
+#. Translators: Message when rying to frame the containing object but the largest container is already framed
+#: addon\globalPlugins\screenshot\__init__.py:317
+msgid "There is no upper container"
+msgstr "沒有上層容器"
+
+#. Translators: Message presented when trying to frame an object that is already framed.
+#: addon\globalPlugins\screenshot\__init__.py:338
+msgid "Already framed"
+msgstr "已被框定"
+
+#. Translators: Message presented when the size of the object is 0 and therefore cannot be framed.
+#: addon\globalPlugins\screenshot\__init__.py:342
+msgid "The object cannot be framed."
+msgstr "無法框定該物件。"
+
+#. Translators: Message presented when a object is framed.
+#. Translators: Message when an object is framed.
+#: addon\globalPlugins\screenshot\__init__.py:353
+#: addon\globalPlugins\screenshot\__init__.py:626
+msgid "Frammed {object} {name} "
+msgstr "已框定 {object} {name}"
+
+#. 1
+#. Translators: Rectangle information: coordinates of the upper left and lower right corners.
+#: addon\globalPlugins\screenshot\__init__.py:362
+msgid "from {startX}, {startY} to {endX}, {endY}"
+msgstr "從 {startX}，{startY} 到 {endX}，{endY}"
+
+#. 2
+#. Translators: Rectangle information: Rectangle dimensions, width per height.
+#: addon\globalPlugins\screenshot\__init__.py:367
+msgid "width {w} per height {h}"
+msgstr "寬度 {w} 高度 {h}"
+
+#. 3
+#. Translators: Rectangle information: Description of the reference object.
+#: addon\globalPlugins\screenshot\__init__.py:370
+msgid "The reference object is {objectRole} {objectName}"
+msgstr "參考物件為 {objectRole} {objectName}"
+
+#. 4
+#. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
+#: addon\globalPlugins\screenshot\__init__.py:375
+#, python-format
+msgid "{ratio}% of the rectangle is occupied by the object of reference"
+msgstr "參考物件佔矩形區域的 {ratio} %"
+
+#: addon\globalPlugins\screenshot\__init__.py:380
+msgid "The reference object is completely inside the rectangle"
+msgstr "參考物件完全在矩形內"
+
+#: addon\globalPlugins\screenshot\__init__.py:380
+msgid "Part of the reference object is outside the rectangle"
+msgstr "參考物件的一部分在矩形外"
+
+#: addon\globalPlugins\screenshot\__init__.py:384
+#: addon\globalPlugins\screenshot\__init__.py:623
+msgid "The rectangle is inside the active window"
+msgstr "矩形在作用中的視窗內"
+
+#: addon\globalPlugins\screenshot\__init__.py:384
+msgid "Part of the rectangle is outside the active window"
+msgstr "矩形的一部分在作用中的視窗外"
+
+#. 7
+#. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
+#: addon\globalPlugins\screenshot\__init__.py:387
+#, python-format
+msgid "The rectangle occupies {percentage}% of the screen"
+msgstr "矩形佔螢幕的 {percentage}%"
+
+#: addon\globalPlugins\screenshot\__init__.py:405
+msgid "screenshot_{timestamp}.{ext}"
+msgstr "screenshot_{timestamp}.{ext}"
+
+#: addon\globalPlugins\screenshot\__init__.py:414
+msgid "Image was not saved"
+msgstr "影像未儲存"
+
+#: addon\globalPlugins\screenshot\__init__.py:426
+msgid "Save image"
+msgstr "儲存影像"
+
+#. Translators: Message informing that the top edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:450
+#: addon\globalPlugins\screenshot\__init__.py:461
+msgid "Top edge moved to"
+msgstr "上邊緣已移動到"
+
+#. Translators: Message informing that the left edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:472
+#: addon\globalPlugins\screenshot\__init__.py:483
+msgid "Left edge moved to"
+msgstr "左邊緣已移動到"
+
+#. Translators: Message informing that the bottom edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:494
+#: addon\globalPlugins\screenshot\__init__.py:505
+msgid "Bottom edge moved to"
+msgstr "下邊緣已移動到"
+
+#. Translators: Message informing that the right edge has been moved.
+#: addon\globalPlugins\screenshot\__init__.py:516
+#: addon\globalPlugins\screenshot\__init__.py:527
+msgid "Right edge moved to"
+msgstr "右邊緣已移動到"
+
+#. Translators: Message when the rectangle is expanded, dimensions width per height
+#. Translators: Message when the rectangle is shrunken, dimensions width per height
+#: addon\globalPlugins\screenshot\__init__.py:536
+#: addon\globalPlugins\screenshot\__init__.py:547
+msgid "{msg} {width} per {height}"
+msgstr "{msg} {width} 每 {height}"
+
+#: addon\globalPlugins\screenshot\__init__.py:537
+msgid "Expanding, "
+msgstr "正在擴大"
+
+#: addon\globalPlugins\screenshot\__init__.py:548
+msgid "Shrinking, "
+msgstr "正在縮小"
+
+#. Translators: Message when trying to fit the frame around an object that is already wrapped.
+#: addon\globalPlugins\screenshot\__init__.py:561
+msgid "Already adjusted"
+msgstr "已經調整"
+
+#. Translators: Message when fit the frame  around the object.
+#: addon\globalPlugins\screenshot\__init__.py:564
+msgid "Rectangle  adjusted to {objectRole} {objectName}"
+msgstr "矩形已調整為 {objectRole} {objectName}"
+
+#: addon\globalPlugins\screenshot\__init__.py:581
+msgid "could not be recognized. {reason}"
+msgstr "無法識別。{reason}"
+
+#: addon\globalPlugins\screenshot\__init__.py:582
+msgid "The image is too small."
+msgstr "影象太小"
+
+#. Translators: Help message presented when F1 is pressed on the keyboard layer.
+#: addon\globalPlugins\screenshot\__init__.py:596
+msgid ""
+"Press up arrow to frame the container object, space bar or numbers to know "
+"the rectangle information, enter key to take the screenshot or escape to "
+"cancel and exit. See the documentation for more commands."
+msgstr ""
+"按向上鍵框定容器物件，按空格鍵或數字以知道矩形資訊，按 Enter 鍵以拍攝螢幕截"
+"圖，按 Esc 鍵取消並退出。請參閱說明以瞭解更多命令。"
+
+#. Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
+#: addon\globalPlugins\screenshot\__init__.py:602
+msgid "Wrong gesture"
+msgstr "手勢錯誤"
+
+#. Translators: Messages that will be presented when the events occur.
+#: addon\globalPlugins\screenshot\__init__.py:619
+msgid "Reference object has changed"
+msgstr "參考物件已更改"
+
+#: addon\globalPlugins\screenshot\__init__.py:620
+msgid "The reference object is fully inside the rectangle"
+msgstr "參考物件完全在矩形內"
+
+#: addon\globalPlugins\screenshot\__init__.py:621
+msgid "The reference object exceeds the bounds of the rectangle"
+msgstr "參考物件超出矩形範圍"
+
+#: addon\globalPlugins\screenshot\__init__.py:622
+msgid "The rectangle has overflowed the active window"
+msgstr "矩形已超出作用中視窗"
+
+#. Translators: Message presented when trying to frame an object but there is none.
+#: addon\globalPlugins\screenshot\__init__.py:632
+msgid "object not found"
+msgstr "找不到物件"
+
+#. Translators: Message   when modifying the amount of movement in pixels
+#. Translators: Message presented when the number of pixels per movement is modified.
+#: addon\globalPlugins\screenshot\__init__.py:641
+msgid "{step} px"
+msgstr "{step} 畫素"
+
+#. TRANSLATORS: Selecting the folder where the image file will be saved
+#: addon\globalPlugins\screenshot\gui.py:27
+msgid ""
+"Select the folder where the image files of the screenshots will be saved"
+msgstr "選擇儲存螢幕截圖的資料夾"
+
+#. TRANSLATORS: Label of the button to select folder.
+#: addon\globalPlugins\screenshot\gui.py:36
+msgid "browse"
+msgstr "瀏覽"
+
+#. TRANSLATORS: Selecting the format of the image to be saved
+#: addon\globalPlugins\screenshot\gui.py:44
+msgid "File format"
+msgstr "檔案格式"
+
+#. TRANSLATORS: Checkbox to toggle  images enlagement
+#: addon\globalPlugins\screenshot\gui.py:50
+msgid "Enlarge small images"
+msgstr "放大小圖"
+
+#. TRANSLATORS: Select what to do after saving the file
+#: addon\globalPlugins\screenshot\gui.py:64
+msgid "After saving the screenshot"
+msgstr "儲存螢幕截圖後"
+
+#: addon\globalPlugins\screenshot\gui.py:65
+msgid "Nothing"
+msgstr "無"
+
+#: addon\globalPlugins\screenshot\gui.py:65
+msgid "Open file"
+msgstr "開啟檔案"
+
+#: addon\globalPlugins\screenshot\gui.py:65
+msgid "Open folder"
+msgstr "開啟資料夾"
+
+#. TRANSLATORS: Selecting the number of pixels per step when the rectangle coordinates are modified.
+#: addon\globalPlugins\screenshot\gui.py:72
+msgid "Movement unit (in pixels): "
+msgstr "移動單位（以畫素為單位）："
+
+#. TRANSLATORS: Title of the dialog where to select the folder
+#: addon\globalPlugins\screenshot\gui.py:81
+msgid "Choose a folder:"
+msgstr "選擇資料夾:"
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+#: buildVars.py:23
+msgid "screenshots wizard"
+msgstr "螢幕截圖精靈"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:26
+msgid "Provides an wizard to take screenshots."
+msgstr "提供了一個精靈，來拍攝螢幕截圖。"
