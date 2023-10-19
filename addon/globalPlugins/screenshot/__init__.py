@@ -129,7 +129,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		global mouseCallbackFunc
 		mouseCallbackFunc = winInputHook.mouseCallback
 		winInputHook.setCallbacks(mouse=self.mouseCapture)
-		
+
 	def unlockMouse(self):
 		global mouseCallbackFunc
 		winInputHook.setCallbacks(mouse=mouseCallbackFunc)
@@ -150,7 +150,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			if "kb:escape" in gesture.identifiers:
 				script = finally_(self.script_exit, self.finish)
 			else:
-				script = finally_(self.script_wrongGesture, lambda: None) 
+				script = finally_(self.script_wrongGesture, lambda: None)
 		return script
 
 	def script_exit(self, gesture):
@@ -582,13 +582,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			reason = _("The image is too small.") if w<100 or h<100 else ""))
 
 	def script_help(self, gesture):
-		if self.kbTimer and self.kbTimer.isAlive():
+		if self.kbTimer and self.kbTimer.is_alive():
 			try:
 				path = filter(lambda a: a.name == "screenshots", addonHandler.getAvailableAddons()).__next__().getDocFilePath()
 				os.startfile(path)
 				self.finish()
 			except:
-				pas
+				pass
 			return
 		self.kbTimer = Thread(target=sleep, args=(0.35, ))
 		self.kbTimer.start()
@@ -603,7 +603,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		displayedMessage = braille.handler.messageBuffer.rawText
 		if wrongGestureMessage != displayedMessage:
 			braille.handler.message(wrongGestureMessage)
-			if self.brTimer and self.brTimer.isAlive(): return
+			if self.brTimer and self.brTimer.is_alive(): return
 			def restoreDisplayedMessage():
 				if braille.handler.messageBuffer.rawText == wrongGestureMessage:
 					braille.handler.message(displayedMessage)
