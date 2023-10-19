@@ -644,8 +644,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def scaleImage(self, img):
 		fg = api.getDesktopObject()
-		wFactor = fg.location.width/img.Width
-		hFactor = fg.location.height/img.Height
+		wFactor = round(fg.location.width/img.Width)
+		hFactor = round(fg.location.height/img.Height)
 		factor = wFactor if wFactor<hFactor else hFactor
 		if factor>4: factor = 4 # Enlarging more than 4x produces blurry images.
 		return img.Scale(img.Width*factor, img.Height*factor, wx.IMAGE_QUALITY_HIGH)
