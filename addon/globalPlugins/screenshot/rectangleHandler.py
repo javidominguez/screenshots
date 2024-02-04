@@ -5,9 +5,12 @@ This file is covered by the GNU General Public License.
 Copyright (C) Javi Dominguez 2021
 """
 
-from threading import Event, Thread
+from threading import Event, Thread, Timer
+from logHandler import log
 import api
+import ctypes
 import locationHelper
+import os
 import screenBitmap
 import wx
 
@@ -47,9 +50,18 @@ class Rectangle():
 	def getRGBQUAD_Array(self):
 		""" Returns a screenBitmap.RGBQUAD_Array object with the pixels that the rectangle contains. """
 		try:
+			# Set the mouse pointer to invisible mode
+			SPI_SETMOUSECURSOR = 0x0057
+			SPIF_SENDCHANGE = 0x02
+			transparentCursorFile = os.path.join(os.path.dirname(__file__), "TransparentCursor.cur")
+			ctypes.windll.user32.SystemParametersInfoW(SPI_SETMOUSECURSOR, 0, transparentCursorFile, SPIF_SENDCHANGE)
 			return screenBitmap.ScreenBitmap(self.__location.width, self.__location.height).captureImage(self.__location.top, self.__location.left, self.__location.width, self.__location.height)
-		except:
+		except Exception as inst:
+			log.warning(Exception)
 			return None
+		finally:
+			# Return the visible state to the mouse pointer.
+			Timer(1.0, ctypes.windll.user32.SystemParametersInfoW, (SPI_SETMOUSECURSOR, 1, 0, SPIF_SENDCHANGE)).start()
 
 	def getImage(self):
 		""" Returns a wx.Image object with the screen image delimited by the rectangle. """
