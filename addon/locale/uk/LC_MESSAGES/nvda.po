@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Screenshots wizard\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
 "POT-Creation-Date: 2023-05-07 10:47+0300\n"
-"PO-Revision-Date: 2023-05-07 10:55+0300\n"
+"PO-Revision-Date: 2024-03-10 13:19+0300\n"
 "Last-Translator: Volodymyr Pyrih <vp88.mobile@gmail.com>\n"
 "Language-Team: Volodymyr Pyrih\n"
 "Language: uk_UA\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: .\n"
 
 #. TRANSLATORS: title for the Screenshots Wizard settings category
@@ -135,8 +135,8 @@ msgstr "Опорним об'єктом є {objectRole} {objectName}"
 #. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
 #: addon\globalPlugins\screenshot\__init__.py:375
 #, python-format, python-brace-format
-msgid "{ratio}% of the rectangle is occupied by the object of reference"
-msgstr "Опорний об'єкт займає {ratio}% прямокутника"
+msgid "%{ratio} of the rectangle is occupied by the object of reference"
+msgstr "Опорний об'єкт займає %{ratio} прямокутника"
 
 #: addon\globalPlugins\screenshot\__init__.py:380
 msgid "The reference object is completely inside the rectangle"
@@ -159,8 +159,8 @@ msgstr "Частина прямокутника перебуває за межа
 #. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
 #: addon\globalPlugins\screenshot\__init__.py:387
 #, python-format, python-brace-format
-msgid "The rectangle occupies {percentage}% of the screen"
-msgstr "Прямокутник займає {percentage}% екрана"
+msgid "The rectangle occupies %{percentage} of the screen"
+msgstr "Прямокутник займає %{percentage} екрана"
 
 #: addon\globalPlugins\screenshot\__init__.py:405
 #, python-brace-format
