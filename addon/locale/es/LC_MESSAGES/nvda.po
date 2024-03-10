@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Screenshots Wizard\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2022-11-26 21:37+0100\n"
-"PO-Revision-Date: 2022-11-26 21:50+0100\n"
+"PO-Revision-Date: 2024-03-10 12:00+0300\n"
 "Last-Translator: \n"
 "Language-Team: Javi Domínguez <fjavids@gmail.com>\n"
 "Language: es\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -31,8 +31,7 @@ msgstr "Cancelado"
 #: addon\globalPlugins\screenshot\__init__.py:184
 #: addon\globalPlugins\screenshot\__init__.py:286
 msgid "Please disable screen curtain before take a screenshot"
-msgstr ""
-"Por favor, desactive la cortina de pantalla antes de tomar una captura."
+msgstr "Por favor, desactive la cortina de pantalla antes de tomar una captura"
 
 #. Translators: Message presented in input help mode.
 #: addon\globalPlugins\screenshot\__init__.py:236
@@ -105,7 +104,7 @@ msgstr "Ya está enmarcado"
 #. Translators: Message presented when the size of the object is 0 and therefore cannot be framed.
 #: addon\globalPlugins\screenshot\__init__.py:333
 msgid "The object cannot be framed."
-msgstr "No se puede enmarcar el objeto"
+msgstr "No se puede enmarcar el objeto."
 
 #. Translators: Message presented when a object is framed.
 #. Translators: Message when an object is framed.
@@ -120,7 +119,7 @@ msgstr "Enmarcado {object} {name} "
 #: addon\globalPlugins\screenshot\__init__.py:353
 #, python-brace-format
 msgid "from {startX}, {startY} to {endX}, {endY}"
-msgstr "Desde {startX}, {startY} hasta {endX}, {endY}"
+msgstr "desde {startX}, {startY} hasta {endX}, {endY}"
 
 #. 2
 #. Translators: Rectangle information: Rectangle dimensions, width per height.
@@ -140,8 +139,8 @@ msgstr "El objeto de referencia es {objectRole} {objectName}"
 #. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
 #: addon\globalPlugins\screenshot\__init__.py:366
 #, python-format, python-brace-format
-msgid "{ratio}% of the rectangle is occupied by the object of reference"
-msgstr "El {ratio}% del rectángulo está ocupado por el objeto de referencia"
+msgid "%{ratio} of the rectangle is occupied by the object of reference"
+msgstr "El %{ratio} del rectángulo está ocupado por el objeto de referencia"
 
 #: addon\globalPlugins\screenshot\__init__.py:371
 msgid "The reference object is completely inside the rectangle"
@@ -164,8 +163,8 @@ msgstr "Parte del rectángulo está fuera de la ventana activa"
 #. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
 #: addon\globalPlugins\screenshot\__init__.py:378
 #, python-format, python-brace-format
-msgid "The rectangle occupies {percentage}% of the screen"
-msgstr "El rectángulo ocupa el {percentage}% de la pantalla"
+msgid "The rectangle occupies %{percentage} of the screen"
+msgstr "El rectángulo ocupa el %{percentage} de la pantalla"
 
 #: addon\globalPlugins\screenshot\__init__.py:396
 #, python-brace-format
@@ -214,11 +213,11 @@ msgstr "{msg} {width} por {height}"
 
 #: addon\globalPlugins\screenshot\__init__.py:530
 msgid "Expanding, "
-msgstr "Expandiendo"
+msgstr "Expandiendo, "
 
 #: addon\globalPlugins\screenshot\__init__.py:541
 msgid "Shrinking, "
-msgstr "Encogiendo"
+msgstr "Encogiendo, "
 
 #. Translators: Message when trying to fit the frame around an object that is already wrapped.
 #: addon\globalPlugins\screenshot\__init__.py:554
@@ -238,7 +237,7 @@ msgstr "no se pudo reconocer. {reason}"
 
 #: addon\globalPlugins\screenshot\__init__.py:575
 msgid "The image is too small."
-msgstr "La imagen es demasiado pequeña"
+msgstr "La imagen es demasiado pequeña."
 
 #. Translators: Help message presented when F1 is pressed on the keyboard layer.
 #: addon\globalPlugins\screenshot\__init__.py:589
@@ -272,12 +271,12 @@ msgstr "El objeto de referencia excede los límites del rectángulo"
 
 #: addon\globalPlugins\screenshot\__init__.py:615
 msgid "The rectangle has overflowed the active window"
-msgstr "El rectángulo ha desbordado la ventana activa."
+msgstr "El rectángulo ha desbordado la ventana activa"
 
 #. Translators: Message presented when trying to frame an object but there is none.
 #: addon\globalPlugins\screenshot\__init__.py:625
 msgid "object not found"
-msgstr "No se encuentra el objeto"
+msgstr "no se encuentra el objeto"
 
 #. Translators: Message   when modifying the amount of movement in pixels
 #. Translators: Message presented when the number of pixels per movement is modified.
@@ -341,7 +340,7 @@ msgstr "Elija una carpeta:"
 #. to be shown on installation and add-on information found in Add-ons Manager.
 #: buildVars.py:23
 msgid "screenshots wizard"
-msgstr "Asistente para capturas de pantalla"
+msgstr "asistente para capturas de pantalla"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
