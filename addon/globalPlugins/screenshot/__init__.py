@@ -394,6 +394,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except:
 			ui.message(". ".join(messages))
 
+	def script_copyImageToClipboard(self, gesture=None):
+		# Translators: Message when there is no image to copy.
+		if not self.rectangle.getImage():
+			ui.message(_("No image to copy"))
+			return
+
+		# Retrieve the image of the rectangle and convert it to wx.Bitmap
+		img = self.rectangle.getImage()
+		bitmap = wx.Bitmap(img)
+
+		# Attempt to open the clipboard
+		if wx.TheClipboard.Open():
+			wx.TheClipboard.SetData(wx.BitmapDataObject(bitmap))
+			wx.TheClipboard.Close()
+			# Translators: Message when the image has been successfully copied to the clipboard.
+			ui.message(_("Image copied to clipboard"))
+		else:
+			# Translators: Message when unable to open the clipboard.
+			ui.message(_("Unable to open the clipboard"))
+
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
 		if config.conf.profiles[0]["screenshots"]["scale"]:
@@ -672,6 +692,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:5": "rectangleInfo",
 	"kb:6": "rectangleInfo",
 	"kb:7": "rectangleInfo",
+	"kb:c": "copyImageToClipboard",
 	"kb:enter": "saveScreenshot",
 	"kb:shift+enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
