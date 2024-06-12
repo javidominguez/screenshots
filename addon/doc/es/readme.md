@@ -62,6 +62,8 @@ Con la tecla enter se captura la imagen del área de la pantalla delimitada por 
 
 Con mayúsculas+enter en lugar de sólo enter se mostrará un diálogo para elegir dónde guardar la captura en lugar de guardarla automáticamente  en la carpeta predefinida.
 
+C copia la imagen en el rectángulo al portapapeles.
+
 Con la tecla escape se cancela y sale del asistente.
 
 ### Configuración

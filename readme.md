@@ -62,6 +62,8 @@ Enter key captures the image of the screen area delimited by the rectangle, it i
 
 Shift+enter instead of just enter will bring up a dialog to choose where to save the screenshot instead of automatically saving it to the default folder.
 
+C copy the image in the rectangle to the clipboard.
+
 Escape key  cancels and exits.
 
 ### Settings
