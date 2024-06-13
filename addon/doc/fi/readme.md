@@ -62,6 +62,8 @@ Enter-näppäin ottaa kuvakaappauksen suorakulmiolla rajatusta näytön alueesta
 
 Vaihto+Enter-näppäin avaa valintaikkunan, jossa voit valita, minne kuvakaappaus tallennetaan sen sijaan, että se tallennettaisiin automaattisesti oletussijaintiin.
 
+C-näppäin kopioi suorakulmion sisässä olevan kuvan leikepöydälle.
+
 Esc-näppäin peruuttaa ja poistuu komentokerroksesta.
 
 ### Asetukset
