@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'screenshots' '2.1.1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2024-04-13 10:56+0300\n"
-"PO-Revision-Date: 2024-04-13 17:03+0300\n"
+"POT-Creation-Date: 2024-06-13 14:25+0300\n"
+"PO-Revision-Date: 2024-06-13 15:04+0300\n"
 "Last-Translator: Jani Kinnunen <janikinnunen340@gmail.com>\n"
 "Language-Team: fi_FI <janikinnunen340@gmail.com>\n"
 "Language: fi\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #. TRANSLATORS: title for the Screenshots Wizard settings category
 #: addon\globalPlugins\screenshot\__init__.py:71
@@ -26,7 +27,7 @@ msgstr "Ohjattu kuvakaappaus"
 
 #. Translators: Message presented when leaving the keyboard  layer
 #: addon\globalPlugins\screenshot\__init__.py:164
-#: addon\globalPlugins\screenshot\__init__.py:414
+#: addon\globalPlugins\screenshot\__init__.py:434
 msgid "Cancelled"
 msgstr "Peruutettu"
 
@@ -108,13 +109,15 @@ msgstr "Objektia ei voirajata."
 #. Translators: Message presented when a object is framed.
 #. Translators: Message when an object is framed.
 #: addon\globalPlugins\screenshot\__init__.py:353
-#: addon\globalPlugins\screenshot\__init__.py:626
+#: addon\globalPlugins\screenshot\__init__.py:646
+#, python-brace-format
 msgid "Frammed {object} {name} "
 msgstr "Rajattu {object} {name} "
 
 #. 1
 #. Translators: Rectangle information: coordinates of the upper left and lower right corners.
 #: addon\globalPlugins\screenshot\__init__.py:362
+#, python-brace-format
 msgid "from {startX}, {startY} to {endX}, {endY}"
 msgstr ""
 "alkaen koordinaateista {startX}, {startY} ja päättyen koordinaatteihin "
@@ -123,19 +126,21 @@ msgstr ""
 #. 2
 #. Translators: Rectangle information: Rectangle dimensions, width per height.
 #: addon\globalPlugins\screenshot\__init__.py:367
+#, python-brace-format
 msgid "width {w} per height {h}"
 msgstr "leveys {w} kertaa korkeus {h}"
 
 #. 3
 #. Translators: Rectangle information: Description of the reference object.
 #: addon\globalPlugins\screenshot\__init__.py:370
+#, python-brace-format
 msgid "The reference object is {objectRole} {objectName}"
 msgstr "Viiteobjekti on {objectRole} {objectName}"
 
 #. 4
 #. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
 #: addon\globalPlugins\screenshot\__init__.py:375
-#, python-format
+#, python-format, python-brace-format
 msgid "{ratio}% of the rectangle is occupied by the object of reference"
 msgstr "Viiteobjekti kattaa {ratio} % suorakulmiosta"
 
@@ -148,7 +153,7 @@ msgid "Part of the reference object is outside the rectangle"
 msgstr "Osa viiteobjektista on suorakulmion ulkopuolella"
 
 #: addon\globalPlugins\screenshot\__init__.py:384
-#: addon\globalPlugins\screenshot\__init__.py:623
+#: addon\globalPlugins\screenshot\__init__.py:643
 msgid "The rectangle is inside the active window"
 msgstr "Suorakulmio on aktiivisen ikkunan sisällä"
 
@@ -159,121 +164,140 @@ msgstr "Osa suorakulmiosta on aktiivisen ikkunan ulkopuolella"
 #. 7
 #. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
 #: addon\globalPlugins\screenshot\__init__.py:387
-#, python-format
+#, python-format, python-brace-format
 msgid "The rectangle occupies {percentage}% of the screen"
-msgstr "Suorakulmio kattaa {percentage}% näytöstä"
+msgstr "Suorakulmio kattaa {percentage} % näytöstä"
 
-#: addon\globalPlugins\screenshot\__init__.py:405
+#: addon\globalPlugins\screenshot\__init__.py:400
+msgid "No image to copy"
+msgstr "Ei kopioitavaa kuvaa"
+
+#. Translators: Message when the image has been successfully copied to the clipboard.
+#: addon\globalPlugins\screenshot\__init__.py:412
+msgid "Image copied to clipboard"
+msgstr "Kuva kopioitu leikepöydälle"
+
+#. Translators: Message when unable to open the clipboard.
+#: addon\globalPlugins\screenshot\__init__.py:415
+msgid "Unable to open the clipboard"
+msgstr "Leikepöytää ei voi avata"
+
+#: addon\globalPlugins\screenshot\__init__.py:425
+#, python-brace-format
 msgid "screenshot_{timestamp}.{ext}"
 msgstr "kuvakaappaus_{timestamp}.{ext}"
 
-#: addon\globalPlugins\screenshot\__init__.py:414
+#: addon\globalPlugins\screenshot\__init__.py:434
 msgid "Image was not saved"
 msgstr "Kuvaa ei tallennettu"
 
-#: addon\globalPlugins\screenshot\__init__.py:426
+#: addon\globalPlugins\screenshot\__init__.py:446
 msgid "Save image"
 msgstr "Tallenna kuva"
 
 #. Translators: Message informing that the top edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:450
-#: addon\globalPlugins\screenshot\__init__.py:461
+#: addon\globalPlugins\screenshot\__init__.py:470
+#: addon\globalPlugins\screenshot\__init__.py:481
 msgid "Top edge moved to"
 msgstr "Yläreuna siirretty kohtaan"
 
 #. Translators: Message informing that the left edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:472
-#: addon\globalPlugins\screenshot\__init__.py:483
+#: addon\globalPlugins\screenshot\__init__.py:492
+#: addon\globalPlugins\screenshot\__init__.py:503
 msgid "Left edge moved to"
 msgstr "Vasen reuna siirretty kohtaan"
 
 #. Translators: Message informing that the bottom edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:494
-#: addon\globalPlugins\screenshot\__init__.py:505
+#: addon\globalPlugins\screenshot\__init__.py:514
+#: addon\globalPlugins\screenshot\__init__.py:525
 msgid "Bottom edge moved to"
 msgstr "Alareuna siirretty kohtaan"
 
 #. Translators: Message informing that the right edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:516
-#: addon\globalPlugins\screenshot\__init__.py:527
+#: addon\globalPlugins\screenshot\__init__.py:536
+#: addon\globalPlugins\screenshot\__init__.py:547
 msgid "Right edge moved to"
 msgstr "Oikea reuna siirretty kohtaan"
 
 #. Translators: Message when the rectangle is expanded, dimensions width per height
 #. Translators: Message when the rectangle is shrunken, dimensions width per height
-#: addon\globalPlugins\screenshot\__init__.py:536
-#: addon\globalPlugins\screenshot\__init__.py:547
+#: addon\globalPlugins\screenshot\__init__.py:556
+#: addon\globalPlugins\screenshot\__init__.py:567
+#, python-brace-format
 msgid "{msg} {width} per {height}"
 msgstr "{msg} {width} kertaa {height}"
 
-#: addon\globalPlugins\screenshot\__init__.py:537
+#: addon\globalPlugins\screenshot\__init__.py:557
 msgid "Expanding, "
 msgstr "Laajennetaan, "
 
-#: addon\globalPlugins\screenshot\__init__.py:548
+#: addon\globalPlugins\screenshot\__init__.py:568
 msgid "Shrinking, "
 msgstr "Pienennetään, "
 
 #. Translators: Message when trying to fit the frame around an object that is already wrapped.
-#: addon\globalPlugins\screenshot\__init__.py:561
+#: addon\globalPlugins\screenshot\__init__.py:581
 msgid "Already adjusted"
 msgstr "On jo säädetty"
 
 #. Translators: Message when fit the frame  around the object.
-#: addon\globalPlugins\screenshot\__init__.py:564
+#: addon\globalPlugins\screenshot\__init__.py:584
+#, python-brace-format
 msgid "Rectangle  adjusted to {objectRole} {objectName}"
 msgstr "Suorakulmio säädetty objektin {objectRole} {objectName} mittoihin"
 
-#: addon\globalPlugins\screenshot\__init__.py:581
+#: addon\globalPlugins\screenshot\__init__.py:601
+#, python-brace-format
 msgid "could not be recognized. {reason}"
 msgstr "ei tunnistettu. {reason}"
 
-#: addon\globalPlugins\screenshot\__init__.py:582
+#: addon\globalPlugins\screenshot\__init__.py:602
 msgid "The image is too small."
 msgstr "Kuva on liian pieni."
 
 #. Translators: Help message presented when F1 is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:596
+#: addon\globalPlugins\screenshot\__init__.py:616
 msgid ""
 "Press up arrow to frame the container object, space bar or numbers to know "
 "the rectangle information, enter key to take the screenshot or escape to "
 "cancel and exit. See the documentation for more commands."
 msgstr ""
-"Paina ylänuolinäppäintä rajataksesi säilöobjektin, välilyöntiä tai "
-"numeroita saadaksesi suorakulmion tiedot, Enter-näppäintä ottaaksesi "
-"kuvakaappauksen tai Esc-näppäintä peruuttaaksesi ja poistuaksesi. Katso "
-"lisää komentoja ohjeesta."
+"Paina ylänuolinäppäintä rajataksesi säilöobjektin, välilyöntiä tai numeroita "
+"saadaksesi suorakulmion tiedot, Enter-näppäintä ottaaksesi kuvakaappauksen "
+"tai Esc-näppäintä peruuttaaksesi ja poistuaksesi. Katso lisää komentoja "
+"ohjeesta."
 
 #. Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:602
+#: addon\globalPlugins\screenshot\__init__.py:622
 msgid "Wrong gesture"
 msgstr "Väärä näppäinkomento"
 
 #. Translators: Messages that will be presented when the events occur.
-#: addon\globalPlugins\screenshot\__init__.py:619
+#: addon\globalPlugins\screenshot\__init__.py:639
 msgid "Reference object has changed"
 msgstr "Viiteobjekti on muuttunut"
 
-#: addon\globalPlugins\screenshot\__init__.py:620
+#: addon\globalPlugins\screenshot\__init__.py:640
 msgid "The reference object is fully inside the rectangle"
 msgstr "Viiteobjekti on kokonaan suorakulmion sisällä"
 
-#: addon\globalPlugins\screenshot\__init__.py:621
+#: addon\globalPlugins\screenshot\__init__.py:641
 msgid "The reference object exceeds the bounds of the rectangle"
 msgstr "Viiteobjekti ylittää suorakulmion rajat"
 
-#: addon\globalPlugins\screenshot\__init__.py:622
+#: addon\globalPlugins\screenshot\__init__.py:642
 msgid "The rectangle has overflowed the active window"
 msgstr "Suorakulmio on ylittänyt aktiivisen ikkunan rajat"
 
 #. Translators: Message presented when trying to frame an object but there is none.
-#: addon\globalPlugins\screenshot\__init__.py:632
+#: addon\globalPlugins\screenshot\__init__.py:652
 msgid "object not found"
 msgstr "Objektia ei löydy"
 
 #. Translators: Message   when modifying the amount of movement in pixels
 #. Translators: Message presented when the number of pixels per movement is modified.
-#: addon\globalPlugins\screenshot\__init__.py:641
+#: addon\globalPlugins\screenshot\__init__.py:661
+#, python-brace-format
 msgid "{step} px"
 msgstr "{step} pikseliä"
 
