@@ -13,7 +13,6 @@ from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
 from keyboardHandler import KeyboardInputGesture
-from subprocess import Popen
 from threading import Event, Thread, Timer
 from time import sleep
 from tones import beep, nvwave
@@ -29,7 +28,9 @@ import gui
 import inputCore
 import mouseHandler
 import os
+import re
 import scriptHandler
+import subprocess
 import ui
 import vision
 import winInputHook
@@ -112,6 +113,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.flagNoAction = False
 		self.lastScreenshot = None
 		self.recognizer = uwpOcr.UwpOcr()
+		self.BeMyEyesAppIdentifier = None
 
 	def terminate(self):
 		try:
@@ -394,7 +396,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except:
 			ui.message(". ".join(messages))
 
-	def script_copyImageToClipboard(self, gesture=None):
+	def script_copyImageToClipboard(self, gesture=None, verbose=True):
 		# Translators: Message when there is no image to copy.
 		if not self.rectangle.getImage():
 			ui.message(_("No image to copy"))
@@ -409,10 +411,52 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			wx.TheClipboard.SetData(wx.BitmapDataObject(bitmap))
 			wx.TheClipboard.Close()
 			# Translators: Message when the image has been successfully copied to the clipboard.
-			ui.message(_("Image copied to clipboard"))
+			if verbose: ui.message(_("Image copied to clipboard"))
 		else:
 			# Translators: Message when unable to open the clipboard.
 			ui.message(_("Unable to open the clipboard"))
+
+	def script_describeWithBeMyEyes(self, gesture=None):
+		self.script_copyImageToClipboard(verbose=False)
+		if wx.TheClipboard.Open():
+			data_format = wx.DataFormat(wx.DF_BITMAP)
+			has_image = wx.TheClipboard.IsSupported(data_format)
+			wx.TheClipboard.Close()
+		if not has_image:
+			ui.message("Error copying rectangle to clipboard.")
+			return
+		# Check if Be My Eyes is running
+		try:
+			output = os.popen('tasklist').read()
+			isRunning = "bemyeyes" in output
+		except:
+			isRunning = False
+		# If Be My Eyes is not running, try starting the application.
+		if not isRunning:
+			ui.message("Starting Be My Eyes app")
+			if not self.BeMyEyesAppIdentifier:
+				# Get the application identifier
+				si = subprocess.STARTUPINFO()
+				si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+				p = subprocess.Popen(["powershell.exe", "-Command", "Get-AppxPackage | Select Name, PackageFullName"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, startupinfo=si)
+				stdout, stderr = p.communicate()
+				match = re.search(r'BeMyEyes\.BeMyEyes.*?__(\w+)', stdout)
+				if match:
+					self.BeMyEyesAppIdentifier = match.group(1)
+				else:
+					ui.message("Be My Eyes app seems not to be installed.")
+					return
+			# Launch the BeMyEyes app
+			r = subprocess.run(["start", f"shell:AppsFolder\\BeMyEyes.BeMyEyes_{self.BeMyEyesAppIdentifier}!App"], shell=True)
+			if r.returncode != 0:
+				ui.message("Failed to start application")
+				return
+			else:
+				# Wait for the application to load.
+					sleep(1.50)
+		self.finish()
+		# Be My Eyes app keyboard shortcut to describe the image on the clipboard.
+		KeyboardInputGesture.fromName("control+alt+l").send()
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
@@ -693,6 +737,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:6": "rectangleInfo",
 	"kb:7": "rectangleInfo",
 	"kb:c": "copyImageToClipboard",
+	"kb:b": "describeWithBeMyEyes",
 	"kb:enter": "saveScreenshot",
 	"kb:shift+enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
