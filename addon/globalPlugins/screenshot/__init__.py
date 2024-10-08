@@ -63,7 +63,8 @@ confspec = {
 	"format":"string(default=BMP)",
 	"action":"integer(default=2)",
 	"step":"integer(default=5)",
-	"scale":"boolean(default=false)"
+	"scale":"boolean(default=false)",
+	"BeMyEyesAppKeyboardShortcut":"string(default=alt+control+l)"
 }
 config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
@@ -93,9 +94,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 					for k in config.conf["screenshots"]:
 						config.conf.profiles[0]["screenshots"][k] = config.conf["screenshots"][k]
 				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
-		if "scale" not in config.conf.profiles[0]["screenshots"]:
 		# Required for those upgrading from previous versions.
+		if "scale" not in config.conf.profiles[0]["screenshots"]:
 			config.conf.profiles[0]["screenshots"]["scale"] = config.conf["screenshots"]["scale"]
+		if "BeMyEyesAppKeyboardShortcut" not in config.conf.profiles[0]["screenshots"]:
+			config.conf.profiles[0]["screenshots"]["BeMyEyesAppKeyboardShortcut"] = config.conf["screenshots"]["BeMyEyesAppKeyboardShortcut"]
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
 
@@ -114,6 +117,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.lastScreenshot = None
 		self.recognizer = uwpOcr.UwpOcr()
 		self.BeMyEyesAppIdentifier = None
+		self.BeMyEyesAppKeyboardShortcut  = KeyboardInputGesture.fromName(config.conf.profiles[0]["screenshots"]["BeMyEyesAppKeyboardShortcut"])
+		self.flagConfigureBeMyEyesAppKeyboardShortcut  = False
 
 	def terminate(self):
 		try:
@@ -140,6 +145,21 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def getScript(self, gesture):
 		if not self.toggling:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
+		if self.flagConfigureBeMyEyesAppKeyboardShortcut :
+			inputCore.manager._captureFunc = lambda self: not (gesture.isModifier and gesture.mainKeyName in (
+			"leftWindows", "rightWindows", "leftAlt"))
+			if not gesture.isModifier:
+				if gesture.isCharacter or not gesture.modifiers:
+					beep(100,50)
+					return lambda g: ui.message(_("Invalid key. Press a keyboard shortcut with modifier keys."))
+				if "NVDA" in gesture.modifierNames:
+					beep(100,50)
+					return lambda g: ui.message(_("The NVDA key cannot be on this keyboard shortcut."))
+				self.BeMyEyesAppKeyboardShortcut  = gesture
+				gestureName = gesture.identifiers[0].split(":")[1]
+				config.conf.profiles[0]["screenshots"]["BeMyEyesAppKeyboardShortcut"] = gestureName
+				self.flagConfigureBeMyEyesAppKeyboardShortcut  = False
+			return lambda g: evtMessage(_(f"Saved keyboard shortcut. {gestureName}"))
 		if True in [gID.lower() in self.allowedBrailleGestures for gID in gesture.identifiers] \
 		or set(gesture.normalizedIdentifiers) & self.allowedNavigationGestures:
 			return globalPluginHandler.GlobalPlugin.getScript(self, gesture)
@@ -455,8 +475,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				# Wait for the application to load.
 					sleep(1.50)
 		self.finish()
-		# Be My Eyes app keyboard shortcut to describe the image on the clipboard.
-		KeyboardInputGesture.fromName("control+alt+l").send()
+		self.BeMyEyesAppKeyboardShortcut .send()
+
+	def script_configureBeMyEyesKeyboardShortcut(self, gesture=None):
+		ui.message(_("Press the keyboard shortcut qto have Be My Eyes App describe the clipboard"))
+		self.flagConfigureBeMyEyesAppKeyboardShortcut  = True
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
@@ -738,6 +761,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	"kb:7": "rectangleInfo",
 	"kb:c": "copyImageToClipboard",
 	"kb:b": "describeWithBeMyEyes",
+	"kb:shift+B": "configureBeMyEyesKeyboardShortcut",
 	"kb:enter": "saveScreenshot",
 	"kb:shift+enter": "saveScreenshot",
 	"kb:numpadEnter": "saveScreenshot",
