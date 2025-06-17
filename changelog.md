@@ -1,1 +1,1 @@
-* Updated finnish translation by Jani Kinnunen @jkinnunen
+* NVDA 2025.1 compatibility test OK.
