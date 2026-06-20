@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Screenshots wizard\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2023-05-07 10:47+0300\n"
-"PO-Revision-Date: 2023-05-07 10:55+0300\n"
+"POT-Creation-Date: 2026-05-03 13:46+0300\n"
+"PO-Revision-Date: 2026-05-03 13:47+0300\n"
 "Last-Translator: Volodymyr Pyrih <vp88.mobile@gmail.com>\n"
 "Language-Team: Volodymyr Pyrih\n"
 "Language: uk_UA\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-Basepath: .\n"
 
 #. TRANSLATORS: title for the Screenshots Wizard settings category
@@ -23,18 +23,18 @@ msgstr "Майстер скриншотів"
 
 #. Translators: Message presented when leaving the keyboard  layer
 #: addon\globalPlugins\screenshot\__init__.py:164
-#: addon\globalPlugins\screenshot\__init__.py:414
+#: addon\globalPlugins\screenshot\__init__.py:438
 msgid "Cancelled"
 msgstr "Скасовано"
 
 #. Translators: Reported when screen curtain is enabled.
-#: addon\globalPlugins\screenshot\__init__.py:189
-#: addon\globalPlugins\screenshot\__init__.py:295
+#: addon\globalPlugins\screenshot\__init__.py:193
+#: addon\globalPlugins\screenshot\__init__.py:299
 msgid "Please disable screen curtain before take a screenshot"
 msgstr "Будь ласка, вимкніть екранну завісу перед тим, як зробити скриншот"
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:245
+#: addon\globalPlugins\screenshot\__init__.py:249
 msgid ""
 "Launch the screenshots wizard. A layer of keyboard commands will be "
 "activated. Use enter key to take a screenshot, escape to cancel. See "
@@ -44,35 +44,35 @@ msgstr ""
 "Використовуйте клавішу enter, щоб зробити скриншот, а escape для скасування. "
 "Щоб дізнатися більше команд, перегляньте документацію."
 
-#: addon\globalPlugins\screenshot\__init__.py:252
+#: addon\globalPlugins\screenshot\__init__.py:256
 msgid "Folder not found"
 msgstr "Папку не знайдено"
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:255
+#: addon\globalPlugins\screenshot\__init__.py:259
 msgid "Open the folder where the screenshots are stored."
 msgstr "Відкрити папку, в якій зберігаються скриншоти."
 
-#: addon\globalPlugins\screenshot\__init__.py:259
+#: addon\globalPlugins\screenshot\__init__.py:263
 msgid "No screenshot has been taken yet."
 msgstr "Скриншот поки що не зроблено."
 
-#: addon\globalPlugins\screenshot\__init__.py:265
+#: addon\globalPlugins\screenshot\__init__.py:269
 msgid "File not found"
 msgstr "Файл не знайдено"
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:268
+#: addon\globalPlugins\screenshot\__init__.py:272
 msgid "Open the last screenshot file in the default app."
 msgstr "Відкрити останній скриншот у стандартному застосунку."
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:273
+#: addon\globalPlugins\screenshot\__init__.py:277
 msgid "Take a full screenshot directly, bypassing the keyboard command layer"
 msgstr "Зробити скриншот усього екрана безпосередньо, без клавіатурних команд"
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:278
+#: addon\globalPlugins\screenshot\__init__.py:282
 msgid ""
 "Take a  screenshot of focused object directly, bypassing the keyboard "
 "command layer"
@@ -80,7 +80,7 @@ msgstr ""
 "Зробити скриншот об'єкта у фокусі безпосередньо, без клавіатурних команд"
 
 #. Translators: Message presented in input help mode.
-#: addon\globalPlugins\screenshot\__init__.py:283
+#: addon\globalPlugins\screenshot\__init__.py:287
 msgid ""
 "Take a  screenshot of current window directly, bypassing the keyboard "
 "command layer"
@@ -88,155 +88,169 @@ msgstr ""
 "Зробити скриншот активного вікна безпосередньо, без клавіатурних команд"
 
 #. Translators: Message when rying to frame the containing object but the largest container is already framed
-#: addon\globalPlugins\screenshot\__init__.py:317
+#: addon\globalPlugins\screenshot\__init__.py:321
 msgid "There is no upper container"
 msgstr "Верхній контейнер відсутній"
 
 #. Translators: Message presented when trying to frame an object that is already framed.
-#: addon\globalPlugins\screenshot\__init__.py:338
+#: addon\globalPlugins\screenshot\__init__.py:342
 msgid "Already framed"
 msgstr "Вже відкадровано"
 
 #. Translators: Message presented when the size of the object is 0 and therefore cannot be framed.
-#: addon\globalPlugins\screenshot\__init__.py:342
+#: addon\globalPlugins\screenshot\__init__.py:346
 msgid "The object cannot be framed."
 msgstr "Об'єкт не може бути відкадровано."
 
 #. Translators: Message presented when a object is framed.
 #. Translators: Message when an object is framed.
-#: addon\globalPlugins\screenshot\__init__.py:353
-#: addon\globalPlugins\screenshot\__init__.py:626
+#: addon\globalPlugins\screenshot\__init__.py:357
+#: addon\globalPlugins\screenshot\__init__.py:650
 #, python-brace-format
 msgid "Frammed {object} {name} "
 msgstr "Відкадровано {object} {name} "
 
 #. 1
 #. Translators: Rectangle information: coordinates of the upper left and lower right corners.
-#: addon\globalPlugins\screenshot\__init__.py:362
+#: addon\globalPlugins\screenshot\__init__.py:366
 #, python-brace-format
 msgid "from {startX}, {startY} to {endX}, {endY}"
 msgstr "від {startX}, {startY} до {endX}, {endY}"
 
 #. 2
 #. Translators: Rectangle information: Rectangle dimensions, width per height.
-#: addon\globalPlugins\screenshot\__init__.py:367
+#: addon\globalPlugins\screenshot\__init__.py:371
 #, python-brace-format
 msgid "width {w} per height {h}"
 msgstr "ширина {w} на висоту {h}"
 
 #. 3
 #. Translators: Rectangle information: Description of the reference object.
-#: addon\globalPlugins\screenshot\__init__.py:370
+#: addon\globalPlugins\screenshot\__init__.py:374
 #, python-brace-format
 msgid "The reference object is {objectRole} {objectName}"
 msgstr "Опорним об'єктом є {objectRole} {objectName}"
 
 #. 4
 #. Translators: Rectangle information: Proportion of the rectangle occupied by the reference object.
-#: addon\globalPlugins\screenshot\__init__.py:375
-#, python-format, python-brace-format
+#: addon\globalPlugins\screenshot\__init__.py:379
+#, python-brace-format
 msgid "{ratio}% of the rectangle is occupied by the object of reference"
 msgstr "Опорний об'єкт займає {ratio}% прямокутника"
 
-#: addon\globalPlugins\screenshot\__init__.py:380
+#: addon\globalPlugins\screenshot\__init__.py:384
 msgid "The reference object is completely inside the rectangle"
 msgstr "Опорний об'єкт повністю розташований у прямокутнику"
 
-#: addon\globalPlugins\screenshot\__init__.py:380
+#: addon\globalPlugins\screenshot\__init__.py:384
 msgid "Part of the reference object is outside the rectangle"
 msgstr "Частина опорного об'єкта перебуває за межами прямокутника"
 
-#: addon\globalPlugins\screenshot\__init__.py:384
-#: addon\globalPlugins\screenshot\__init__.py:623
+#: addon\globalPlugins\screenshot\__init__.py:388
+#: addon\globalPlugins\screenshot\__init__.py:647
 msgid "The rectangle is inside the active window"
 msgstr "Прямокутник перебуває всередині активного вікна"
 
-#: addon\globalPlugins\screenshot\__init__.py:384
+#: addon\globalPlugins\screenshot\__init__.py:388
 msgid "Part of the rectangle is outside the active window"
 msgstr "Частина прямокутника перебуває за межами активного вікна"
 
 #. 7
 #. Translators: Rectangle Information: Relation of the rectangle with respect to the screen.
-#: addon\globalPlugins\screenshot\__init__.py:387
-#, python-format, python-brace-format
+#: addon\globalPlugins\screenshot\__init__.py:391
+#, python-brace-format
 msgid "The rectangle occupies {percentage}% of the screen"
 msgstr "Прямокутник займає {percentage}% екрана"
 
-#: addon\globalPlugins\screenshot\__init__.py:405
+#: addon\globalPlugins\screenshot\__init__.py:404
+msgid "No image to copy"
+msgstr "Немає зображення для копіювання"
+
+#. Translators: Message when the image has been successfully copied to the clipboard.
+#: addon\globalPlugins\screenshot\__init__.py:416
+msgid "Image copied to clipboard"
+msgstr "Зображення скопійовано в буфер обміну"
+
+#. Translators: Message when unable to open the clipboard.
+#: addon\globalPlugins\screenshot\__init__.py:419
+msgid "Unable to open the clipboard"
+msgstr "Неможливо відкрити буфер обміну"
+
+#: addon\globalPlugins\screenshot\__init__.py:429
 #, python-brace-format
 msgid "screenshot_{timestamp}.{ext}"
 msgstr "screenshot_{timestamp}.{ext}"
 
-#: addon\globalPlugins\screenshot\__init__.py:414
+#: addon\globalPlugins\screenshot\__init__.py:438
 msgid "Image was not saved"
 msgstr "Зображення не збережено"
 
-#: addon\globalPlugins\screenshot\__init__.py:426
+#: addon\globalPlugins\screenshot\__init__.py:450
 msgid "Save image"
 msgstr "Зберегти зображення"
 
 #. Translators: Message informing that the top edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:450
-#: addon\globalPlugins\screenshot\__init__.py:461
+#: addon\globalPlugins\screenshot\__init__.py:474
+#: addon\globalPlugins\screenshot\__init__.py:485
 msgid "Top edge moved to"
 msgstr "Верхній край переміщено до"
 
 #. Translators: Message informing that the left edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:472
-#: addon\globalPlugins\screenshot\__init__.py:483
+#: addon\globalPlugins\screenshot\__init__.py:496
+#: addon\globalPlugins\screenshot\__init__.py:507
 msgid "Left edge moved to"
 msgstr "Лівий край переміщено до"
 
 #. Translators: Message informing that the bottom edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:494
-#: addon\globalPlugins\screenshot\__init__.py:505
+#: addon\globalPlugins\screenshot\__init__.py:518
+#: addon\globalPlugins\screenshot\__init__.py:529
 msgid "Bottom edge moved to"
 msgstr "Нижній край переміщено до"
 
 #. Translators: Message informing that the right edge has been moved.
-#: addon\globalPlugins\screenshot\__init__.py:516
-#: addon\globalPlugins\screenshot\__init__.py:527
+#: addon\globalPlugins\screenshot\__init__.py:540
+#: addon\globalPlugins\screenshot\__init__.py:551
 msgid "Right edge moved to"
 msgstr "Правий край переміщено до"
 
 #. Translators: Message when the rectangle is expanded, dimensions width per height
 #. Translators: Message when the rectangle is shrunken, dimensions width per height
-#: addon\globalPlugins\screenshot\__init__.py:536
-#: addon\globalPlugins\screenshot\__init__.py:547
+#: addon\globalPlugins\screenshot\__init__.py:560
+#: addon\globalPlugins\screenshot\__init__.py:571
 #, python-brace-format
 msgid "{msg} {width} per {height}"
 msgstr "{msg} {width} на {height}"
 
-#: addon\globalPlugins\screenshot\__init__.py:537
+#: addon\globalPlugins\screenshot\__init__.py:561
 msgid "Expanding, "
 msgstr "Розширення, "
 
-#: addon\globalPlugins\screenshot\__init__.py:548
+#: addon\globalPlugins\screenshot\__init__.py:572
 msgid "Shrinking, "
 msgstr "Зменшення, "
 
 #. Translators: Message when trying to fit the frame around an object that is already wrapped.
-#: addon\globalPlugins\screenshot\__init__.py:561
+#: addon\globalPlugins\screenshot\__init__.py:585
 msgid "Already adjusted"
 msgstr "Вже відрегульовано"
 
 #. Translators: Message when fit the frame  around the object.
-#: addon\globalPlugins\screenshot\__init__.py:564
+#: addon\globalPlugins\screenshot\__init__.py:588
 #, python-brace-format
 msgid "Rectangle  adjusted to {objectRole} {objectName}"
 msgstr "Прямокутник відрегульовано до {objectRole} {objectName}"
 
-#: addon\globalPlugins\screenshot\__init__.py:581
+#: addon\globalPlugins\screenshot\__init__.py:605
 #, python-brace-format
 msgid "could not be recognized. {reason}"
 msgstr "не може бути розпізнано. {reason}"
 
-#: addon\globalPlugins\screenshot\__init__.py:582
+#: addon\globalPlugins\screenshot\__init__.py:606
 msgid "The image is too small."
 msgstr "Зображення занадто маленьке."
 
 #. Translators: Help message presented when F1 is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:596
+#: addon\globalPlugins\screenshot\__init__.py:620
 msgid ""
 "Press up arrow to frame the container object, space bar or numbers to know "
 "the rectangle information, enter key to take the screenshot or escape to "
@@ -248,35 +262,35 @@ msgstr ""
 "перегляньте документацію."
 
 #. Translators: Message presented, only on the braille display, when a key with no assigned script is pressed on the keyboard layer.
-#: addon\globalPlugins\screenshot\__init__.py:602
+#: addon\globalPlugins\screenshot\__init__.py:626
 msgid "Wrong gesture"
 msgstr "Неправильний жест"
 
 #. Translators: Messages that will be presented when the events occur.
-#: addon\globalPlugins\screenshot\__init__.py:619
+#: addon\globalPlugins\screenshot\__init__.py:643
 msgid "Reference object has changed"
 msgstr "Опорний об'єкт змінено"
 
-#: addon\globalPlugins\screenshot\__init__.py:620
+#: addon\globalPlugins\screenshot\__init__.py:644
 msgid "The reference object is fully inside the rectangle"
 msgstr "Опорний об'єкт повністю перебуває в прямокутнику"
 
-#: addon\globalPlugins\screenshot\__init__.py:621
+#: addon\globalPlugins\screenshot\__init__.py:645
 msgid "The reference object exceeds the bounds of the rectangle"
 msgstr "Опорний об'єкт виходить за межі прямокутника"
 
-#: addon\globalPlugins\screenshot\__init__.py:622
+#: addon\globalPlugins\screenshot\__init__.py:646
 msgid "The rectangle has overflowed the active window"
 msgstr "Прямокутник переповнив активне вікно"
 
 #. Translators: Message presented when trying to frame an object but there is none.
-#: addon\globalPlugins\screenshot\__init__.py:632
+#: addon\globalPlugins\screenshot\__init__.py:656
 msgid "object not found"
 msgstr "об'єкт не знайдено"
 
 #. Translators: Message   when modifying the amount of movement in pixels
 #. Translators: Message presented when the number of pixels per movement is modified.
-#: addon\globalPlugins\screenshot\__init__.py:641
+#: addon\globalPlugins\screenshot\__init__.py:665
 #, python-brace-format
 msgid "{step} px"
 msgstr "{step} пікселів"
