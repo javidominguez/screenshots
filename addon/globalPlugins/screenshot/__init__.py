@@ -9,6 +9,7 @@ Copyright (C) Javi Dominguez 2021
 
 from .gui import *
 from .rectangleHandler import *
+from .configHelper import ensureBaseProfileConfig
 from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
@@ -75,26 +76,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if globalVars.appArgs.secure == True:
 			raise RuntimeError("This add-on cannot run on secure screens")
 
-		# By default, the user's documents folder is assumed as the folder where to save the image files of the screenshots.
-		try:
-		# Read the normal profile settings
-			folder = config.conf.profiles[0]["screenshots"]["folder"]
-		except:
-			# If it is not possible we read it from the general configuration
-			folder = config.conf["screenshots"]["folder"]
-		if folder == "/":
-		# If it is used for the first time there will be no folder assigned. The user's documents is assigned to the normal profile.
-			try:
-				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
-			except KeyError:
-				if "screenshots" not in config.conf.profiles[0]:
-					config.conf.profiles[0]["screenshots"] = {}
-					for k in config.conf["screenshots"]:
-						config.conf.profiles[0]["screenshots"][k] = config.conf["screenshots"][k]
-				config.conf.profiles[0]["screenshots"]["folder"] = os.path.join(os.getenv("USERPROFILE"), "documents")
-		if "scale" not in config.conf.profiles[0]["screenshots"]:
-		# Required for those upgrading from previous versions.
-			config.conf.profiles[0]["screenshots"]["scale"] = config.conf["screenshots"]["scale"]
+		# Materialize every screenshots setting in the base/normal profile.
+		# The settings panel and the wizard scripts read config.conf.profiles[0]["screenshots"]
+		# directly, which does not apply the confspec defaults, so any key missing from
+		# nvda.ini (e.g. when upgrading from a version that stored fewer keys) has to be
+		# backfilled here to avoid KeyError (see configHelper.ensureBaseProfileConfig).
+		ensureBaseProfileConfig(config.conf, confspec)
 
 		NVDASettingsDialog.categoryClasses.append(ScreenshotsPanel)
 
