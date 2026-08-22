@@ -10,6 +10,7 @@ Copyright (C) Javi Dominguez 2021
 from .gui import *
 from .rectangleHandler import *
 from .configHelper import ensureBaseProfileConfig
+from .actualizadorRecursos import ActualizadorRecursos
 from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
@@ -99,8 +100,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.flagNoAction = False
 		self.lastScreenshot = None
 		self.recognizer = uwpOcr.UwpOcr()
+		self._actualizador = ActualizadorRecursos("javidominguez", "screenshots", rama="master", intervalo_horas=12)
 
 	def terminate(self):
+		self._actualizador.detener()
 		try:
 			NVDASettingsDialog.categoryClasses.remove(ScreenshotsPanel)
 		except:
