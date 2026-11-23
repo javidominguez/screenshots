@@ -418,7 +418,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			pass
 		filename = _("screenshot_{timestamp}.{ext}").format(
 		timestamp=datetime.now().strftime("%d-%m-%Y_%H-%M-%S"),
-		ext=config.conf.profiles[0]["screenshots"]["format"])
+		ext=config.conf.profiles[0]["screenshots"]["format"].lower())
 		def callback(result):
 			if result == wx.ID_OK:
 				path = dlg.GetPath()
