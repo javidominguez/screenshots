@@ -55,7 +55,8 @@ class Rectangle():
 			SPIF_SENDCHANGE = 0x02
 			transparentCursorFile = os.path.join(os.path.dirname(__file__), "TransparentCursor.cur")
 			ctypes.windll.user32.SystemParametersInfoW(SPI_SETMOUSECURSOR, 0, transparentCursorFile, SPIF_SENDCHANGE)
-			return screenBitmap.ScreenBitmap(self.__location.width, self.__location.height).captureImage(self.__location.top, self.__location.left, self.__location.width, self.__location.height)
+			left, top, width, height = self.__location
+			return screenBitmap.ScreenBitmap(width, height).captureImage(left, top, width, height)
 		except Exception as inst:
 			log.warning(Exception)
 			return None
