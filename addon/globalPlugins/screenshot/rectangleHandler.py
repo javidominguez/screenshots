@@ -66,9 +66,16 @@ class Rectangle():
 
 	def getImage(self):
 		""" Returns a wx.Image object with the screen image delimited by the rectangle. """
-		rgb = self.getRGBQUAD_Array()
-		if not rgb: return None
-		return wx.BitmapFromBufferRGBA(self.__location.width, self.__location.height, rgb).ConvertToImage()
+		pixels = self.getRGBQUAD_Array()
+		if not pixels:
+			return None
+		# Win32 RGBQUAD stores blue, green, red and a reserved byte per pixel.
+		bgrx = bytes(pixels)
+		rgb = bytearray(self.width * self.height * 3)
+		rgb[0::3] = bgrx[2::4]
+		rgb[1::3] = bgrx[1::4]
+		rgb[2::3] = bgrx[0::4]
+		return wx.Image(self.width, self.height, rgb)
 
 	def moveLeftEdge(self, step=1):
 		check = self.__check_overflows()
