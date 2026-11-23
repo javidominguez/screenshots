@@ -8,16 +8,18 @@ on:
 jobs:
   buildAndUpload:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
     - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/checkout@v7
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v7
       with:
-        python-version: 3.8
+        python-version: "3.13"
     - name: Install dependencies
       run: |
         pip install scons markdown
@@ -26,7 +28,7 @@ jobs:
     - name: Build add-on
       run: scons
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
