@@ -59,6 +59,12 @@ class ScreenshotsPanel(SettingsPanel):
 			pass """
 		helper.addItem(self.checkboxEnlargement)
 
+		self.checkboxOutline = wx.CheckBox(self,
+		# Translators: Show the current selection visually while using the screenshots wizard.
+		label=_("Show an outline around the capture area"))
+		self.checkboxOutline.SetValue(config.conf.profiles[0]["screenshots"].as_bool("showOutline"))
+		helper.addItem(self.checkboxOutline)
+
 		self.radioBoxAction = wx.RadioBox(self, wx.ID_ANY,
 		# TRANSLATORS: Select what to do after saving the file
 		_("After saving the screenshot"),
@@ -90,6 +96,7 @@ class ScreenshotsPanel(SettingsPanel):
 		config.conf.profiles[0]["screenshots"]["format"] = self.radioBoxFormat.GetStringSelection()
 		config.conf.profiles[0]["screenshots"]["action"] = int(self.radioBoxAction.GetSelection())
 		config.conf.profiles[0]["screenshots"]["scale"] = self.checkboxEnlargement.GetValue()
+		config.conf.profiles[0]["screenshots"]["showOutline"] = self.checkboxOutline.GetValue()
 		config.conf.profiles[0]["screenshots"]["step"] = self.spin_ctrl.GetValue()
 
 	def onDiscard(self):

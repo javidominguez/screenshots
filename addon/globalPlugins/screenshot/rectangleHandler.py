@@ -5,6 +5,7 @@ This file is covered by the GNU General Public License.
 Copyright (C) Javi Dominguez 2021
 """
 
+from contextlib import nullcontext
 from threading import Event, Thread, Timer
 from logHandler import log
 import api
@@ -24,7 +25,8 @@ class Rectangle():
 	""" Class that defines a virtual rectangle on the screen.
 	This rectangle delimits the area of the screen from which a capture will be taken. """
 
-	def __init__(self, top=0, left=0, width=0, height=0):
+	def __init__(self, top=0, left=0, width=0, height=0, *, outline=None):
+		self._outline = outline
 		self.__location = locationHelper.RectLTWH(top,left,width,height)
 		self.__object = None
 		self.__events = {
@@ -40,11 +42,16 @@ class Rectangle():
 		while self.__threads:
 			self.__threads.pop().kill()
 
+	def _setLocation(self, location):
+		self.__location = location
+		if self._outline is not None:
+			self._outline.showFor(location)
+
 	def fromObject(self, obj):
 		if not hasattr(obj, "location"): raise TypeError("The argument must be an NVDA object")
 		if not isinstance(obj.location,locationHelper.RectLTWH): raise TypeError("The location attribute must be a RectLTWH object")
 		self.__object = obj
-		self.__location = self.__delimit_object(obj)
+		self._setLocation(self.__delimit_object(obj))
 		return self
 
 	def getRGBQUAD_Array(self):
@@ -56,7 +63,9 @@ class Rectangle():
 			transparentCursorFile = os.path.join(os.path.dirname(__file__), "TransparentCursor.cur")
 			ctypes.windll.user32.SystemParametersInfoW(SPI_SETMOUSECURSOR, 0, transparentCursorFile, SPIF_SENDCHANGE)
 			left, top, width, height = self.__location
-			return screenBitmap.ScreenBitmap(width, height).captureImage(left, top, width, height)
+			captureContext = self._outline.hiddenForCapture() if self._outline is not None else nullcontext()
+			with captureContext:
+				return screenBitmap.ScreenBitmap(width, height).captureImage(left, top, width, height)
 		except Exception as inst:
 			log.warning(Exception)
 			return None
@@ -88,7 +97,7 @@ class Rectangle():
 		if x > self.__location.right-10:
 			check.set()
 			return None
-		self.__location = locationHelper.RectLTWH(x, y, w, h)
+		self._setLocation(locationHelper.RectLTWH(x, y, w, h))
 		check.set()
 		self.__hook_object()
 		return x
@@ -103,7 +112,7 @@ class Rectangle():
 		if w < 10:
 			check.set()
 			return None
-		self.__location = locationHelper.RectLTWH(x, y, w, h)
+		self._setLocation(locationHelper.RectLTWH(x, y, w, h))
 		check.set()
 		self.__hook_object()
 		return x+w
@@ -119,7 +128,7 @@ class Rectangle():
 		if y > self.__location.bottom-10:
 			check.set()
 			return None
-		self.__location = locationHelper.RectLTWH(x,y,w,h)
+		self._setLocation(locationHelper.RectLTWH(x,y,w,h))
 		check.set()
 		self.__hook_object()
 		return y
@@ -134,7 +143,7 @@ class Rectangle():
 		if y+h > api.getDesktopObject().location.height:
 			check.set()
 			return None
-		self.__location = locationHelper.RectLTWH(x, y, w, h)
+		self._setLocation(locationHelper.RectLTWH(x, y, w, h))
 		check.set()
 		self.__hook_object()
 		return y+h
@@ -153,7 +162,7 @@ class Rectangle():
 			check.set()
 			return False
 		else:
-			self.__location = location
+			self._setLocation(location)
 			check.set()
 			return True
 
@@ -180,7 +189,7 @@ class Rectangle():
 
 	def adjustToObject(self):
 		if not self.__object: return False
-		self.__location = self.__delimit_object(self.__object)
+		self._setLocation(self.__delimit_object(self.__object))
 		return True
 
 	def bind(self, event, func, *args, **kwargs):

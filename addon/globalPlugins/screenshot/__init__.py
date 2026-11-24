@@ -9,6 +9,7 @@ Copyright (C) Javi Dominguez 2021
 
 from .gui import *
 from .rectangleHandler import *
+from .captureOutline import CaptureOutline
 from .configHelper import ensureBaseProfileConfig
 from .actualizadorRecursos import ActualizadorRecursos
 from contentRecog import uwpOcr, RecogImageInfo
@@ -64,7 +65,8 @@ confspec = {
 	"format":"string(default=BMP)",
 	"action":"integer(default=2)",
 	"step":"integer(default=5)",
-	"scale":"boolean(default=false)"
+	"scale":"boolean(default=false)",
+	"showOutline":"boolean(default=false)"
 }
 config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
@@ -88,6 +90,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 		self.oldGestureBindings = {}
 		self.toggling = False
+		self._outline = None
 		self.rectangle = Rectangle()
 		self.oldRectangles = Stack()
 		self.lastGesture = None
@@ -103,6 +106,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self._actualizador = ActualizadorRecursos("javidominguez", "screenshots", rama="master", intervalo_horas=12)
 
 	def terminate(self):
+		self._destroyOutline()
 		self._actualizador.detener()
 		try:
 			NVDASettingsDialog.categoryClasses.remove(ScreenshotsPanel)
@@ -153,7 +157,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		# Translators: Message presented when leaving the keyboard  layer
 		ui.message(_("Cancelled"))
 
+	def _destroyOutline(self):
+		if self._outline is not None:
+			self._outline.Hide()
+			self._outline.Destroy()
+			self._outline = None
+
 	def finish(self):
+		self._destroyOutline()
 		self.toggling = False
 		self.clearGestureBindings()
 		self.bindGestures(self.__gestures)
@@ -182,6 +193,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			# Translators: Reported when screen curtain is enabled.
 			ui.message(_("Please disable screen curtain before take a screenshot"))
 			return
+		if config.conf.profiles[0]["screenshots"].as_bool("showOutline"):
+			self._outline = CaptureOutline()
 		self.lastGesture = gesture.identifiers
 		for k in [i[3:] for i in self.__keyboardLayerGestures]:
 			try:
@@ -343,6 +356,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.script_wrongGesture(None)
 			return
 		self.rectangle = self.oldRectangles.pop()
+		if self._outline is not None:
+			self._outline.showFor(self.rectangle.location)
 		# Translators: Message presented when a object is framed.
 		ui.message(_("Frammed {object} {name} ").format(
 		object=controlTypes.role._roleLabels[self.rectangle.object.role], name=self.rectangle.object.name if self.rectangle.object.name and self.rectangle.object.role == controlTypes.Role.WINDOW else ""))
@@ -389,13 +404,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message(". ".join(messages))
 
 	def script_copyImageToClipboard(self, gesture=None):
+		img = self.rectangle.getImage()
 		# Translators: Message when there is no image to copy.
-		if not self.rectangle.getImage():
+		if not img:
 			ui.message(_("No image to copy"))
 			return
 
-		# Retrieve the image of the rectangle and convert it to wx.Bitmap
-		img = self.rectangle.getImage()
 		bitmap = wx.Bitmap(img)
 
 		# Attempt to open the clipboard
@@ -628,7 +642,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def rectangleFromObject(self, obj, verbose=True):
 		if obj:
 			if self.rectangle.object: self.oldRectangles.push(self.rectangle)
-			self.rectangle = Rectangle().fromObject(obj)
+			self.rectangle = Rectangle(outline=self._outline).fromObject(obj)
 			# Translators: Messages that will be presented when the events occur.
 			self.rectangle.bind(EVT_object, evtMessage, _("Reference object has changed"))
 			self.rectangle.bind(EVT_objectInside, evtMessage, _("The reference object is fully inside the rectangle"))
