@@ -40,6 +40,7 @@ CONFSPEC = {
 	"action": "integer(default=2)",
 	"step": "integer(default=5)",
 	"scale": "boolean(default=false)",
+	"showOutline": "boolean(default=false)",
 }
 SPEC_DEFAULTS = {
 	"folder": "/",
@@ -47,6 +48,7 @@ SPEC_DEFAULTS = {
 	"action": 2,
 	"step": 5,
 	"scale": False,
+	"showOutline": False,
 }
 
 
@@ -111,6 +113,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 		self.assertEqual(section["format"], "BMP")
 		self.assertEqual(section["action"], 2)
 		self.assertEqual(section["step"], 5)
+		self.assertIs(section["showOutline"], False)
 		# Pre-existing user values were preserved untouched.
 		self.assertEqual(section["folder"], r"C:\Users\admin\documents")
 		self.assertEqual(section["scale"], False)
@@ -130,6 +133,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 			os.path.join(os.environ["USERPROFILE"], "documents"),
 		)
 		self.assertEqual(section["format"], "BMP")
+		self.assertIs(section["showOutline"], False)
 
 	def test_existing_complete_config_is_untouched(self):
 		"""A fully-populated profile is returned verbatim (idempotent)."""
@@ -139,6 +143,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 			"action": 1,
 			"step": 3,
 			"scale": True,
+			"showOutline": True,
 		}
 		conf = FakeConf(dict(custom))
 		section = configHelper.ensureBaseProfileConfig(conf, CONFSPEC)
