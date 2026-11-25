@@ -15,7 +15,7 @@ from .actualizadorRecursos import ActualizadorRecursos
 from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
 from functools import wraps
-from keyboardHandler import KeyboardInputGesture
+from keyboardHandler import KeyboardInputGesture, trappedKeys
 from subprocess import Popen
 from threading import Event, Thread, Timer
 from time import sleep
@@ -138,6 +138,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if isinstance(gesture, KeyboardInputGesture) and gesture.mainKeyName != "f1" and self.kbTimer:
 			self.kbTimer = None
 		script = globalPluginHandler.GlobalPlugin.getScript(self, gesture)
+		if (
+			script == self.script_copyImageToClipboard
+			and isinstance(gesture, KeyboardInputGesture)
+			and (gesture.vkCode, gesture.isExtended) in trappedKeys
+		):
+			# NVDA keeps handled keys in trappedKeys until key-up. Consume this repeat
+			# before it can interrupt speech or queue another capture.
+			gesture.speechEffectWhenExecuted = None
+			inputCore.manager._captureFunc = lambda incoming: incoming is not gesture
+			return script
 		inputCore.manager._captureFunc = lambda self: not (gesture.isModifier and gesture.mainKeyName in (
 		"leftWindows", "rightWindows", "leftAlt"))
 		if not script:
@@ -410,17 +420,21 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message(_("No image to copy"))
 			return
 
-		bitmap = wx.Bitmap(img)
-
-		# Attempt to open the clipboard
-		if wx.TheClipboard.Open():
-			wx.TheClipboard.SetData(wx.BitmapDataObject(bitmap))
+		data = wx.BitmapDataObject(wx.Bitmap(img))
+		if not wx.TheClipboard.Open():
+			# Translators: Message when unable to open the clipboard.
+			ui.message(_("Unable to open the clipboard"))
+			return
+		try:
+			copied = wx.TheClipboard.SetData(data)
+		finally:
 			wx.TheClipboard.Close()
+		if copied:
 			# Translators: Message when the image has been successfully copied to the clipboard.
 			ui.message(_("Image copied to clipboard"))
 		else:
-			# Translators: Message when unable to open the clipboard.
-			ui.message(_("Unable to open the clipboard"))
+			# Translators: Message when the clipboard did not accept the image.
+			ui.message(_("Unable to copy the image to the clipboard"))
 
 	def script_saveScreenshot(self, gesture):
 		img = self.rectangle.getImage()
