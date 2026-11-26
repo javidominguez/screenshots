@@ -41,6 +41,7 @@ CONFSPEC = {
 	"step": "integer(default=5)",
 	"scale": "boolean(default=false)",
 	"showOutline": "boolean(default=false)",
+	"dimmingOpacity": "integer(min=0, max=100, default=0)",
 }
 SPEC_DEFAULTS = {
 	"folder": "/",
@@ -49,6 +50,7 @@ SPEC_DEFAULTS = {
 	"step": 5,
 	"scale": False,
 	"showOutline": False,
+	"dimmingOpacity": 0,
 }
 
 
@@ -78,6 +80,14 @@ class FakeConf:
 
 	def __getitem__(self, key):
 		return self._merged[key]
+
+
+class DimmingOpacityTests(unittest.TestCase):
+	def test_percentage_from_raw_profile(self):
+		for value, expected in (("37", 37), (100, 100), ("-5", 0), ("121", 100), ("invalid", 0)):
+			with self.subTest(value=value):
+				self.assertEqual(configHelper.getDimmingOpacity({"dimmingOpacity": value}), expected)
+		self.assertEqual(configHelper.getDimmingOpacity({}), 0)
 
 
 class EnsureBaseProfileConfigTests(unittest.TestCase):
@@ -114,6 +124,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 		self.assertEqual(section["action"], 2)
 		self.assertEqual(section["step"], 5)
 		self.assertIs(section["showOutline"], False)
+		self.assertEqual(section["dimmingOpacity"], 0)
 		# Pre-existing user values were preserved untouched.
 		self.assertEqual(section["folder"], r"C:\Users\admin\documents")
 		self.assertEqual(section["scale"], False)
@@ -134,6 +145,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 		)
 		self.assertEqual(section["format"], "BMP")
 		self.assertIs(section["showOutline"], False)
+		self.assertEqual(section["dimmingOpacity"], 0)
 
 	def test_existing_complete_config_is_untouched(self):
 		"""A fully-populated profile is returned verbatim (idempotent)."""
@@ -144,6 +156,7 @@ class EnsureBaseProfileConfigTests(unittest.TestCase):
 			"step": 3,
 			"scale": True,
 			"showOutline": True,
+			"dimmingOpacity": 65,
 		}
 		conf = FakeConf(dict(custom))
 		section = configHelper.ensureBaseProfileConfig(conf, CONFSPEC)

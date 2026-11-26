@@ -73,6 +73,7 @@ In NVDA preferences, options, the following settings can be configured:
 * The folder where the files will be saved.  The user's documents folder by default.
 * The image file format.
 * **Show an outline around the capture area** displays a yellow and black border while the wizard is open. The border follows the selection as you frame objects or resize the rectangle. It is hidden during capture, including clipboard copies and OCR. This option is off by default.
+* **Dimming outside the capture area (%)** darkens the desktop outside the outline. The default is 0%. At 100% the surrounding desktop is black. The selected area and its border stay at normal brightness.
 * Whether or not to enlarge the captured image. The scale is calculated based on the size of the rectangle and the screen. Small images will be enlarged further, to a maximum of 4x, and larger ones only to the edge of the screen.
 * The action after saving (nothing, open the folder or open the file).
 * The number of pixels for each movement.
