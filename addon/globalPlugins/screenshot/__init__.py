@@ -10,7 +10,7 @@ Copyright (C) Javi Dominguez 2021
 from .gui import *
 from .rectangleHandler import *
 from .captureOutline import CaptureOutline
-from .configHelper import ensureBaseProfileConfig
+from .configHelper import ensureBaseProfileConfig, getDimmingOpacity
 from .actualizadorRecursos import ActualizadorRecursos
 from contentRecog import uwpOcr, RecogImageInfo
 from datetime import datetime
@@ -66,7 +66,8 @@ confspec = {
 	"action":"integer(default=2)",
 	"step":"integer(default=5)",
 	"scale":"boolean(default=false)",
-	"showOutline":"boolean(default=false)"
+	"showOutline":"boolean(default=false)",
+	"dimmingOpacity":"integer(min=0, max=100, default=0)"
 }
 config.conf.spec["screenshots"]=confspec
 mouseCallbackFunc = None
@@ -203,8 +204,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			# Translators: Reported when screen curtain is enabled.
 			ui.message(_("Please disable screen curtain before take a screenshot"))
 			return
-		if config.conf.profiles[0]["screenshots"].as_bool("showOutline"):
-			self._outline = CaptureOutline()
+		settings = config.conf.profiles[0]["screenshots"]
+		if settings.as_bool("showOutline"):
+			self._outline = CaptureOutline(dimmingOpacity=getDimmingOpacity(settings))
 		self.lastGesture = gesture.identifiers
 		for k in [i[3:] for i in self.__keyboardLayerGestures]:
 			try:

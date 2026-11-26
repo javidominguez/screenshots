@@ -21,6 +21,15 @@ migration logic can be unit tested in isolation.
 import os
 
 
+def getDimmingOpacity(section):
+	"""Read a percentage from the raw profile, including hand-edited settings."""
+	try:
+		opacity = int(section.get("dimmingOpacity", 0))
+	except (TypeError, ValueError):
+		return 0
+	return max(0, min(100, opacity))
+
+
 def ensureBaseProfileConfig(conf, confspec):
 	"""Make sure the base (normal) profile holds every screenshots setting.
 

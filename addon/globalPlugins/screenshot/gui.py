@@ -9,6 +9,7 @@ Copyright (C) Javi Dominguez 2021
 
 from gui import guiHelper, NVDASettingsDialog
 from gui.settingsDialogs import SettingsPanel
+from .configHelper import getDimmingOpacity
 import addonHandler
 import config
 import wx
@@ -64,6 +65,13 @@ class ScreenshotsPanel(SettingsPanel):
 		label=_("Show an outline around the capture area"))
 		self.checkboxOutline.SetValue(config.conf.profiles[0]["screenshots"].as_bool("showOutline"))
 		helper.addItem(self.checkboxOutline)
+		self.dimmingOpacity = helper.addLabeledControl(
+			# Translators: Opacity of the dark overlay outside the outlined screenshot area.
+			_("Dimming outside the capture area (%)"), wx.SpinCtrl,
+			min=0, max=100, initial=getDimmingOpacity(config.conf.profiles[0]["screenshots"]),
+		)
+		self.dimmingOpacity.Enable(self.checkboxOutline.GetValue())
+		self.checkboxOutline.Bind(wx.EVT_CHECKBOX, self.onToggleOutline)
 
 		self.radioBoxAction = wx.RadioBox(self, wx.ID_ANY,
 		# TRANSLATORS: Select what to do after saving the file
@@ -81,6 +89,10 @@ class ScreenshotsPanel(SettingsPanel):
 		sizerStep.Add(self.spin_ctrl)
 		helper.addItem(sizerStep)
 
+	def onToggleOutline(self, evt):
+		self.dimmingOpacity.Enable(evt.IsChecked())
+		evt.Skip()
+
 	def onBrowse(self, evt):
 		dlg = wx.DirDialog(self,
 		# TRANSLATORS: Title of the dialog where to select the folder
@@ -97,6 +109,7 @@ class ScreenshotsPanel(SettingsPanel):
 		config.conf.profiles[0]["screenshots"]["action"] = int(self.radioBoxAction.GetSelection())
 		config.conf.profiles[0]["screenshots"]["scale"] = self.checkboxEnlargement.GetValue()
 		config.conf.profiles[0]["screenshots"]["showOutline"] = self.checkboxOutline.GetValue()
+		config.conf.profiles[0]["screenshots"]["dimmingOpacity"] = self.dimmingOpacity.GetValue()
 		config.conf.profiles[0]["screenshots"]["step"] = self.spin_ctrl.GetValue()
 
 	def onDiscard(self):
